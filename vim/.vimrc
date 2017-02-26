@@ -7,7 +7,7 @@ filetype plugin indent on
 " else
 "     set background=light
 " endif
-colorscheme solarized
+colorscheme wal
 " molokai is also installed see github/tomasr/molokai
 
 " makes the background disapear (so that it uses default terminal color and transparency)
@@ -27,6 +27,14 @@ set hlsearch        " highlight matches
 
 " turn of search highlight
 nnoremap <leader><space> :nohlsearch<CR>
+
+set ttyfast             " send more characters for redraws
+set mouse=a             " enable mouse
+
+" set this t othe name of your terminal that supports mouse codes.
+" must be one of: xterm, xterm2, netterm, dec, jsbterm, pterm
+" use only if problems without it arise
+" set ttymouse=xterm2
 
 
 set foldenable          " enable folding

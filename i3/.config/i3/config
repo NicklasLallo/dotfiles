@@ -30,7 +30,11 @@ font pango:monospace 8
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+# bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec urxvt
+
+bindsym $mod+Shift+Return exec i3-sensible-terminal
+
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -172,10 +176,84 @@ set $urgent-bg-color     #E53935
 
 # window colors
 #                       border              background         text                 indicator
-client.focused          $bg-color           $bg-color          $text-color          #00ff00
-client.unfocused        $inactive-bg-color  $inactive-bg-color $inactive-text-color #00ff00
-client.focused_inactive $inactive-bg-color  $inactive-bg-color $inactive-text-color #00ff00
-client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color          #00ff00
+#client.focused          $bg-color           $bg-color          $text-color          #00ff00
+#client.unfocused        $inactive-bg-color  $inactive-bg-color $inactive-text-color #00ff00
+#client.focused_inactive $inactive-bg-color  $inactive-bg-color $inactive-text-color #00ff00
+#client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color          #00ff00
+
+
+
+#in order to work with dylanaraps/wal we use this to change colors on the fly
+# Set colors from Xresources
+# Change 'color7' and 'color2' to whatever colors you want i3 to use
+# from the generated scheme.
+# NOTE: The '#f0f0f0' in the lines below is the color i3 will use if
+# it fails to get colors from Xresources for some reason.
+set_from_resource $fg i3wm.color7 #f0f0f0
+set_from_resource $bg i3wm.color2 #f0f0f0
+
+# class                 border  backgr. text indicator child_border
+client.focused          $bg     $bg     $fg  $bg       $bg
+client.focused_inactive $bg     $bg     $fg  $bg       $bg
+client.unfocused        $bg     $bg     $fg  $bg       $bg
+client.urgent           $bg     $bg     $fg  $bg       $bg
+client.placeholder      $bg     $bg     $fg  $bg       $bg
+
+client.background       $bg
+
+
+# Media Keys
+
+# Pulse Audio controls
+bindsym XF86AudioRaiseVolume exec --no-startup-id "vol up &"
+bindsym XF86AudioLowerVolume exec --no-startup-id "vol down &"
+bindsym XF86AudioMute exec --no-startup-id "vol mute &"
+
+# Media player controls
+bindsym XF86AudioPlay exec "song toggle"
+bindsym XF86AudioNext exec "song next"
+bindsym XF86AudioPrev exec "song prev"
+
+# Add a 5px border to all windows.
+# for_window [class="^.*"] border normal 0
+
+# Float all windows by default.
+# for_window [class="^.*"] floating enable
+
+# Title bars with padding.
+# We first set the titlebar font size to a larger font size than desired
+# to get a good padding amount. We then use pango markup to force i3 to
+# print the desired font size. This gives us large titlebars with a small
+# font.
+font pango:lemon 12
+for_window [class=".*"] title_format "<span font='Artwiz Lemon 7'> > %title</span>"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 hide_edge_borders both
 
@@ -186,17 +264,18 @@ bar {
 #  	status_command i3blocks -c /home/booker/.i3/i3blocks.conf
     status_command i3status
 	colors {
-		background $bg-color
+		background $bg
 	    	separator #757575
 		#                  border             background         text
-		focused_workspace  $bg-color          $bg-color          $text-color
-		inactive_workspace $inactive-bg-color $inactive-bg-color $inactive-text-color
+		focused_workspace  $bg                $bg                $text-color
+		inactive_workspace $bg                $bg                $inactive-text-color
 		urgent_workspace   $urgent-bg-color   $urgent-bg-color   $text-color
 	}
 }
 
 
-exec_always compton -f
+exec compton -f
+exec xrdb ~/.Xresources
 exec feh --bg-scale ~/wallpapers/MpA1ygh.jpg
 exec setxkbmap -layout se
 # Add this to your .xinitrc or whatever file starts programs on startup.
