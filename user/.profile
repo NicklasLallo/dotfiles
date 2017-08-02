@@ -1,4 +1,6 @@
 $TERMINAL=konsole
 export PATH="/home/la1/dotfiles/scripts/":$PATH
-export LC_ALL=sv_SE.utf8
-export LC_LANG=sv_SE.utf8
+export LANG=en_US.utf8
+export LANGUAGE=en_US.utf8
+export LC_ALL=en_US.utf8
+#export LC_LANG=en_US.utf8
