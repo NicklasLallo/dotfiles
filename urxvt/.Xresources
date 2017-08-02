@@ -17,7 +17,7 @@ Xft.lcdfilter: lcddefault
 URxvt.scrollBar: false
 
 ! Set terminal padding
-URxvt.internalBorder: 15
+URxvt.internalBorder: 35
 
 ! Enables copy/paste with Ctrl-Shift-C/V
 URxvt.iso14755: false

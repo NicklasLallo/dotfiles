@@ -24,7 +24,7 @@ clickarea = 25
 
 border-left-size = 40
 border-right = 40
-border-top = 6
+border-top = 11
 
 module-margin-left = 1
 module-margin-right = 1
@@ -38,10 +38,12 @@ radius = 4
 radius-top = 4
 radius-bottom = 0
 
-font-0 = FontAwesome:size=11;3
-font-1 = misc tamsyn:pixelsize=13;2
-font-2 = Unifont:size=11;3
-font-3 = Wuncon Siji:pixelsize=11;3
+font-0 = FontAwesome:size=16;3
+font-1 = misc tamsyn:pixelsize=16;2
+font-3 = Unifont:size=11;3
+font-2 = Symbola:size=18;3
+font-4 = Wuncon Siji:pixelsize=11;3
+
 ;SanFranSiscoDisplay:size=14:weight=regular;0;
 ;
 [bar/center]
@@ -64,7 +66,7 @@ border-top-size = ${const.border-top}
 ;border-radius-bottom = ${const.radius-bottom}
 ;border-radius = ${const.radius}
 
-radius = 4
+radius = 5
 
 module-margin-left = ${const.module-margin-left}
 module-margin-right = ${const.module-margin-right}
@@ -74,16 +76,19 @@ lineheight = ${const.lineheight}
 
 font-0 = ${const.font-0}
 font-1 = ${const.font-1}
+font-2 = ${const.font-2}
+font-3 = ${const.font-3}
+font-4 = ${const.font-4}
 
-modules-left = i3 xwindow 
-modules-center =  
-modules-right = coretemps redshift pkg vpncheck volume clock
-
-[bar/left]
-monitor = DP-3
 modules-left = i3 
-modules-center = mpd
-modules-right = wireless-network battery volume clock
+modules-center = xwindow  
+modules-right = redshift pkg volume clock
+
+[bar/right]
+monitor = ${env:MONITOR:DP-3}
+modules-left = i3 
+modules-center = 
+modules-right = filesystem coretemps vpncheck volume clock menu0
 
 width = ${const.width}
 height = ${const.height}
@@ -95,8 +100,10 @@ line-color = ${colors.line-color}
 
 border-color = ${colors.transparent}
 border-left-size = ${const.border-left-size}
-border-right = ${const.boarder-right}
-border-top = ${const.boarder-top}
+border-right-size = ${const.border-right}
+border-top-size = ${const.border-top}
+
+radius = 4
 
 module-margin-left = ${const.module-margin-left}
 module-margin-right = ${const.module-margin-right}
@@ -106,37 +113,9 @@ lineheight = ${const.lineheight}
 
 font-0 = ${const.font-0}
 font-1 = ${const.font-1}
-
-;tray-position = right
-tray-background = ${colors/tray_background}
-
-[bar/right]
-monitor = DP-2
-modules-left = i3 
-modules-center = 
-modules-right = volume clock
-
-width = ${const.width}
-height = ${const.height}
-clickareas = ${const.clickareas}
-
-background = ${colors.background}
-foreground = ${colors.foreground}
-line-color = ${colors.linecolor}
-
-border-color = ${colors.transparent}
-border-left-size = ${const.boarder-left}
-border-right = ${const.boarder-right}
-border-top = ${const.boarder-top}
-
-module-margin-left = ${const.module-margin-left}
-module-margin-right = ${const.module-margin-right}
-
-spacing = ${const.spacing}
-lineheight = ${const.lineheight}
-
-font-0 = ${const.font-0}
-font-1 = ${const.font-1}
+font-2 = ${const.font-2}
+font-3 = ${const.font-3}
+font-4 = ${const.font-4}
 
 ;tray-position = right
 tray-background = ${colors/tray_background}
@@ -178,10 +157,13 @@ animation-charging-framerate = 1000
 [module/i3]
 type = internal/i3
 
+font = symbola
+
 pin-workspaces = true
 strip-wsnumbers = true
 
 index-sort = true
+
 
 label-focused = %name%
 label-focused-foreground = ${colors.i3_foreground}
@@ -276,7 +258,7 @@ label-ellipsis = true
 [module/clock]
 type = internal/date
 interval = 1
-date =  %H:%M  %{F-}%{B-}
+date =  %H:%M %{F-}%{B-}
 
 format-background = ${colors.background}
 format-foreground = ${colors.foreground}
@@ -326,5 +308,81 @@ exec = ~/.config/polybar/tempcores.sh
 [module/redshift]
 type = custom/script
 interval = 5
+click-left = pkill -USR1 redshift
+click-right = pgrep redshift &> /dev/null || redshift &> /dev/null &
 
 exec = ~/.config/polybar/redshift.sh
+
+[module/filesystem]
+type = internal/fs
+
+
+; Mountpoints to display
+mount-0 = /
+;mount-1 = /home/la1/
+;mount-2 = /var
+
+; Seconds to sleep between updates
+; Default: 30
+interval = 10
+
+; Display fixed precision values
+; Default: false
+fixed-values = true
+
+; Spacing between entries
+; Default: 2
+spacing = 4
+
+label-mounted =%{F#0a81f5}%{F-} %percentage_used%% - %free%
+label-unmounted = %mountpoint% not mounted
+label-unmounted-foreground = ${colors.foreground-alt}
+
+[module/powermenu]
+type = custom/menu
+
+format-spacing = 1
+
+label-open =%{T3} %{T-}
+label-open-foreground = #e60053
+label-close =  cancel
+label-close-foreground = #e60053
+label-separator = |
+label-separator-foreground = #555 
+
+menu-0-0 = reboot
+menu-0-0-exec = menu-open-1
+menu-0-1 = power off
+menu-0-1-exec = menu-open-2
+
+menu-1-0 = cancel
+menu-1-0-exec = menu-open-0
+menu-1-1 = reboot
+menu-1-1-exec = sudo reboot
+
+menu-2-0 = power off
+menu-2-0-exec = sudo poweroff
+menu-2-1 = cancel
+menu-2-1-exec = menu-open-0
+
+
+
+[module/menu0]
+
+format-spacing = 1
+
+type = custom/menu
+format-foreground = #e60053
+format = <label-toggle> <menu>
+format-padding = 1
+format-margin = 0
+
+menu-0-0 = " shutdown  " 
+menu-0-0-exec = shutdown now
+menu-0-1 = " restart  "
+menu-0-1-exec = shutdown -r now
+menu-0-2 =   cancel
+
+
+label-open = 
+label-close =

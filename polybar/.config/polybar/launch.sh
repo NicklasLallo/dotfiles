@@ -10,7 +10,7 @@ while pgrep -x polybar >/dev/null; do sleep 1; done
 #polybar example &
 #polybar -c ${HOME}/.config/polybar/config2 laptop &
 polybar -c ${HOME}/.config/polybar/config2 center &
-#polybar -c ${HOME}/.config/polybar/config2 left &
+polybar -c ${HOME}/.config/polybar/config2 right &
 #polybar -c ${HOME}/.config/polybar/config_3 title &
 #polybar -c ${HOME}/.config/polybar/config_3 cpu &
 #polybar -c ${HOME}/.config/polybar/config_3 memory & 

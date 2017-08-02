@@ -38,7 +38,9 @@ floating_modifier $mod
 # bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+Return exec urxvt
 
-bindsym $mod+Shift+Return exec i3-sensible-terminal
+bindsym $mod+Shift+Return exec urxvt -b 0
+
+#bindsym $mod+Shift+Return exec i3-sensible-terminal
 
 
 # kill focused window
@@ -116,7 +118,7 @@ bindsym $mod+a focus parent
 
 #bind workspaces to specific screens
 workspace $workspace1 output DP-0
-workspace $workspace5 output DP-3
+workspace $workspace2 output DP-3
 
 
 # switch to workspace
@@ -246,20 +248,22 @@ bindsym XF86AudioPrev exec "song prev"
 # to get a good padding amount. We then use pango markup to force i3 to
 # print the desired font size. This gives us large titlebars with a small
 # font.
-font pango:lemon 19
-for_window [class=".*"] title_format "<span font='Artwiz Lime 8'> > %title</span>"
+font pango:lemon 0
+for_window [class=".*"] title_format "<span font='Artwiz Lime 0'> > %title</span>"
+
+for_window [class="^.*"] border pixel 2
 
 gaps inner 15
 gaps outer 0
-smart_gaps on
+#smart_gaps on
 
 #set workspace names
 set $workspace1 "" 
-set $workspace2 "" 
-set $workspace3 "" 
-set $workspace4 "" 
-set $workspace5 "" 
-set $workspace6 ""
+set $workspace2 "🦇" 
+set $workspace3 "☥" 
+set $workspace4 "☢" 
+set $workspace5 "☣" 
+set $workspace6 "♿"
 #1 Terminals 
 #2 Mail 
 #3 Palemoon 
@@ -308,7 +312,7 @@ hide_edge_borders both
 #	}
 #}
 
-exec --no-startup-id redshift-gtk
+# exec --no-startup-id redshift-gtk
 # Start Polybar (instead of i3bar)
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 

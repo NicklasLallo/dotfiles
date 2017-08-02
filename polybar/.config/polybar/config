@@ -19,6 +19,7 @@ secondary = #e60053
 alert = #bd2c40
 
 [bar/example]
+monitor = ${env:MONITOR:DP-3}
 ;monitor = ${env:MONITOR:HDMI-1}
 width = 100%
 height = 27
@@ -45,6 +46,7 @@ module-margin-right = 2
 font-0 = fixed:pixelsize=10;1
 font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-2 = wuncon siji:size=30:pixelsize=50;1
+font-3 = symbola:fontformat=truetype:size=8
 
 modules-left = bspwm i3
 modules-center = mpd
