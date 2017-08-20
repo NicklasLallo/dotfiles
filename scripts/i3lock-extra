@@ -65,6 +65,8 @@ image_prepare() {
     R=$(file $overlay_image | grep -o '[0-9]* x [0-9]*')
     RX=$(echo $R | cut -d' ' -f 1)
     RY=$(echo $R | cut -d' ' -f 3)
+    # RX=640
+    # RY=360
 
     SR=$(xrandr --query | grep ' connected' | cut -f3 -d' ')
     for RES in $SR

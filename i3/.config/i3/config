@@ -50,7 +50,7 @@ bindsym $mod+Shift+q kill
 bindsym $mod+Shift+d exec dmenu_run
 
 #lock the screen using i3lock and a custom script
-bindsym $mod+l exec i3lock-extra --screenshot --grayscale --pixelize --overlay-image ~/Pictures/Icons/icon2.png
+bindsym $mod+l exec i3lock-extra --screenshot --pixelize --overlay-image ~/Pictures/Icons/icon2.png
 
 #bindsym $mod+d exec rofi -show run -lines 3 -eh 2 -width 100 -padding 800 -opacity "85" -bw 0 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "System San Francisco Display 18"
 
@@ -317,7 +317,15 @@ hide_edge_borders both
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 
-exec compton -f
+ exec compton -f
+# exec compton -cCzG -t-3 -l-5 -r4 \
+# --config /dev/null --backend glx \
+# --vsync opengl-swc \
+# --shadow-exclude "name = 'synapse'" \
+# --shadow-ignore-shaped --unredir-if-possible \
+# --glx-no-stencil --paint-on-overlay \
+# --glx-swap-method 3 --glx-no-rebind-pixmap
+
 exec xrdb ~/.Xresources
 exec feh --bg-scale ~/wallpapers/MpA1ygh.jpg
 exec setxkbmap -layout se
