@@ -57,6 +57,7 @@ plugins=(git zsh-autosuggestions)
   export PATH=~/dotfiles/scripts/:$PATH
 # export MANPATH="/usr/local/man:$MANPATH"
 
+export ANDROID_HOME=/opt/android-sdk
 #  export TERM="xterm-256color"
 
   setxkbmap -layout se

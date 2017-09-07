@@ -331,3 +331,5 @@ exec feh --bg-scale ~/wallpapers/MpA1ygh.jpg
 exec setxkbmap -layout se
 # Add this to your .xinitrc or whatever file starts programs on startup.
 exec wal -i "$(< "${HOME}/.cache/wal/wal")"
+exec_always --no-startup-id i3-msg 'workspace 🦇; exec urxvt -e gtop' 
+exec --no-startup-id i3-msg 'workspace 🦇; exec urxvt -e weechat'
