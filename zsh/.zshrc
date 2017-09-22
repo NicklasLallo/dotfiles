@@ -67,7 +67,9 @@ source $ZSH/oh-my-zsh.sh
 # Import colorscheme from 'wal'
 (wal -r &)
 
-
+if [[ -r /usr/lib/python3.6/site-packages/powerline/bindings/zsh/powerline.zsh ]]; then
+    source /usr/lib/python3.6/site-packages/powerline/bindings/zsh/powerline.zsh
+fi
 
 
 

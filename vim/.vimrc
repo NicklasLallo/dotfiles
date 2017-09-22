@@ -2,6 +2,15 @@ execute pathogen#infect()
 syntax enable "enables syntax processing
 filetype plugin indent on
 
+set laststatus=2 "always show the powerline statusbar in all windows
+set showtabline=2 "always display the tabline, even if there is only one tab
+set noshowmode "Hide the default mode text (e.g. -- INSET -- below the statusline)
+set rtp+=/usr/lib/python3.6/site-packages/powerline/bindings/vim
+
+python3 from powerline.vim import setup as powerline_setup
+python3 powerline_setup()
+python3 del powerline_setup
+
 " if has('gui_running')
     set background=dark
 " else

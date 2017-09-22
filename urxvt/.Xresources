@@ -1,11 +1,18 @@
 ! Dylans Xresources
 
- URxvt*font: -*-clean-medium-r-*--12-*-*-*-*-*-*-*
- URxvt*font: xft:Monospace
- URxvt*boldFont: -*-clean-medium-r-*--12-*-*-*-*-*-*-*
- URxvt*boldFont: xft:Monospace
+! URxvt*font: -*-clean-medium-r-*--16-*-*-*-*-*-*-*
+URxvt*font: xft:Source Code Pro for Powerline:size=12
+! URxvt*boldFont: -*-clean-medium-r-*--12-*-*-*-*-*-*-*
+URxvt*boldFont: xft:Source Code Pro for Powerline
 
-Xft.dpi: 96
+!! Fix the annoying gaps between powerline symbols
+URxvt.letterSpace: -1
+
+!! Larger History limit
+URxvt.saveLines: 1000000
+
+!Xft.dpi: 96
+Xft.dpi: 109
 Xft.autohint: 0
 Xft.antialias: 1
 Xft.hinting: true
@@ -17,7 +24,7 @@ Xft.lcdfilter: lcddefault
 URxvt.scrollBar: false
 
 ! Set terminal padding
-URxvt.internalBorder: 35
+URxvt.internalBorder: 0 
 
 ! Enables copy/paste with Ctrl-Shift-C/V
 URxvt.iso14755: false
@@ -29,8 +36,8 @@ URxvt.keysym.Shift-Control-V: perl:clipboard:paste
 !urxvt*depth: 32
 !urxvt*background: rgba:0000/0000/0200/c800
 
-urxvt*transparent: true
-urxvt*shading: 30
+urxvt*transparent: false
+urxvt*shading: 0
 
 ! Colors {{{
 
