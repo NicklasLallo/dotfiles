@@ -228,14 +228,16 @@ client.background           $bg
 # Media Keys
 
 # Pulse Audio controls
-bindsym XF86AudioRaiseVolume exec --no-startup-id "vol up &"
-bindsym XF86AudioLowerVolume exec --no-startup-id "vol down &"
-bindsym XF86AudioMute exec --no-startup-id "vol mute &"
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q sset Master 2%+
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q sset Master 2%-
+bindsym XF86AudioMute exec --no-startup-id amixer -q sset Master toggle
 
 # Media player controls
-bindsym XF86AudioPlay exec "song toggle"
-bindsym XF86AudioNext exec "song next"
-bindsym XF86AudioPrev exec "song prev"
+bindsym XF86AudioPlay exec playerctl -p spotify play-pause
+bindsym XF86AudioNext exec playerctl -p spotify next
+bindsym XF86AudioPrev exec playerctl -p spotify previous
+
+
 
 # Add a 5px border to all windows.
 # for_window [class="^.*"] border normal 0

@@ -81,15 +81,14 @@ font-3 = ${const.font-3}
 font-4 = ${const.font-4}
 
 modules-left = i3 
-modules-center = xwindow  
+modules-center = spotipy 
 modules-right = redshift pkg volume clock
 
 [bar/right]
 monitor = ${env:MONITOR:DP-3}
 modules-left = i3 
 modules-center = 
-modules-right = filesystem coretemps vpncheck volume clock menu0
-
+modules-right = pub-ip filesystem coretemps vpncheck volume clock menu0
 width = ${const.width}
 height = ${const.height}
 clickareas = ${const.clickareas}
@@ -281,6 +280,28 @@ label-maxlen = 50
 # vim:filetype=dosini
 # mousepad:filetype=dosini
 
+[module/spotipy]
+type = custom/script
+exec = ~/.config/polybar/spotifyS
+exec-if = pgrep spotify > /dev/null
+interval = 0.2
+click-left = playerctl -p spotify play-pause
+format-foreground = ${colors.foreground}
+# format-background = #191A29
+format-padding = 2
+label = "%output%"
+content = 
+content-foreground = #23B37A
+
+[module/pub-ip]
+type = custom/script
+exec = $HOME/.config/polybar/pub-ip.sh
+interval = 100
+;format-underline = ${colors.line-color}
+format-underline = #dc322f
+format = <label> 
+label = %output%
+
 [module/pkg]
 type = custom/script
 interval = 1200
@@ -368,9 +389,7 @@ menu-2-1-exec = menu-open-0
 
 
 [module/menu0]
-
 format-spacing = 1
-
 type = custom/menu
 format-foreground = #e60053
 format = <label-toggle> <menu>
@@ -382,7 +401,6 @@ menu-0-0-exec = shutdown now
 menu-0-1 = " restart  "
 menu-0-1-exec = shutdown -r now
 menu-0-2 =   cancel
-
-
 label-open = 
-label-close =
+label-close = 
+
