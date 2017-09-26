@@ -24,8 +24,10 @@ hi Normal ctermbg=NONE
 
 set tabstop=4       " number of visual spaces per TAB
 set softtabstop=4   " number of spaces in tab when editing
+set shiftwidth=4    " number of spaces used for autoindent, command: <<, >>, == (auto entire doc: gg=G )
 set expandtab       " tabs are converted into spaces
 set number          " show line numbers
+set relativenumber  " shor relative distances to make commands such as 8dd faster. Abslut number is still shown on curor line
 set showcmd         " show command in bottom bar
 set cursorline      " highlight current line
 set wildmenu        " visual autocomplete for command menu
