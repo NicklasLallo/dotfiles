@@ -4,30 +4,32 @@ filetype plugin indent on
 
 set laststatus=2 "always show the powerline statusbar in all windows
 set showtabline=2 "always display the tabline, even if there is only one tab
-set noshowmode "Hide the default mode text (e.g. -- INSET -- below the statusline)
+set noshowmode "Hide the default mode text (e.g. -- INSERT -- below the statusline)
 set rtp+=/usr/lib/python3.6/site-packages/powerline/bindings/vim
 
 python3 from powerline.vim import setup as powerline_setup
 python3 powerline_setup()
 python3 del powerline_setup
 
-" if has('gui_running')
-    set background=dark
-" else
-"     set background=light
-" endif
-colorscheme wal
-" molokai is also installed see github/tomasr/molokai
+ if has('gui_running')
+    set background=light
+ else
+     set background=dark
+ endif
+
+" set t_Co=256            " forces 256 colors so I don't have to change $TERM
+
+colorscheme gruvbox
 
 " makes the background disapear (so that it uses default terminal color and transparency)
-hi Normal ctermbg=NONE
+" hi Normal ctermbg=NONE
 
 set tabstop=4       " number of visual spaces per TAB
 set softtabstop=4   " number of spaces in tab when editing
 set shiftwidth=4    " number of spaces used for autoindent, command: <<, >>, == (auto entire doc: gg=G )
 set expandtab       " tabs are converted into spaces
 set number          " show line numbers
-set relativenumber  " shor relative distances to make commands such as 8dd faster. Abslut number is still shown on curor line
+set relativenumber  " show relative distances to make commands such as 8dd faster. Abslut number is still shown on curor line
 set showcmd         " show command in bottom bar
 set cursorline      " highlight current line
 set wildmenu        " visual autocomplete for command menu
@@ -46,7 +48,6 @@ set mouse=a             " enable mouse
 " must be one of: xterm, xterm2, netterm, dec, jsbterm, pterm
 " use only if problems without it arise
 " set ttymouse=xterm2
-
 
 set foldenable          " enable folding
 set foldlevelstart=10   " open most folds by default

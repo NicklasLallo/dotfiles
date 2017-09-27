@@ -1,4 +1,6 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =2
+let g:netrw_dirhist_cnt =4
 let g:netrw_dirhist_1='/home/la1/dotfiles/i3/.config'
 let g:netrw_dirhist_2='/home/la1/Documents/FFR135_Artificial-Neural-Networks/hw1/src'
+let g:netrw_dirhist_3='/home/la1/dotfiles/vim/.vim/bundle'
+let g:netrw_dirhist_4='/home/la1/dotfiles/i3/.config/i3'

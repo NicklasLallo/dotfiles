@@ -4,6 +4,7 @@
 URxvt*font: xft:Source Code Pro for Powerline:size=12
 ! URxvt*boldFont: -*-clean-medium-r-*--12-*-*-*-*-*-*-*
 URxvt*boldFont: xft:Source Code Pro for Powerline
+URxvt.color12: rgb:5c/5c/ff
 
 !! Fix the annoying gaps between powerline symbols
 URxvt.letterSpace: -1
@@ -24,20 +25,25 @@ Xft.lcdfilter: lcddefault
 URxvt.scrollBar: false
 
 ! Set terminal padding
-URxvt.internalBorder: 0 
+URxvt.internalBorder: 36 
 
 ! Enables copy/paste with Ctrl-Shift-C/V
 URxvt.iso14755: false
 URxvt.iso14755_52: false
-URxvt.perl-ext-common: default,clipboard
+!URxvt.perl-ext-common: default,clipboard
 URxvt.keysym.Shift-Control-C: perl:clipboard:copy
 URxvt.keysym.Shift-Control-V: perl:clipboard:paste
+
+! Make URLs clickable with left mouse button
+URxvt.perl-ext-common: default,clipboard,matcher
+URxvt.url-launcher: /usr/bin/xdg-open
+URxvt.matcher.button: 1 
 
 !urxvt*depth: 32
 !urxvt*background: rgba:0000/0000/0200/c800
 
-urxvt*transparent: false
-urxvt*shading: 0
+!urxvt*transparent: true
+!urxvt*shading: 20
 
 ! Colors {{{
 

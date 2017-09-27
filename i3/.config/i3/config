@@ -36,9 +36,9 @@ floating_modifier $mod
 
 # start a terminal
 # bindsym $mod+Return exec i3-sensible-terminal
-bindsym $mod+Return exec urxvt
+bindsym $mod+Return exec konsole
 
-bindsym $mod+Shift+Return exec urxvt -b 0
+bindsym $mod+Shift+Return exec urxvt
 
 #bindsym $mod+Shift+Return exec i3-sensible-terminal
 
@@ -253,7 +253,7 @@ bindsym XF86AudioPrev exec playerctl -p spotify previous
 font pango:lemon 0
 for_window [class=".*"] title_format "<span font='Artwiz Lime 0'> > %title</span>"
 
-for_window [class="^.*"] border pixel 2
+for_window [class="^.*"] border pixel 0
 
 gaps inner 15
 gaps outer 0
@@ -318,8 +318,8 @@ hide_edge_borders both
 # Start Polybar (instead of i3bar)
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
-
- exec compton -f
+exec compton -b -f --backend glx -cCfFbG -I 0.05 -D 6 -r5 -l-6 -t-5 -o.99 --vsync opengl-mswc
+# exec compton -f
 # exec compton -cCzG -t-3 -l-5 -r4 \
 # --config /dev/null --backend glx \
 # --vsync opengl-swc \
