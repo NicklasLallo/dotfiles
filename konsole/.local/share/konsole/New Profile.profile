@@ -2,8 +2,8 @@
 AntiAliasFonts=true
 BoldIntense=true
 ColorScheme=Solarized
-Font=Source Code Pro for Powerline,14,-1,5,57,0,0,0,0,0,Medium
-LineSpacing=2
+Font=Source Code Pro for Powerline,13,-1,5,57,0,0,0,0,0
+LineSpacing=0
 UseFontLineChararacters=true
 
 [General]

@@ -19,7 +19,7 @@ python3 del powerline_setup
 
 " set t_Co=256            " forces 256 colors so I don't have to change $TERM
 
-colorscheme gruvbox
+colorscheme delek
 
 " makes the background disapear (so that it uses default terminal color and transparency)
 " hi Normal ctermbg=NONE
