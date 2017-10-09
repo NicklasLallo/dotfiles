@@ -257,9 +257,22 @@ for_window [class="^.*"] border pixel 0
 for_window [floating] border pixel 10
 for_window [tiling] border pixel 0
 
-gaps inner 15
-gaps outer 0
-#smart_gaps on
+
+# Gaps
+
+# gaps inner 15
+# gaps outer 0
+# smart_gaps on
+
+smart_gaps on
+gaps inner 30
+gaps outer -20
+# Focus_follows_mouse off
+
+new_window pixel 0
+smart_borders on
+
+
 
 #set workspace names
 set $workspace1 "" 
@@ -321,9 +334,9 @@ hide_edge_borders both
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 # Add this to your .xinitrc or whatever file starts programs on startup.
-exec --no-startup-id  wal -i "$(< "${HOME}/.cache/wal/wal")"
+exec --no-startup-id wal -i "$(< "${HOME}/.cache/wal/wal")"
+exec --no-startup-id compton -b -f --backend glx -cCfFbG -I 0.05 -D 6 -r5 -l-6 -t-5 -o.99 --vsync opengl-mswc --config ~/.config/compton.conf
 
-exec compton -b -f --backend glx -cCfFbG -I 0.05 -D 6 -r5 -l-6 -t-5 -o.99 --vsync opengl-mswc
 # exec compton -f
 # exec compton -cCzG -t-3 -l-5 -r4 \
 # --config /dev/null --backend glx \
