@@ -276,11 +276,12 @@ smart_borders on
 
 #set workspace names
 set $workspace1 "" 
-set $workspace2 "🦇" 
+set $workspace2 "⛧" 
 set $workspace3 "☥" 
 set $workspace4 "☢" 
 set $workspace5 "☣" 
-set $workspace6 "♿"
+set $workspace6 "♿" 
+
 #1 Terminals 
 #2 Mail 
 #3 Palemoon 
@@ -335,7 +336,8 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 # Add this to your .xinitrc or whatever file starts programs on startup.
 exec --no-startup-id wal -i "$(< "${HOME}/.cache/wal/wal")"
-exec --no-startup-id compton -b -f --backend glx -cCfFbG -I 0.05 -D 6 -r5 -l-6 -t-5 -o.99 --vsync opengl-mswc --config ~/.config/compton.conf
+exec --no-startup-id compton -b -f --backend glx -cCfFbG -I 0.05 -D 6 -r5 -l-6 -t-5 -o.99 --vsync opengl-mswc
+# exec --no-startup-id compton -b -f --config ~/.config/compton.conf
 
 # exec compton -f
 # exec compton -cCzG -t-3 -l-5 -r4 \
@@ -349,6 +351,6 @@ exec --no-startup-id compton -b -f --backend glx -cCfFbG -I 0.05 -D 6 -r5 -l-6 -
 exec xrdb ~/.Xresources
 # exec feh --bg-scale ~/wallpapers/MpA1ygh.jpg
 exec setxkbmap -layout se
-exec --no-startup-id i3-msg 'workspace 🦇; exec urxvt -e gtop' 
-# exec --no-startup-id i3-msg 'workspace 🦇; exec urxvt -e weechat'
+exec --no-startup-id i3-msg 'workspace ⛧; exec urxvt -e gtop' 
+# exec --no-startup-id i3-msg 'workspace ⛧; exec urxvt -e weechat'
 

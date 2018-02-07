@@ -38,11 +38,22 @@ radius = 4
 radius-top = 4
 radius-bottom = 0
 
-font-0 = FontAwesome:size=16;3
-font-1 = misc tamsyn:pixelsize=16;2
-font-3 = Unifont:size=11;3
-font-2 = Symbola:size=18;3
-font-4 = Wuncon Siji:pixelsize=11;3
+;font-4 = FontAwesome:size=16;3
+;font-1 = misc tamsyn:pixelsize=16;2
+;font-3 = Unifont:size=11;3
+;font-2 = symbola:size=18;3
+;font-0 = Wuncon Siji:pixelsize=11;3
+
+font-0 = Wuncon Siji:pixelsize=11;3
+font-1 = misc tamsyn:pixelsize=18;2
+font-2 = FontAwesome5Free:style=Solid:size=15;3
+font-3 = FontAwesome5Brands:style=Solid:size=15;3
+font-4 = symbola:size=18;3
+
+;font-1 = misc tamsyn:pixelsize=16;2
+;font-2 = Unifont:size=11;3
+;font-3 = symbola:size=18;3
+;font-4 = Wuncon Siji:pixelsize=11;3
 
 ;SanFranSiscoDisplay:size=14:weight=regular;0;
 ;
@@ -51,13 +62,10 @@ monitor = DP-0
 width = ${const.width}
 height = ${const.height}
 clickareas = ${const.clickareas}
-
 background = ${colors.background}
 foreground = ${colors.foreground}
 line-color = ${colors.line-color}
-
 line-size = ${const.line-size}
-
 border-color = ${colors.transparent}
 border-left-size = ${const.border-left-size}
 border-right-size = ${const.border-right}
@@ -65,21 +73,16 @@ border-top-size = ${const.border-top}
 ;border-radius-top = ${const.radius-top}
 ;border-radius-bottom = ${const.radius-bottom}
 ;border-radius = ${const.radius}
-
 radius = 5
-
 module-margin-left = ${const.module-margin-left}
 module-margin-right = ${const.module-margin-right}
-
 spacing = ${const.spacing}
 lineheight = ${const.lineheight}
-
 font-0 = ${const.font-0}
 font-1 = ${const.font-1}
 font-2 = ${const.font-2}
 font-3 = ${const.font-3}
 font-4 = ${const.font-4}
-
 modules-left = i3 
 modules-center = spotipy 
 modules-right = redshift pkg volume clock
@@ -96,17 +99,13 @@ clickareas = ${const.clickareas}
 background = ${colors.background}
 foreground = ${colors.foreground}
 line-color = ${colors.line-color}
-
 border-color = ${colors.transparent}
 border-left-size = ${const.border-left-size}
 border-right-size = ${const.border-right}
 border-top-size = ${const.border-top}
-
-radius = 4
-
+radius = 5
 module-margin-left = ${const.module-margin-left}
 module-margin-right = ${const.module-margin-right}
-
 spacing = ${const.spacing}
 lineheight = ${const.lineheight}
 
@@ -129,7 +128,7 @@ format-charging =<animation-charging>  %{F#e9a15f}%{F-} <label-charging>
 format-discharging = <ramp-capacity> <label-discharging>
 format-full = <ramp-capacity> <label-full>
 
-ramp-capacity-0 = a
+ramp-capacity-0 = 
 ramp-capacity-0-foreground = ${colors.status_bad}
 ramp-capacity-1 = 
 ramp-capacity-1-foreground = ${colors.status_sub}
@@ -155,15 +154,11 @@ animation-charging-framerate = 1000
 
 [module/i3]
 type = internal/i3
-
 font = symbola
 
 pin-workspaces = true
 strip-wsnumbers = true
-
 index-sort = true
-
-
 label-focused = %name%
 label-focused-foreground = ${colors.i3_foreground}
 label-focused-background = ${colors.i3_background}
@@ -268,7 +263,7 @@ format-padding = 3
 type = custom/script
 interval = 10
 format = <label>
-format-prefix = " "
+format-prefix = ""
 format-prefix-foreground = ${colors.foreground}
 exec = $HOME/.config/polybar/weather
 
