@@ -1,0 +1,18 @@
+[submodule "vim/.vim/bundle/carbonized"]
+	path = vim/.vim/bundle/carbonized
+	url = https://github.com/nightsense/carbonized
+[submodule "vim/.vim/bundle/molokai"]
+	path = vim/.vim/bundle/molokai
+	url = git://github.com/tomasr/molokai
+[submodule "vim/.vim/bundle/solarized"]
+	path = vim/.vim/bundle/solarized
+	url = git://github.com/altercation/vim-colors-solarized.git
+[submodule "vim/.vim/bundle/hydrangea"]
+	path = vim/.vim/bundle/hydrangea
+	url = https://github.com/yuttie/hydrangea-vim.git
+[submodule "vim/.vim/bundle/neuromancer"]
+	path = vim/.vim/bundle/neuromancer
+	url = https://github.com/Zabanaa/neuromancer.vim.git
+[submodule "vim/.vim/bundle/dream"]
+	path = vim/.vim/bundle/dream
+	url = https://github.com/crusoexia/vim-dream.git
