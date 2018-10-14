@@ -124,7 +124,14 @@ if exists('&guioptions')
     " cursor behaviour:
     " - no blinking in normal/visual mode
     " - blinking in insert-mode
+    set guicursor+=a:blinkon0
     " set guicursor+=n-v-c:blinkon0,i-ci:ver25-Cursor/lCursor-blinkwait300-blinkoff500-blinkon500
+endif
+
+if has("gui_running")
+    "set guifont=Source\ Code\ Pro\ for\ Powerline\ Regular:15
+    "set guifont=Source\ Code\ Pro\ for\ Powerline:h16:cANSI
+    set guifont=Source\ Code\ Pro\ for\ Powerline\ 12
 endif
 
 " }}}
@@ -169,11 +176,11 @@ nnoremap <silent> <leader>i :call ToggleCC()<CR>
 nnoremap <silent> <C-T> /\S\zs\s\+$
 
 " Toggle gundo, super undo
-if exists('loaded_gundo')
-    nnoremap <leader>u :GundoToggle<CR>
-endif
-if exists('g:loaded_surround')
-endif
+"if exists('loaded_gundo')
+nnoremap <leader>u :GundoToggle<CR>
+"endif
+"if exists('g:loaded_surround')
+"endif
 " open a new tab in the current buffer's path
 " very useful when editing files in the same directory
 " TODO combine with Vexplore and make more convinent
