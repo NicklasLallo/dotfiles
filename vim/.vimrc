@@ -18,7 +18,6 @@ Plug 'junegunn/fzf.vim'
 
 " The ultimate undo history visualizer for VIM
 Plug 'mbbill/undotree'
-" NERDTree: {{{
 " NERDTree... tree explorer for vim
 Plug 'scrooloose/nerdtree'
 
@@ -27,7 +26,9 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 
 " highlight file icons with different colors
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-" }}}
+
+" git awesomeness
+Plug 'tpope/vim-fugitive'
 call plug#end()
 " }}}
 " Airline {{{
