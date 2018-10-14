@@ -164,24 +164,24 @@ label-focused-foreground = ${colors.i3_foreground}
 label-focused-background = ${colors.i3_background}
 label-focused-underline = ${colors.foreground}
 label-focused-padding = 6
-label-focused-maxlen = 2 
+label-focused-maxlen = 3 
 label-focused-ellipsis = true
 
 label-unfocused = %name%
 label-unfocused-foreground = ${colors.i3_unfocused_foreground}
 label-unfocused-padding = 4
-label-unfocused-maxlen = 2
+label-unfocused-maxlen = 3
 label-unfocused-ellipsis = false
 
 label-visible = %name%
 label-visible-padding = 4
-label-visible-maxlen = 2 
+label-visible-maxlen = 3 
 
 label-urgent = %name%
 label-urgent-foreground = ${colors.i3_foreground}
 label-urgent-background = ${colors.i3_urgent_background}
 label-urgent-padding = 4
-label-urgent-maxlen = 2
+label-urgent-maxlen = 3
 
 [module/wireless-network]
 type = internal/network

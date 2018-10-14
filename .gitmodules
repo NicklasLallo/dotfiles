@@ -31,3 +31,6 @@
 [submodule "vim/.vim/bundle/ale"]
 	path = vim/.vim/bundle/ale
 	url = https://github.com/w0rp/ale
+[submodule "vim/.vim/bundle/airline"]
+	path = vim/.vim/bundle/airline
+	url = https://github.com/vim-airline/vim-airline.git

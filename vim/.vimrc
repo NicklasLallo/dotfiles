@@ -1,5 +1,5 @@
 " Pluggins {{{
-execute pathogen#infect()
+" execute pathogen#infect() " Replaced by vim-plug
 " Current List of Plugins
 " Various Colorschemes:
 " Gruvbox
@@ -8,6 +8,87 @@ execute pathogen#infect()
 " Vim-Surround
 " Powerline
 
+" Now using plug! github/junegunn/vim-plug
+" Remember to run :PlugInstall on a new setup
+let g:no_plugins = 'false'
+call plug#begin('~/.vim/plugged')
+
+" Plugin from git directory
+Plug 'vim-airline/vim-airline'
+
+" Plugin from local directory
+Plug '~/.vim/bundle/gruvbox'
+
+call plug#end()
+ " Airline {{{ 
+let g:airline#extensions#branch#enabled = 0
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+"let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#show_buffers = 0
+let g:airline_left_sep = ''
+let g:airline_right_sep = ''
+"let g:airline_mode_map = {
+"      \ '__' : '-',
+"      \ 'n'  : 'N',
+"      \ 'i'  : 'I',
+"      \ 'R'  : 'R',
+"      \ 'c'  : 'C',
+"      \ 'v'  : 'V',
+"      \ 'V'  : 'V',
+"      \ '' : 'V',
+"      \ 's'  : 'S',
+"      \ 'S'  : 'S',
+"      \ '' : 'S',
+"      \ }
+
+if !exists('g:airline_symbols')
+        let g:airline_symbols = {}
+    endif
+
+    " unicode symbols
+    let g:airline_left_sep = '»'
+    let g:airline_left_sep = '▶'
+    let g:airline_right_sep = '«'
+    let g:airline_right_sep = '◀'
+    let g:airline_symbols.crypt = '🔒'
+    let g:airline_symbols.linenr = '☰'
+    let g:airline_symbols.linenr = '␊'
+    let g:airline_symbols.linenr = '␤'
+    let g:airline_symbols.linenr = '¶'
+    let g:airline_symbols.maxlinenr = ''
+    let g:airline_symbols.maxlinenr = '㏑'
+    let g:airline_symbols.branch = '⎇'
+    let g:airline_symbols.paste = 'ρ'
+    let g:airline_symbols.paste = 'Þ'
+    let g:airline_symbols.paste = '∥'
+    let g:airline_symbols.spell = 'Ꞩ'
+    let g:airline_symbols.notexists = 'Ɇ'
+    let g:airline_symbols.whitespace = 'Ξ'
+
+    " powerline symbols
+    let g:airline_left_sep = ''
+    let g:airline_left_alt_sep = ''
+    let g:airline_right_sep = ''
+    let g:airline_right_alt_sep = ''
+    let g:airline_symbols.branch = ''
+    let g:airline_symbols.readonly = ''
+    let g:airline_symbols.linenr = '☰'
+    let g:airline_symbols.maxlinenr = ''
+
+
+" }}}
+
+
+" Enable powerline using one of the two solutions bellow (should both work
+" similarly. Top solution usually creates fewer errors on systems without
+" powerline.
+" set rtp+=/usr/lib/python3.6/site-packages/powerline/bindings/vim
+"python3 from powerline.vim import setup as powerline_setup
+"python3 powerline_setup()
+"python3 del powerline_setup
+" Enable the fuzzy finder fzf
+set rtp+=~/.fzf
 " }}}
 "Intro Settings {{{
 if version > 600
@@ -18,13 +99,6 @@ endif
 set laststatus=2 "always show the powerline statusbar in all windows
 set showtabline=2 "always display the tabline, even if there is only one tab
 
-" Enable powerline using one of the two solutions bellow (should both work
-" similarly. Top solution usually creates fewer errors on systems without
-" powerline.
-set rtp+=/usr/lib/python3.6/site-packages/powerline/bindings/vim
-"python3 from powerline.vim import setup as powerline_setup
-"python3 powerline_setup()
-"python3 del powerline_setup
 
 if has('gui_running')
   set background=dark
@@ -271,6 +345,9 @@ let g:netrw_banner = 0        " removes the banner
 let g:netrw_winsize = 22      " makes the file browsing tree take up only 20% of the screen instead of 50%
 let g:netrw_liststyle= 3      " tree view when using netrw (file browsing)
 
+let g:fzf_launcher= 'urxvt'
+"let g:fzf_launcher= 'urxvt -geometry 120*30 -e sh -c %s'
+
 " }}}
 " Status Line {{{
 
@@ -326,9 +403,7 @@ hi User9 ctermfg=007 guifg=NONE guifg=NONE
 
 
 
-if exists ('loaded_powerline')
-
-else
+if g:no_plugins ==# 'true'
     set statusline=%!StatusLine('active')
     augroup MyStatusLine
     autocmd!
