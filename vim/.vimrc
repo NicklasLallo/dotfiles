@@ -36,7 +36,8 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-commentary'
 
 " Plugin from local directory
-Plug '~/.vim/bundle/gruvbox'
+"Plug '~/.vim/bundle/gruvbox'
+Plug 'morhetz/gruvbox'
 
 " PlugInstall and PlugUpdate will clone fzf in ~/.fzf and run install script
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
