@@ -16,3 +16,18 @@
 [submodule "vim/.vim/bundle/dream"]
 	path = vim/.vim/bundle/dream
 	url = https://github.com/crusoexia/vim-dream.git
+[submodule "vim/.vim/bundle/gruvbox"]
+	path = vim/.vim/bundle/gruvbox
+	url = https://github.com/morhetz/gruvbox.git
+[submodule "vim/.vim/bundle/surround"]
+	path = vim/.vim/bundle/surround
+	url = https://github.com/tpope/vim-surround.git
+[submodule "vim/.vim/bundle/wal"]
+	path = vim/.vim/bundle/wal
+	url = https://github.com/dylanaraps/wal
+[submodule "vim/.vim/bundle/gundo"]
+	path = vim/.vim/bundle/gundo
+	url = https://github.com/sjl/gundo.vim
+[submodule "vim/.vim/bundle/ale"]
+	path = vim/.vim/bundle/ale
+	url = https://github.com/w0rp/ale
