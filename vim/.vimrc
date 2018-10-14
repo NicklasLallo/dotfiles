@@ -1,26 +1,36 @@
-" Pluggins {{{
-" execute pathogen#infect() " Replaced by vim-plug
-" Current List of Plugins
-" Various Colorschemes:
-" Gruvbox
-" Others:
-" Gundo (super undo tree)
-" Vim-Surround
-" Powerline
-
-" Now using plug! github/junegunn/vim-plug
 " Remember to run :PlugInstall on a new setup
 let g:no_plugins = 'false'
+" Plug {{{
 call plug#begin('~/.vim/plugged')
 
 " Plugin from git directory
 Plug 'vim-airline/vim-airline'
 
+
 " Plugin from local directory
 Plug '~/.vim/bundle/gruvbox'
 
+" PlugInstall and PlugUpdate will clone fzf in ~/.fzf and run install script
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+  " Both options are optional. You don't have to install fzf in ~/.fzf
+  " and you don't have to run install script if you use fzf only in Vim.
+
+" The ultimate undo history visualizer for VIM
+Plug 'mbbill/undotree'
+" NERDTree: {{{
+" NERDTree... tree explorer for vim
+Plug 'scrooloose/nerdtree'
+
+" Nerdtree show git status
+Plug 'Xuyuanp/nerdtree-git-plugin'
+
+" highlight file icons with different colors
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+" }}}
 call plug#end()
- " Airline {{{ 
+" }}}
+" Airline {{{
 let g:airline#extensions#branch#enabled = 0
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
@@ -78,17 +88,76 @@ if !exists('g:airline_symbols')
 
 
 " }}}
+" FZF {{{
+" set fzf's default input to fd instead of find. This also removes gitignore etc
+let $FZF_DEFAULT_COMMAND = 'fd --type f --hidden --follow --color=always --exclude .git'
+let $FZF_DEFAULT_OPTS="--ansi --extended"
+"let g:fzf_files_options = '--preview "(head -'.&lines.' | rougify {} || bat --color \"always\" --line-range 0:100 {} || head -'.&lines.' {})"'
+
+function! FZFOpen(command_str)
+  if (expand('%') =~# 'NERD_tree' && winnr('$') > 1)
+    exe "normal! \<c-w>\<c-w>"
+  endif
+  exe 'normal! ' . a:command_str . "\<cr>"
+endfunction
 
 
-" Enable powerline using one of the two solutions bellow (should both work
-" similarly. Top solution usually creates fewer errors on systems without
-" powerline.
-" set rtp+=/usr/lib/python3.6/site-packages/powerline/bindings/vim
-"python3 from powerline.vim import setup as powerline_setup
-"python3 powerline_setup()
-"python3 del powerline_setup
+nnoremap <silent> <C-b> :call FZFOpen(':Buffers')<CR>
+nnoremap <silent> <C-g>g :call FZFOpen(':Ag')<CR>
+nnoremap <silent> <C-g>c :call FZFOpen(':Commands')<CR>
+nnoremap <silent> <C-g>l :call FZFOpen(':BLines')<CR>
+nnoremap <silent> <C-p> :call FZFOpen(':Files')<CR>
+nnoremap <silent> <C-h> :call FZFOpen(':History')<CR>
+" nnoremap <silent> <C-p> :call FZFOpen(':call Fzf_dev()')<CR>
+
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+imap <c-x><c-l> <plug>(fzf-complete-line)
+
+" }}}
+" NERDTree {{{
+let g:NERDTreeIgnore = [
+      \ '\.vim$',
+      \ '\~$',
+      \ '\.beam',
+      \ 'elm-stuff',
+      \ 'deps',
+      \ '_build',
+      \ '.git',
+      \ 'node_modules',
+      \ 'tags',
+      \ ]
+
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeAutoDeleteBuffer=1
+" keep alternate files and jumps
+let g:NERDTreeCreatePrefix='silent keepalt keepjumps'
+
+nnoremap <Leader>nt :NERDTreeToggle<CR>
+
+" not necessarily NTree related but uses NERDTree because I have it setup
+nnoremap <leader>d :e %:h<CR>
+
+augroup NERDTreeAuCmds
+  autocmd!
+  autocmd FileType nerdtree nmap <buffer> <expr> - g:NERDTreeMapUpdir
+augroup END
+" move up a directory with "-" like using vim-vinegar (usually "u" does that)
+" }}}
+" UndoTree {{{
+" Not quite undo related but enough so
+" set where swap file and undo/backup files are saved
+set backupdir=~/.vim/tmp,.
+set directory=~/.vim/tmp,.
+
+if has("persistent_undo")
+    set undodir=~/.undodir/
+    set undofile
+endif
+" }}}
 " Enable the fuzzy finder fzf
-set rtp+=~/.fzf
+" set rtp+=~/.fzf
 " }}}
 "Intro Settings {{{
 if version > 600
@@ -146,8 +215,13 @@ let mapleader=","       " leader is comma instead of \
 " }}}
 " Basic Settings {{{
 
+
+
+
 syntax enable           " enables syntax highlighting
-set noshowmode "Hide the default mode text (e.g. -- INSERT -- below the statusline)
+set guioptions=
+set termguicolors
+set noshowmode          "Hide the default mode text (e.g. -- INSERT -- below the statusline)
 set nobackup            " most files are in git anyways
 set encoding=utf-8      " usually the case rather than latin1
 set textwidth=0         " disable automatic word wrapping (newlines)
@@ -163,6 +237,7 @@ set relativenumber      " line numbers are relative to cursor position
 set showcmd             " show command in bottom bar
 set cursorline          " highlight current line
 set wildmenu            " visual autocomplete for command menu
+"set wildmode=list:longest,list:full " configure wildmenu
 "set lazyredraw          " redraw less often
 set showmatch           " highlight matching {[()]}
 set incsearch           " display search results while writing
@@ -176,13 +251,15 @@ set undolevels=1000     " save more levels of undo
 set foldenable          " enable folding
 set foldlevelstart=10   " open most folds by default
 set foldnestmax=10      " 10 nested fold max
+set foldmethod=manual
+set iskeyword+=-        " Treat dash separated words as word text objects (for ciw etc)
 " set foldcolumn=1
 set mouse=a             " enable mouse
 set scrolloff=9         " center coursor
 set nocp                " 'compatible' is not set
 set autochdir       " Change directory to the current buffer when opening files.
 set background=dark
-set foldmethod=indent   " fold based on indent level alternatives are: marker, manual, expr, syntax, diff, run :help foldmethod for info
+"set foldmethod=indent   " fold based on indent level alternatives are: marker, manual, expr, syntax, diff, run :help foldmethod for info
 set wildignore=*.o,*.obj,*.bak,*.exe,*.pyc,*.class
 set title               " change the title of the terminal
 "set visualbell          " don't beep
@@ -249,12 +326,9 @@ nnoremap <silent> <leader>i :call ToggleCC()<CR>
 "show trailing whitespaces, somewhat exessive
 nnoremap <silent> <C-T> /\S\zs\s\+$
 
-" Toggle gundo, super undo
-"if exists('loaded_gundo')
-nnoremap <leader>u :GundoToggle<CR>
-"endif
-"if exists('g:loaded_surround')
-"endif
+" Replaced gundo with UndoTree, pure vimscript instead of dependencies
+nnoremap <leader>u :UndotreeToggle<CR>
+
 " open a new tab in the current buffer's path
 " very useful when editing files in the same directory
 " TODO combine with Vexplore and make more convinent
@@ -564,6 +638,15 @@ endfunction
 "endfunction
 
 
+" Replaced Powerline with Airline since it was pure vimscript instead of
+" python
+" Enable powerline using one of the two solutions bellow (should both work
+" similarly. Top solution usually creates fewer errors on systems without
+" powerline.
+" set rtp+=/usr/lib/python3.6/site-packages/powerline/bindings/vim
+"python3 from powerline.vim import setup as powerline_setup
+"python3 powerline_setup()
+"python3 del powerline_setup
 
 " }}}
 " Modelines

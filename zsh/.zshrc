@@ -107,3 +107,9 @@ python2.7 -c 'import sys, random, json; randnum = random.randint(0,99); response
 echo $showerthoughts | cowsay | lolcat
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_DEFAULT_OPS="--extended"
+export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+alias gs=git status
+alias gb=git branchs
