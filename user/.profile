@@ -3,4 +3,7 @@ export PATH="/home/la1/dotfiles/scripts/":$PATH
 export LANG=en_US.utf8
 export LANGUAGE=en_US.utf8
 export LC_ALL=en_US.utf8
+export PATH=/opt/cuda/bin${PATH:+:${PATH}}
+export CUDA_HOME=/opt/cuda${CUDA_HOME:+:${CUDA_HOME}}
+export LD_LIBRARY_PATH=/opt/cuda/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 #export LC_LANG=en_US.utf8

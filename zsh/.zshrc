@@ -71,8 +71,10 @@ if [[ -r /usr/lib/python3.6/site-packages/powerline/bindings/zsh/powerline.zsh ]
     source /usr/lib/python3.6/site-packages/powerline/bindings/zsh/powerline.zsh
 fi
 
-
-
+export PATH=/opt/cuda/bin${PATH:+:${PATH}}
+export CUDA_HOME=/opt/cuda${CUDA_HOME:+:${CUDA_HOME}}
+export LD_LIBRARY_PATH=/opt/cuda/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+export LD_LIBRARY_PATH=/opt/cuda/extras/CUPTI/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
