@@ -1,3 +1,4 @@
+" Plugins {{{
 " Remember to run :PlugInstall on a new setup
 let g:no_plugins = 'false'
 " Plug {{{
@@ -5,7 +6,34 @@ call plug#begin('~/.vim/plugged')
 
 " Plugin from git directory
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+" Plug 'enricobacis/vim-airline-clock'
+" Linter
+Plug 'w0rp/ale'
 
+" Colorthemes
+Plug 'nightsense/carbonized'
+Plug 'crusoexia/vim-dream'
+Plug 'yuttie/hydrangea-vim'
+Plug 'tomasr/molokai'
+Plug 'Zabanaa/neuromancer.vim'
+Plug 'altercation/vim-colors-solarized'
+
+" wal for colors
+Plug 'dylanaraps/wal'
+
+" multifile find & replace
+Plug 'brooth/far.vim'
+" :Far foo bar **/*.c     This finds the pattern to replace
+" :Fardo                  This does the replacement
+" :Farundo                Undo in panic
+
+" Real multiple cursors
+Plug 'terryma/vim-multiple-cursors'
+" Use easily with <C-n>
+
+" Simple comment toggeling with :gcc (line) or gc (target of a motion)
+Plug 'tpope/vim-commentary'
 
 " Plugin from local directory
 Plug '~/.vim/bundle/gruvbox'
@@ -13,8 +41,12 @@ Plug '~/.vim/bundle/gruvbox'
 " PlugInstall and PlugUpdate will clone fzf in ~/.fzf and run install script
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-  " Both options are optional. You don't have to install fzf in ~/.fzf
-  " and you don't have to run install script if you use fzf only in Vim.
+" Both options are optional. You don't have to install fzf in ~/.fzf
+" and you don't have to run install script if you use fzf only in Vim.
+
+" Vim align, by jonegunn again
+Plug 'junegunn/vim-easy-align'
+
 
 " The ultimate undo history visualizer for VIM
 Plug 'mbbill/undotree'
@@ -130,21 +162,21 @@ let g:NERDTreeIgnore = [
       \ 'tags',
       \ ]
 
+let NERDTreeHijackNetrw=1
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeAutoDeleteBuffer=1
 " keep alternate files and jumps
 let g:NERDTreeCreatePrefix='silent keepalt keepjumps'
+" Open NERDTree if vim was started in empty buffer
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
-nnoremap <Leader>nt :NERDTreeToggle<CR>
-
-" not necessarily NTree related but uses NERDTree because I have it setup
-nnoremap <leader>d :e %:h<CR>
 
 augroup NERDTreeAuCmds
   autocmd!
   autocmd FileType nerdtree nmap <buffer> <expr> - g:NERDTreeMapUpdir
 augroup END
-" move up a directory with "-" like using vim-vinegar (usually "u" does that)
+" move up a directory with "-" like using vim-vinegar or netrw (usually "u" does that)
 " }}}
 " UndoTree {{{
 " Not quite undo related but enough so
@@ -157,6 +189,26 @@ if has("persistent_undo")
     set undofile
 endif
 " }}}
+" EasyAlign {{{
+"" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
+" Example vipga= - v_isual-select i_nner p_aragraph, EasyAlight (ga), align around symbol (=)
+" Example gaip=  - EasyAlign (ga) for i_nner p_aragraph, align around symbol (=)
+" = Around 1st occurrence
+" 2= Around 2nd occurrance
+" *= Around all occurances
+" **= Left/Right alternatig alignment around all occurrences
+" <Enter> Switching between left/right/center alighment modes
+
+" Common usage
+" gaip2<Space>
+
+" }}}
+"
 " Enable the fuzzy finder fzf
 " set rtp+=~/.fzf
 " }}}
@@ -219,56 +271,56 @@ let mapleader=","       " leader is comma instead of \
 
 
 
-syntax enable           " enables syntax highlighting
+syntax enable         " enables syntax highlighting
 set guioptions=
-set termguicolors
-set noshowmode          "Hide the default mode text (e.g. -- INSERT -- below the statusline)
-set nobackup            " most files are in git anyways
-set encoding=utf-8      " usually the case rather than latin1
-set textwidth=0         " disable automatic word wrapping (newlines)
-set hidden              " preserve buffers by hiding instead of closing them
-set showtabline=4       " t
-set tabstop=4           " number of visual spaces per tab
-set softtabstop=4       " number of spaces in tab when editing
-set shiftwidth=4        " number of spaces used for autoindent, command: <<, >>, == (auto entire doc: gg=G)
-set expandtab           " tabs are converted into spaces
-set shiftround          " use multiples of shiftwidth when indenting with '<' and '>'
-set number              " show line numbers
-set relativenumber      " line numbers are relative to cursor position
-set showcmd             " show command in bottom bar
-set cursorline          " highlight current line
-set wildmenu            " visual autocomplete for command menu
+"set termguicolors
+set noshowmode        " Hide the default mode text (e.g. -- INSERT -- below the statusline)
+set nobackup          " most files are in git anyways
+set encoding=utf-8    " usually the case rather than latin1
+set textwidth=0       " disable automatic word wrapping (newlines)
+set hidden            " preserve buffers by hiding instead of closing them
+set showtabline=4     " t
+set tabstop=4         " number of visual spaces per tab
+set softtabstop=4     " number of spaces in tab when editing
+set shiftwidth=4      " number of spaces used for autoindent, command: <<, >>, == (auto entire doc: gg=G)
+set expandtab         " tabs are converted into spaces
+set shiftround        " use multiples of shiftwidth when indenting with '<' and '>'
+set number            " show line numbers
+set relativenumber    " line numbers are relative to cursor position
+set showcmd           " show command in bottom bar
+set cursorline        " highlight current line
+set wildmenu          " visual autocomplete for command menu
 "set wildmode=list:longest,list:full " configure wildmenu
 "set lazyredraw          " redraw less often
-set showmatch           " highlight matching {[()]}
-set incsearch           " display search results while writing
-set hlsearch            " high light search results
-set ignorecase          " ignore case when searching
-set smartcase           " ignore case if search pattern is all lowercase, otherwise case-sensitive
-set wrapscan            " wrap the searches around the document (/ ?)
-set ttyfast             " faster redraws
-set history=1000        " save a much longer history (default 50) of commands and searches
-set undolevels=1000     " save more levels of undo
-set foldenable          " enable folding
-set foldlevelstart=10   " open most folds by default
-set foldnestmax=10      " 10 nested fold max
+set showmatch         " highlight matching {[()]}
+set incsearch         " display search results while writing
+set hlsearch          " high light search results
+set ignorecase        " ignore case when searching
+set smartcase         " ignore case if search pattern is all lowercase, otherwise case-sensitive
+set wrapscan          " wrap the searches around the document (/ ?)
+set ttyfast           " faster redraws
+set history=1000      " save a much longer history (default 50) of commands and searches
+set undolevels=1000   " save more levels of undo
+set foldenable        " enable folding
+set foldlevelstart=10 " open most folds by default
+set foldnestmax=10    " 10 nested fold max
 set foldmethod=manual
-set iskeyword+=-        " Treat dash separated words as word text objects (for ciw etc)
+set iskeyword+=-      " Treat dash separated words as word text objects (for ciw etc)
 " set foldcolumn=1
-set mouse=a             " enable mouse
-set scrolloff=9         " center coursor
-set nocp                " 'compatible' is not set
-set autochdir       " Change directory to the current buffer when opening files.
+set mouse=a           " enable mouse
+set scrolloff=9       " center coursor
+set nocp              " 'compatible' is not set
+set autochdir         " Change directory to the current buffer when opening files.
 set background=dark
 "set foldmethod=indent   " fold based on indent level alternatives are: marker, manual, expr, syntax, diff, run :help foldmethod for info
 set wildignore=*.o,*.obj,*.bak,*.exe,*.pyc,*.class
-set title               " change the title of the terminal
+set title             " change the title of the terminal
 "set visualbell          " don't beep
-set noerrorbells        " don't beep
-set clipboard=unnamed   " Copy & Paste with the system clipboard (the * register), no need to use the "* prefix when pasting or copying
-set modelines=1         " user last line of file for modelines
-set autoread            " automatically reread the file if it was changed from the outside without asking first
-set wrap                " wrap lines
+set noerrorbells      " don't beep
+set clipboard=unnamed " Copy & Paste with the system clipboard (the * register), no need to use the "* prefix when pasting or copying
+set modelines=1       " user last line of file for modelines
+set autoread          " automatically reread the file if it was changed from the outside without asking first
+set wrap              " wrap lines
 set autoindent
 set smartindent
 
@@ -333,7 +385,12 @@ nnoremap <leader>u :UndotreeToggle<CR>
 " open a new tab in the current buffer's path
 " very useful when editing files in the same directory
 " TODO combine with Vexplore and make more convinent
-nnoremap <leader>e :tabedit <c-r>=expand("%:p:h")<CR>/<CR>
+" nnoremap <leader>e :tabedit <c-r>=expand("%:p:h")<CR>/<CR>
+
+" toggle NERDTree
+nnoremap <Leader>nt :NERDTreeToggle<CR>
+" not necessarily NTree related but uses NERDTree because I have it setup
+nnoremap <leader>d :e %:h<CR>
 
 " allows jk to function like esc while in insert mode, if you ever need to write jk then wait a few sec between the letters
 inoremap jk <esc>
@@ -343,34 +400,38 @@ inoremap jk <esc>
 vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
 vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
 
+" make visual selection dot-able
+vnoremap . :norm. &lt;CR&lt;
+
 " }}}
 " Functions {{{
 " Toggle Vexplore with Ctrl-E
-function! ToggleVExplorer()
-  if exists("t:expl_buf_num") "global variable for current tap, since only one instance of explorer per tab is preffered, replace t with w to change to window
-    let expl_win_num = bufwinnr(t:expl_buf_num)
-    if expl_win_num != -1
-      let cur_win_nr = winnr()
-      exec expl_win_num . 'wincmd w'
-      close
-      if expl_win_num > cur_win_nr
-        exec cur_win_nr . 'wincmd w'
-      elseif cur_win_nr==2
-        exec '1wincmd w'
-      else
-        exec cur_win_nr . 'wincmd w'
-      endif
-      unlet t:expl_buf_num
-    else
-      unlet t:expl_buf_num
-    endif
-  else
-    "exec '1wincmd w'
-    Vexplore
-    let t:expl_buf_num = bufnr("%")
-  endif
-endfunction
-map <silent> <C-E> :call ToggleVExplorer()<CR>
+"function! ToggleVExplorer()
+"  if exists("t:expl_buf_num") "global variable for current tap, since only one instance of explorer
+"                              "per tab is preffered, replace t with w to change to window
+"    let expl_win_num = bufwinnr(t:expl_buf_num)
+"    if expl_win_num != -1
+"      let cur_win_nr = winnr()
+"      exec expl_win_num . 'wincmd w'
+"      close
+"      if expl_win_num > cur_win_nr
+"        exec cur_win_nr . 'wincmd w'
+"      elseif cur_win_nr==2
+"        exec '1wincmd w'
+"      else
+"        exec cur_win_nr . 'wincmd w'
+"      endif
+"      unlet t:expl_buf_num
+"    else
+"      unlet t:expl_buf_num
+"    endif
+"  else
+"    "exec '1wincmd w'
+"    Vexplore
+"    let t:expl_buf_num = bufnr("%")
+"  endif
+"endfunction
+"map <silent> <C-E> :call ToggleVExplorer()<CR>
 
 " Visual Selection tool
 function! VisualSelection(direction, extra_filter) range
@@ -393,18 +454,16 @@ function! CmdLine(str)
     call feedkeys(":" . a:str)
 endfunction
 
-" Toggle 'Lint mode' where some additional checks are displayed such as trailing whitespaces and 100 char limit
+" Toggle ColorColumn
 " Toggle with leader+l
 function! ToggleCC()
   if exists("t:ccline")
     unlet t:ccline
-    set colorcolumn=100
-    setl statusline=%!StatusLine('lint')
+    let &colorcolumn=join(range(100,999),',')
     set list
   else
     let t:ccline = winnr()
     set colorcolumn=0
-    setl statusline=%!StatusLine('active')
     set list!
     redraw!
   endif
@@ -414,8 +473,8 @@ endfuncti
 " Let {{{
 " Hit enter in the file browser to open the selected
 " file with :vsplit to the right of the browser.
-let g:netrw_browse_split = 4  " open new files in previous window (no new splits)
-let g:netrw_altv = 1          "
+let g:netrw_browse_split = 1  " open new files in previous window (no new splits)
+let g:netrw_altv = 1          " Split to hte right instead of the left
 let g:netrw_banner = 0        " removes the banner
 let g:netrw_winsize = 22      " makes the file browsing tree take up only 20% of the screen instead of 50%
 let g:netrw_liststyle= 3      " tree view when using netrw (file browsing)
