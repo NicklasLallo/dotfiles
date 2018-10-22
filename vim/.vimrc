@@ -20,7 +20,9 @@ Plug 'Zabanaa/neuromancer.vim'
 Plug 'altercation/vim-colors-solarized'
 
 " wal for colors
-Plug 'dylanaraps/wal'
+" Plug 'dylanaraps/wal'
+Plug 'dylanaraps/wal.vim'
+
 
 " multifile find & replace
 Plug 'brooth/far.vim'

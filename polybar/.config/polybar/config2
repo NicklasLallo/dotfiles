@@ -1,12 +1,11 @@
 [colors]
-background = ${xrdb:color0}
-foreground = ${xrdb:color6}
-foreground-alt=${xrdb:color0}
-
-i3_background = ${xrdb:color3}
-i3_foreground = ${xrdb:color7}
-i3_urgent_background = ${xrdb:color5}
-i3_unfocused_foreground = ${xrdb:color2}
+background = ${xrdb:color0:#222}
+foreground = ${xrdb:color7:#222}
+foreground-alt=${xrdb:color7:#222}
+i3_background = ${xrdb:color3:#222}
+i3_foreground = ${xrdb:color5:#222}
+i3_urgent_background = ${xrdb:color5:#222}
+i3_unfocused_foreground = ${xrdb:color2:#222}
 
 status_good = ${xrdb:color7}
 status_sub = ${xrdb:color6}

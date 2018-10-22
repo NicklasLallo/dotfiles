@@ -55,6 +55,7 @@ plugins=(git zsh-autosuggestions)
 
   export PATH="/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl"
   export PATH=~/dotfiles/scripts/:$PATH
+  export PATH="${PATH}:${HOME}/.local/bin/"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 export ANDROID_HOME=/opt/android-sdk
@@ -65,7 +66,17 @@ export ANDROID_HOME=/opt/android-sdk
 source $ZSH/oh-my-zsh.sh
 
 # Import colorscheme from 'wal'
-(wal -r &)
+# (wal -r &) # Old Wal
+## Import colorscheme from 'wal' asynchronously
+# &   # Run the process in the background.
+# ( ) # Hide shell job control messages.
+(cat ~/.cache/wal/sequences &)
+
+# Alternative (blocks terminal for 0-3ms)
+# cat ~/.cache/wal/sequences
+
+# To add support for TTYs this line can be optionally added.
+source ~/.cache/wal/colors-tty.sh
 
 if [[ -r /usr/lib/python3.6/site-packages/powerline/bindings/zsh/powerline.zsh ]]; then
     source /usr/lib/python3.6/site-packages/powerline/bindings/zsh/powerline.zsh

@@ -134,8 +134,8 @@ bindsym $mod+3 workspace $workspace3
 bindsym $mod+4 workspace $workspace4
 bindsym $mod+5 workspace $workspace5
 bindsym $mod+6 workspace $workspace6
-bindsym $mod+7 workspace 7
-bindsym $mod+8 workspace 8
+bindsym $mod+7 workspace $workspace7
+bindsym $mod+8 workspace $workspace8
 bindsym $mod+9 workspace 9
 bindsym $mod+0 workspace 10
 
@@ -146,8 +146,8 @@ bindsym $mod+Shift+3 move container to workspace $workspace3
 bindsym $mod+Shift+4 move container to workspace $workspace4
 bindsym $mod+Shift+5 move container to workspace $workspace5
 bindsym $mod+Shift+6 move container to workspace $workspace6
-bindsym $mod+Shift+7 move container to workspace 7
-bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+7 move container to workspace $workspace7
+bindsym $mod+Shift+8 move container to workspace $workspace8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
@@ -190,7 +190,8 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Cycle wallpapers and apply new colorscheme.
-bindsym $mod+n exec "wal -i $HOME/wallpapers/inuse -o wal-set"; exec $HOME/.config/polybar/launch.sh
+# bindsym $mod+n exec "wal -i $HOME/wallpapers/inuse -o wal-set"; exec $HOME/.config/polybar/launch.sh
+bindsym $mod+n exec "wal -i $HOME/wallpapers/inuse"; exec $HOME/.config/polybar/launch.sh
 
 set $bg-color 	         #2f343f
 set $inactive-bg-color   #2f343f
@@ -276,11 +277,14 @@ smart_borders on
 
 #set workspace names
 set $workspace1 "" 
-set $workspace2 "⛧" 
+set $workspace2 "☕" 
+# set $workspace2 "⛧" 
 set $workspace3 "☥" 
-set $workspace4 "☢" 
-set $workspace5 "☣" 
-set $workspace6 "♿" 
+set $workspace4 "☯" 
+set $workspace5 "🎶" 
+set $workspace6 "⚛" 
+set $workspace7 "🐱"
+set $workspace8 "🌙"
 
 #1 Terminals 
 #2 Mail 
@@ -351,6 +355,6 @@ exec --no-startup-id compton -b -f --backend glx -cCfFbG -I 0.05 -D 6 -r5 -l-6 -
 exec xrdb ~/.Xresources
 # exec feh --bg-scale ~/wallpapers/MpA1ygh.jpg
 exec setxkbmap -layout se
-exec --no-startup-id i3-msg 'workspace ⛧; exec urxvt -e gtop' 
+exec --no-startup-id i3-msg 'workspace ☕; exec urxvt -e gtop' 
 # exec --no-startup-id i3-msg 'workspace ⛧; exec urxvt -e weechat'
 
