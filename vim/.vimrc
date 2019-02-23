@@ -261,9 +261,6 @@ endif
 ":autocmd BufWinEnter * match ExtraWhitespace /^\s* \s*\|\s\+$/
 autocmd BufWinLeave * call clearmatches()
 
-"Another way to find trailing whitespace, I toggle in lintmode
-"set list                " needed for listchars
-set listchars=tab:>-,trail:.,extends:#,nbsp:~
 
 colorscheme gruvbox
 
@@ -326,6 +323,7 @@ set autoread          " automatically reread the file if it was changed from the
 set wrap              " wrap lines
 set autoindent
 set smartindent
+set term=xterm-256color " Falls back to 'xterm' if it does not start with xterm
 
 if exists('&guioptions')
     " cursor behaviour:
@@ -343,6 +341,7 @@ endif
 
 " }}}
 " Keybindings {{{
+" nnoremap {{{
 " space open/closes folds
 nnoremap <space> za
 " visualy select last inserted text
@@ -357,6 +356,7 @@ nnoremap <silent> <leader>ec :tabedit ~/.zshrc<CR>
 nnoremap <silent> <leader>ec :tabedit ~/.cshrc.user<CR>
 " remove any search highlighting
 nnoremap <leader><space> :nohlsearch<CR>
+" nnoremap <cr> :
 " `gf` opens file under cursor in new vertical split
 nnoremap gf :vertical wincmd f<CR>
 " move visual lines instead of real lines, less confusing together with wraping lines
@@ -378,7 +378,9 @@ let g:lasttab = 1
 nnoremap <leader>l :exe "tabn ".g:lasttab<CR>
 autocmd TabLeave * let g:lasttab = tabpagenr()
 
-nnoremap <silent> <leader>i :call ToggleCC()<CR>
+" highlight characters past the 100th column
+nnoremap <silent> <leader>i :call ToggleCC()<CR> 
+
 "show trailing whitespaces, somewhat exessive
 nnoremap <silent> <C-T> /\S\zs\s\+$
 
@@ -394,10 +396,24 @@ nnoremap <leader>u :UndotreeToggle<CR>
 nnoremap <Leader>nt :NERDTreeToggle<CR>
 " not necessarily NTree related but uses NERDTree because I have it setup
 nnoremap <leader>d :e %:h<CR>
-
+" Quick Search/Replace
+nnoremap <leader>f :'{,'}s/\<<C-r>=expand('<cword>')<CR>\>/
+nnoremap <leader>% :%s/\<<C-r>=expand('<cword>')<CR>\>/
+" }}}
+" Inoremap {{{ 
 " allows jk to function like esc while in insert mode, if you ever need to write jk then wait a few sec between the letters
 inoremap jk <esc>
 
+inoremap (<CR> (<CR><SPACE><CR>)<Esc>k$xa
+inoremap {<CR> {<CR><SPACE><CR>}<Esc>k$xa
+
+inoremap ,, <C-x><C-o><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>" : ",,"<CR>
+inoremap ,; <C-n><C-r>=pumvisible()      ? "\<lt>Down>\<lt>C-p>\<lt>Down>" : ",;"<CR>
+inoremap ,: <C-x><C-f><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>" : ",:"<CR>
+inoremap ,= <C-x><C-l><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>" : ",="<CR>
+
+" }}}
+" vnoremap {{{
 " Visual Mode pressing * or # searches for the current selection
 " Very useful for finding all occurances of something
 vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
@@ -405,9 +421,50 @@ vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
 
 " make visual selection dot-able
 vnoremap . :norm. &lt;CR&lt;
-
+" }}}
 " }}}
 " Functions {{{
+" make list-like commands more intuitive
+function! CCR()
+    let cmdline = getcmdline()
+    if cmdline =~ '\v\C^(ls|files|buffers)'
+        " like :ls but prompts for a buffer command
+        return "\<CR>:b"
+    elseif cmdline =~ '\v\C/(#|nu|num|numb|numbe|number)$'
+        " like :g//# but prompts for a command
+        return "\<CR>:"
+    elseif cmdline =~ '\v\C^(dli|il)'
+        " like :dlist or :ilist but prompts for a count for :djump or :ijump
+        return "\<CR>:" . cmdline[0] . "j  " . split(cmdline, " ")[1] . "\<S-Left>\<Left>"
+    elseif cmdline =~ '\v\C^(cli|lli)'
+        " like :clist or :llist but prompts for an error/location number
+        return "\<CR>:sil " . repeat(cmdline[0], 2) . "\<Space>"
+    elseif cmdline =~ '\C^old'
+        " like :oldfiles but prompts for an old file to edit
+        set nomore
+        return "\<CR>:sil se more|e #<"
+    elseif cmdline =~ '\C^changes'
+        " like :changes but prompts for a change to jump to
+        set nomore
+        return "\<CR>:sil se more|norm! g;\<S-Left>"
+    elseif cmdline =~ '\C^ju'
+        " like :jumps but prompts for a position to jump to
+        set nomore
+        return "\<CR>:sil se more|norm! \<C-o>\<S-Left>"
+    elseif cmdline =~ '\C^marks'
+        " like :marks but prompts for a mark to jump to
+        return "\<CR>:norm! `"
+    elseif cmdline =~ '\C^undol'
+        " like :undolist but prompts for a change to undo
+        return "\<CR>:u "
+        " Propmpt pastes the selected register content
+    elseif cmdline =~ '\C^reg'
+        return "\<CR>:norm! \"p\<Left>"
+    else
+        return "\<CR>"
+    endif
+endfunction
+cnoremap <expr> <CR> CCR()
 " Toggle Vexplore with Ctrl-E
 "function! ToggleVExplorer()
 "  if exists("t:expl_buf_num") "global variable for current tap, since only one instance of explorer
@@ -457,20 +514,47 @@ function! CmdLine(str)
     call feedkeys(":" . a:str)
 endfunction
 
-" Toggle ColorColumn
+"set list                " needed for listchars
+set listchars=tab:>-,trail:.,extends:#,nbsp:~
+
+" Toggle Whitespace mode
 " Toggle with leader+l
 function! ToggleCC()
   if exists("t:ccline")
     unlet t:ccline
-    let &colorcolumn=join(range(100,999),',')
+    " let &colorcolumn=join(range(100,999),',')
+    " call matchadd('ColorColumn', '\%101v', 100)
     set list
   else
     let t:ccline = winnr()
-    set colorcolumn=0
+    " set colorcolumn=0
     set list!
     redraw!
   endif
 endfuncti
+
+
+" Most Recently Used allows you to open files from :oldfile easily.
+" Use together with tab-completion
+" MRU command-line completion
+function! s:MRUComplete(ArgLead, CmdLine, CursorPos)
+    return filter(copy(v:oldfiles), 'v:val =~ a:ArgLead')
+endfunction
+
+" MRU function
+function! s:MRU(command, arg)
+    if a:command == "tabedit"
+        execute a:command . " " . a:arg . "|lcd %:p:h"
+    else
+        execute a:command . " " . a:arg
+    endif
+endfunction
+
+" commands
+command! -nargs=1 -complete=customlist,<sid>MRUComplete ME call <sid>MRU('edit', <f-args>)
+command! -nargs=1 -complete=customlist,<sid>MRUComplete MS call <sid>MRU('split', <f-args>)
+command! -nargs=1 -complete=customlist,<sid>MRUComplete MV call <sid>MRU('vsplit', <f-args>)
+command! -nargs=1 -complete=customlist,<sid>MRUComplete MT call <sid>MRU('tabedit', <f-args>)
 
 " }}}
 " Let {{{

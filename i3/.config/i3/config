@@ -118,7 +118,13 @@ bindsym $mod+a focus parent
 
 #bind workspaces to specific screens
 workspace $workspace1 output DP-0
+workspace $workspace3 output DP-0
+workspace $workspace5 output DP-0
+workspace $workspace7 output DP-0
 workspace $workspace2 output DP-3
+workspace $workspace4 output DP-3
+workspace $workspace6 output DP-3
+workspace $workspace8 output DP-3
 
 
 # switch to workspace
@@ -191,9 +197,11 @@ bindsym $mod+r mode "resize"
 
 # Cycle wallpapers and apply new colorscheme.
 # bindsym $mod+n exec "wal -i $HOME/wallpapers/inuse -o wal-set"; exec $HOME/.config/polybar/launch.sh
-bindsym $mod+n exec "wal -i $HOME/wallpapers/inuse"; exec $HOME/.config/polybar/launch.sh
+bindsym $mod+n exec --no-startup-id "$HOME/.local/bin/wal -i $HOME/wallpapers/inuse -g"
 
-set $bg-color 	         #2f343f
+# ; exec $HOME/.config/polybar/launch.sh
+
+set $bg-color            #2f343f
 set $inactive-bg-color   #2f343f
 set $text-color          #f3f4f5
 set $inactive-text-color #676E7D
@@ -265,9 +273,9 @@ for_window [tiling] border pixel 0
 # gaps outer 0
 # smart_gaps on
 
-smart_gaps on
 gaps inner 30
 gaps outer -20
+gaps top 32
 # Focus_follows_mouse off
 
 new_window pixel 0
@@ -277,14 +285,14 @@ smart_borders on
 
 #set workspace names
 set $workspace1 "" 
-set $workspace2 "☕" 
+set $workspace2 "🎶" 
 # set $workspace2 "⛧" 
-set $workspace3 "☥" 
-set $workspace4 "☯" 
-set $workspace5 "🎶" 
+set $workspace3 "" 
+set $workspace4 "☥" 
+set $workspace5 "☕" 
 set $workspace6 "⚛" 
 set $workspace7 "🐱"
-set $workspace8 "🌙"
+set $workspace8 ""
 
 #1 Terminals 
 #2 Mail 
@@ -339,7 +347,7 @@ hide_edge_borders both
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 # Add this to your .xinitrc or whatever file starts programs on startup.
-exec --no-startup-id wal -i "$(< "${HOME}/.cache/wal/wal")"
+exec --no-startup-id $HOME/.local/bin/wal -i "$(< "${HOME}/.cache/wal/wal")"
 exec --no-startup-id compton -b -f --backend glx -cCfFbG -I 0.05 -D 6 -r5 -l-6 -t-5 -o.99 --vsync opengl-mswc
 # exec --no-startup-id compton -b -f --config ~/.config/compton.conf
 
@@ -355,6 +363,8 @@ exec --no-startup-id compton -b -f --backend glx -cCfFbG -I 0.05 -D 6 -r5 -l-6 -
 exec xrdb ~/.Xresources
 # exec feh --bg-scale ~/wallpapers/MpA1ygh.jpg
 exec setxkbmap -layout se
-exec --no-startup-id i3-msg 'workspace ☕; exec urxvt -e gtop' 
-# exec --no-startup-id i3-msg 'workspace ⛧; exec urxvt -e weechat'
+exec --no-startup-id i3-msg 'workspace ; exec google-chrome-stable' 
+exec --no-startup-id i3-msg 'workspace 🎶; exec spotify' 
+# exec --no-startup-id i3-msg 'workspace ☕; exec discord' 
+# exec --no-startup-id i3-msg 'workspace ☕; exec urxvt -e weechat'
 

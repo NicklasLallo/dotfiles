@@ -20,21 +20,26 @@ tray_background = #60e7ecdb
 width = 100%
 height = 32
 clickarea = 25
+offset-x = 10
+offset-y = 10
 
-border-left-size = 40
-border-right = 40
-border-top = 11
+border-size = 0
+border-left-size = ${const.border-size}
+border-right = ${const.border-size}
+border-top = ${const.border-size}
+border-bottom = 3
 
-module-margin-left = 1
-module-margin-right = 1
+module-margin-left = 0
+module-margin-right = 0
+format-padding = 1
 
 spacing = 1
-line-height = 4 
+line-height = 4
 
-line-size = 3
+line-size = 0
 
-radius = 4
-radius-top = 4
+radius = 0
+radius-top = 20 
 radius-bottom = 0
 
 ;font-4 = FontAwesome:size=16;3
@@ -56,23 +61,27 @@ font-4 = symbola:size=18;3
 
 ;SanFranSiscoDisplay:size=14:weight=regular;0;
 ;
-[bar/center]
+[bar/centerLeft]
+top = true
+override-redirect = true
+wm-restack = i3
 monitor = DP-0
-width = ${const.width}
+width = 545
 height = ${const.height}
 clickareas = ${const.clickareas}
+offset-x = ${const.offset-x}
+offset-y = ${const.offset-y}
 background = ${colors.background}
 foreground = ${colors.foreground}
 line-color = ${colors.line-color}
 line-size = ${const.line-size}
-border-color = ${colors.transparent}
+border-color = ${colors.foreground}
 border-left-size = ${const.border-left-size}
 border-right-size = ${const.border-right}
 border-top-size = ${const.border-top}
-;border-radius-top = ${const.radius-top}
-;border-radius-bottom = ${const.radius-bottom}
-;border-radius = ${const.radius}
-radius = 5
+border-bottom-size = ${const.border-bottom}
+radius-top = ${const.radius-top}
+radius-bottom = ${const.radius-bottom}
 module-margin-left = ${const.module-margin-left}
 module-margin-right = ${const.module-margin-right}
 spacing = ${const.spacing}
@@ -82,27 +91,140 @@ font-1 = ${const.font-1}
 font-2 = ${const.font-2}
 font-3 = ${const.font-3}
 font-4 = ${const.font-4}
-modules-left = i3 
-modules-center = spotipy 
-modules-right = redshift pkg volume clock
+modules-left = i3
+;modules-center = spotipy
+;modules-right = redshift pkg volume clock
 
-[bar/right]
-monitor = ${env:MONITOR:DP-3}
-modules-left = i3 
-modules-center = 
-modules-right = pub-ip filesystem coretemps vpncheck volume clock menu0
-width = ${const.width}
+[bar/centerMiddle]
+top = true
+override-redirect = true
+wm-restack = i3
+monitor = DP-0
+width = 650
 height = ${const.height}
 clickareas = ${const.clickareas}
-
+offset-x = 1395 
+offset-y = ${const.offset-y}
 background = ${colors.background}
 foreground = ${colors.foreground}
 line-color = ${colors.line-color}
-border-color = ${colors.transparent}
+line-size = ${const.line-size}
+border-color = ${colors.foreground}
 border-left-size = ${const.border-left-size}
 border-right-size = ${const.border-right}
 border-top-size = ${const.border-top}
-radius = 5
+border-bottom-size = ${const.border-bottom}
+radius-top = ${const.radius-top}
+radius-bottom = ${const.radius-bottom}
+module-margin-left = ${const.module-margin-left}
+module-margin-right = ${const.module-margin-right}
+spacing = ${const.spacing}
+lineheight = ${const.lineheight}
+font-0 = ${const.font-0}
+font-1 = ${const.font-1}
+font-2 = ${const.font-2}
+font-3 = ${const.font-3}
+font-4 = ${const.font-4}
+;modules-left = i3
+modules-center = spotipy
+;modules-right = redshift pkg volume clock
+
+[bar/centerRight]
+top = true
+override-redirect = true
+wm-restack = i3
+monitor = DP-0
+width = 500
+height = ${const.height}
+clickareas = ${const.clickareas}
+offset-x = 2930
+offset-y = ${const.offset-y}
+background = ${colors.background}
+foreground = ${colors.foreground}
+line-color = ${colors.line-color}
+line-size = ${const.line-size}
+border-color = ${colors.foreground}
+border-left-size = ${const.border-left-size}
+border-right-size = ${const.border-right}
+border-top-size = ${const.border-top}
+border-bottom-size = ${const.border-bottom}
+radius-top = ${const.radius-top}
+radius-bottom = ${const.radius-bottom}
+module-margin-left = ${const.module-margin-left}
+module-margin-right = ${const.module-margin-right}
+spacing = ${const.spacing}
+lineheight = ${const.lineheight}
+font-0 = ${const.font-0}
+font-1 = ${const.font-1}
+font-2 = ${const.font-2}
+font-3 = ${const.font-3}
+font-4 = ${const.font-4}
+;modules-left = i3
+;modules-center = spotipy
+modules-right = redshift pkg volume clock
+
+[bar/rightLeft]
+override-redirect = true
+wm-restack = i3
+monitor = ${env:MONITOR:DP-3}
+modules-left = i3
+;modules-center =
+;modules-right = pub-ip filesystem coretemps vpncheck volume clock menu0
+width = 545
+height = ${const.height}
+clickareas = ${const.clickareas}
+
+offset-x = ${const.offset-x}
+offset-y = ${const.offset-y}
+background = ${colors.background}
+foreground = ${colors.foreground}
+line-color = ${colors.line-color}
+border-color = ${colors.foreground}
+border-left-size = ${const.border-left-size}
+border-right-size = ${const.border-right}
+border-top-size = ${const.border-top}
+border-bottom-size = ${const.border-bottom}
+radius = ${const.radius}
+radius-top = ${const.radius-top}
+radius-bottom = ${const.radius-bottom}
+module-margin-left = ${const.module-margin-left}
+module-margin-right = ${const.module-margin-right}
+spacing = ${const.spacing}
+lineheight = ${const.lineheight}
+
+font-0 = ${const.font-0}
+font-1 = ${const.font-1}
+font-2 = ${const.font-2}
+font-3 = ${const.font-3}
+font-4 = ${const.font-4}
+
+;tray-position = right
+tray-background = ${colors/tray_background}
+
+[bar/rightRight]
+override-redirect = true
+wm-restack = i3
+monitor = ${env:MONITOR:DP-3}
+;modules-left = i3
+;modules-center =
+modules-right = pub-ip filesystem coretemps vpncheck volume clock menu0
+width = 1150
+height = ${const.height}
+clickareas = ${const.clickareas}
+
+offset-x = 760
+offset-y = ${const.offset-y}
+background = ${colors.background}
+foreground = ${colors.foreground}
+line-color = ${colors.line-color}
+border-color = ${colors.foreground}
+border-left-size = ${const.border-left-size}
+border-right-size = ${const.border-right}
+border-top-size = ${const.border-top}
+border-bottom-size = ${const.border-bottom}
+radius = ${const.radius}
+radius-top = ${const.radius-top}
+radius-bottom = ${const.radius-bottom}
 module-margin-left = ${const.module-margin-left}
 module-margin-right = ${const.module-margin-right}
 spacing = ${const.spacing}
@@ -154,16 +276,23 @@ animation-charging-framerate = 1000
 [module/i3]
 type = internal/i3
 font = symbola
+format = <label-state> <label-mode>
+
+label-mode = %mode%
+label-mode-foreground = ${colors.foreground}
+label-mode-background = ${colors.background}
+label-mode-padding = 0
+;label-mode-margin = 0
 
 pin-workspaces = true
-strip-wsnumbers = true
+; strip-wsnumbers = false
 index-sort = true
 label-focused = %name%
-label-focused-foreground = ${colors.i3_foreground}
+label-focused-foreground = ${colors.background}
 label-focused-background = ${colors.i3_background}
 label-focused-underline = ${colors.foreground}
 label-focused-padding = 6
-label-focused-maxlen = 3 
+label-focused-maxlen = 3
 label-focused-ellipsis = true
 
 label-unfocused = %name%
@@ -174,7 +303,7 @@ label-unfocused-ellipsis = false
 
 label-visible = %name%
 label-visible-padding = 4
-label-visible-maxlen = 3 
+label-visible-maxlen = 3
 
 label-urgent = %name%
 label-urgent-foreground = ${colors.i3_foreground}
@@ -191,7 +320,7 @@ ping-interval = 1
 #format-packetloss = <animation-packetloss> <label-connected>
 format-connected = <ramp-signal> <label-connected>
 
-label-connected = %essid% 
+label-connected = %essid%
 label-disconnected = not connected
 label-disconnected-foreground = #66
 
@@ -213,10 +342,11 @@ animation-packetloss-1-foreground = ${colors.status_sub}
 animation-packetloss-framerate = 500
 
 [module/volume]
-type = internal/volume
+;format-padding = ${const.format-padding}
+format-volume-padding = 1 
+type = internal/alsa
 
-format-volume = <ramp-volume> <label-volume>
-
+format-volume = <ramp-volume> <label-volume> 
 label-muted = %{F#dd7e66}%{F-} %{F#CCC}muted%{F-}
 
 ramp-volume-0 = 
@@ -225,6 +355,7 @@ ramp-volume-2 = 
 ramp-volume-3 = 
 
 [module/mpd]
+format-padding = ${const.format-padding}
 type = custom/script
 exec = $HOME/.config/polybar/Zscroll.sh
 tail = true
@@ -232,33 +363,39 @@ tail = true
 label-foreground = ${colors.foreground}
 
 [module/play_music]
+format-padding = ${const.format-padding}
 type = custom/script
 exec = ~/.scripts/play_music.py
 
 label-foreground = ${colors.i3_foreground}
 label-maxlen = 50
 label-ellipsis = true
-# label-underline = 
+# label-underline =
 
 [module/i3status]
+format-padding = ${const.format-padding}
 type = custom/script
 exec = i3status
 
 label-foreground = ${colors.i3_foreground}
 label-maxlen = 50
 label-ellipsis = true
- 
+
 [module/clock]
+;format-padding = ${const.format-padding}
 type = internal/date
 interval = 1
-date =  %H:%M %{F-}%{B-}
+label = %date% %time%
+date = 🌍 %a %b %d,
+time =  %H:%M
 
-format-background = ${colors.background}
-format-foreground = ${colors.foreground}
-format-padding = 3
+format-background = ${colors.foreground}
+format-foreground = ${colors.background}
+format-padding = 1 
 
 
 [module/weather]
+format-padding = ${const.format-padding}
 type = custom/script
 interval = 10
 format = <label>
@@ -267,6 +404,7 @@ format-prefix-foreground = ${colors.foreground}
 exec = $HOME/.config/polybar/weather
 
 [module/xwindow]
+format-padding = ${const.format-padding}
 type = internal/xwindow
 label = %title%
 label-maxlen = 50
@@ -275,6 +413,7 @@ label-maxlen = 50
 # mousepad:filetype=dosini
 
 [module/spotipy]
+format-padding = ${const.format-padding}
 type = custom/script
 exec = ~/.config/polybar/spotifyS
 exec-if = pgrep spotify > /dev/null
@@ -282,21 +421,22 @@ interval = 2.0
 click-left = playerctl -p spotify play-pause
 format-foreground = ${colors.foreground}
 # format-background = #191A29
-format-padding = 2
 label = "%output%"
 content = 
 content-foreground = #23B37A
 
 [module/pub-ip]
+format-padding = ${const.format-padding}
 type = custom/script
 exec = $HOME/.config/polybar/pub-ip.sh
 interval = 100
 ;format-underline = ${colors.line-color}
 format-underline = #dc322f
-format = <label> 
+format = <label>
 label = %output%
 
 [module/pkg]
+format-padding = ${const.format-padding}
 type = custom/script
 interval = 1200
 format = <label>
@@ -306,6 +446,7 @@ exec = .config/polybar/pkg.sh
 exec-if = "ping -q -w 2 -c 1 176.34.135.167 > /dev/null"
 
 [module/vpncheck]
+format-padding = ${const.format-padding}
 type = custom/script
 exec = pgrep openvpn
 interval = 29
@@ -315,20 +456,24 @@ format-prefix = " "
 format-prefix-foreground = #5b
 
 [module/coretemps]
+format-padding = ${const.format-padding}
 type = custom/script
 interval = 10
 exec-if = sensors
 exec = ~/.config/polybar/tempcores.sh
 
 [module/redshift]
+format-padding = ${const.format-padding}
 type = custom/script
-interval = 5
-click-left = pkill -USR1 redshift
-click-right = pgrep redshift &> /dev/null || redshift &> /dev/null &
+interval = 3.0
+;click-left = pkill -USR1 redshift
+click-left = pgrep redshift &> /dev/null || redshift &> /dev/null &
+click-right = pkill redshift
 
 exec = ~/.config/polybar/redshift.sh
 
 [module/filesystem]
+format-padding = ${const.format-padding}
 type = internal/fs
 
 
@@ -354,6 +499,7 @@ label-unmounted = %mountpoint% not mounted
 label-unmounted-foreground = ${colors.foreground-alt}
 
 [module/powermenu]
+format-padding = ${const.format-padding}
 type = custom/menu
 
 format-spacing = 1
@@ -386,15 +532,17 @@ menu-2-1-exec = menu-open-0
 format-spacing = 1
 type = custom/menu
 format-foreground = #e60053
+format-background = ${colors.foreground}
 format = <label-toggle> <menu>
-format-padding = 1
-format-margin = 0
-
-menu-0-0 = " shutdown  " 
+format-padding = 3
+format-padding-left = 20
+;format-margin = 0
+format-margin-left = 10
+menu-0-0 = "   " 
 menu-0-0-exec = shutdown now
-menu-0-1 = " restart  "
+menu-0-1 = "   "
 menu-0-1-exec = shutdown -r now
-menu-0-2 =   cancel
+menu-0-2 =   
 label-open = 
+;label-open = "%{F#677}"
 label-close = 
-

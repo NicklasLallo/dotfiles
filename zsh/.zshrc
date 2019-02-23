@@ -65,18 +65,7 @@ export ANDROID_HOME=/opt/android-sdk
 
 source $ZSH/oh-my-zsh.sh
 
-# Import colorscheme from 'wal'
-# (wal -r &) # Old Wal
-## Import colorscheme from 'wal' asynchronously
-# &   # Run the process in the background.
-# ( ) # Hide shell job control messages.
-(cat ~/.cache/wal/sequences &)
 
-# Alternative (blocks terminal for 0-3ms)
-# cat ~/.cache/wal/sequences
-
-# To add support for TTYs this line can be optionally added.
-source ~/.cache/wal/colors-tty.sh
 
 if [[ -r /usr/lib/python3.6/site-packages/powerline/bindings/zsh/powerline.zsh ]]; then
     source /usr/lib/python3.6/site-packages/powerline/bindings/zsh/powerline.zsh
@@ -111,6 +100,23 @@ export LD_LIBRARY_PATH=/opt/cuda/extras/CUPTI/lib64${LD_LIBRARY_PATH:+:${LD_LIBR
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #
+
+if [[ $TERM == 'rxvt-unicode-256color' ]]; then
+
+    # Import colorscheme from 'wal'
+    # (wal -r &) # Old Wal
+    ## Import colorscheme from 'wal' asynchronously
+    # &   # Run the process in the background.
+    # ( ) # Hide shell job control messages.
+    (cat ~/.cache/wal/sequences &)
+
+    # Alternative (blocks terminal for 0-3ms)
+    # cat ~/.cache/wal/sequences
+
+    # To add support for TTYs this line can be optionally added.
+    source ~/.cache/wal/colors-tty.sh
+fi
+
 
 showerthoughts=$(curl -s --connect-timeout 5 -A '/u/DrDoctor13' \
 'https://www.reddit.com/r/showerthoughts/top.json?sort=top&t=week&limit=100' | \
