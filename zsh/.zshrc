@@ -128,5 +128,9 @@ export FZF_DEFAULT_OPS="--extended"
 export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
+
+alias f='fzf --height 50% --border --preview "pygmentize -O style=monokai {}"'
+alias vimf='vim $(fzf --height 50% --border --preview "pygmentize -O style=monokai {}")'
+
 alias gs="git status"
 alias gb="git branchs"
