@@ -1,9 +1,20 @@
 ! Dylans Xresources
 
+
+#define font1         Source Code Pro for Powerline
+#define font2         Inconsolata Nerd Font
+#define font3         DejaVu Sans Mono Nerd Font
+#define font4         Noto Sans Mono CJK JP
+
+URxvt*letterSpace: 0
+URxvt*font:           xft:font1:size=12, xft:font2:pixelsize=14:minspace=false, xft:font3:pixelsize=14,xft:font4:pixelsize=14
+URxvt*boldFont:       xft:font1:bold:pixelsize=12, xft:font2:pixelsize=14:minspace=False,xft:font3:pixelsize=14,xft:font4:pixelsize=14
+URxvt*italicFont:     xft:font1:italic:pixelsize=12, xft:font2:pixelsize=14:minspace=False,xft:font3:pixelsize=14,xft:font4:pixelsize=14
+URxvt*boldItalicFont: xft:font1:bold:italic:pixelsize=12, xft:font2:pixelsize=14:minspace=False, xft:font3:pixelsize=14, xft:font4:pixelsize=14
 ! URxvt*font: -*-clean-medium-r-*--16-*-*-*-*-*-*-*
-URxvt*font: xft:Source Code Pro for Powerline:size=12
+/* URxvt*font: xft:Source Code Pro for Powerline:size=12:minspace=False, xft:DejaVu Sans:pixelsize=18 */
 ! URxvt*boldFont: -*-clean-medium-r-*--12-*-*-*-*-*-*-*
-URxvt*boldFont: xft:Source Code Pro for Powerline
+/* URxvt*boldFont: xft:Source Code Pro for Powerline:minspace=False, xft:DejaVu Sans:pixelsize=18 */
 URxvt.color12: rgb:5c/5c/ff
 
 !! Fix the annoying gaps between powerline symbols
