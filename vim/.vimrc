@@ -1,6 +1,4 @@
 " Plugins {{{
-" Remember to run :PlugInstall on a new setup
-" set runtimepath^=~/.vim/local/cscope_maps.vim
 let g:no_plugins = 'false'
 let mapleader=","       " leader is comma instead of \
 " Plug {{{
@@ -1152,7 +1150,7 @@ endfunction
 autocmd! FileType GV nnoremap <buffer> <silent> + :call <sid>gv_expand()<cr>
 " }}}
 " }}}
-" Let {{{
+" Netrw {{{
 " Hit enter in the file browser to open the selected
 " file with :vsplit to the right of the browser.
 let g:netrw_browse_split = 1  " open new files in previous window (no new splits)
