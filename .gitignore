@@ -44,3 +44,13 @@ Thumbs.db
 /Pictures
 /.irssi
 /gnome-terminal
+
+# Temporary files #
+###################
+*.swp
+*.old
+*.bak
+.fehbg
+.netrwhist
+*.tmp
+*.env
