@@ -336,6 +336,7 @@ nnoremap <silent> <leader>g :call FZFOpen(':Tags')<CR>
 nnoremap <silent> <C-g>c :call FZFOpen(':Commands')<CR>
 nnoremap <silent> <C-g>l :call FZFOpen(':BLines')<CR>
 nnoremap <silent> <C-a-p> :call FZFOpen(':Files')<CR>
+nnoremap <silent> <C-f> :call FZFOpen(':Files')<CR>
 nnoremap <silent> <C-h> :call FZFOpen(':History')<CR>
 " nnoremap <silent> <C-p> :call FZFOpen(':call Fzf_dev()')<CR>
 
@@ -821,6 +822,11 @@ nnoremap <leader>% :%s/\<<C-r>=expand('<cword>')<CR>\>/
 " Very useful for finding all occurances of something
 vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
 vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
+vnoremap < <gv
+vnoremap > >gv
+vnoremap <C-k> :m-2<CR>gv
+vnoremap <C-j> :m '>+<CR>gv
+
 
 " make visual selection dot-able
 vnoremap . :norm. &lt;CR&lt;
