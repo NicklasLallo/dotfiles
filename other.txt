@@ -1,0 +1,8 @@
+In addition to the obvious programs mentioned in directory names in this repo I also use a great number of smaller programs that don't need any custom configuration after installation. This file will be an attempt to list any such software to make new installations easier.
+
+FZF
+ranger_devicons
+powerline
+nerd-fonts (includes powerline symbols)
+cower (aur installations)
+compton (mainly to fix the round corners of the top bar)
