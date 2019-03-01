@@ -57,6 +57,7 @@ plugins=(git zsh-autosuggestions)
   export PATH="/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl"
   export PATH=~/dotfiles/scripts/:$PATH
   export PATH="${PATH}:${HOME}/.local/bin/"
+  export PATH="${PATH}:${HOME}/aur/imgur-screenshot/"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 export ANDROID_HOME=/opt/android-sdk
