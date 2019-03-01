@@ -38,7 +38,7 @@ floating_modifier $mod
 # bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+Shift+Return exec konsole
 
-bindsym $mod+Return exec urxvt
+bindsym $mod+Return exec kitty
 
 #bindsym $mod+Shift+Return exec i3-sensible-terminal
 
@@ -197,7 +197,7 @@ bindsym $mod+r mode "resize"
 
 # Cycle wallpapers and apply new colorscheme.
 # bindsym $mod+n exec "wal -i $HOME/wallpapers/inuse -o wal-set"; exec $HOME/.config/polybar/launch.sh
-bindsym $mod+n exec --no-startup-id "$HOME/.local/bin/wal -i $HOME/wallpapers/inuse -g"
+bindsym $mod+n exec --no-startup-id "$HOME/.local/bin/wal -i $HOME/wallpapers/inuse"
 
 # ; exec $HOME/.config/polybar/launch.sh
 
