@@ -26,7 +26,7 @@ Plug 'vim-airline/vim-airline-themes'
 " Plug 'enricobacis/vim-airline-clock'
 " Linter
 Plug 'w0rp/ale'
-"Plug 'tweekmonster/startuptime.vim'
+Plug 'tweekmonster/startuptime.vim'
 
 " allows opening files with syntax: vim fileName:lineNr
 Plug 'bogado/file-line'
@@ -613,7 +613,10 @@ if has('gui_running')
 else
   colorscheme seoul256
   set background=dark
-    if has('terminal')
+    if has('terminal') && !(&term ==# 'xterm-kitty') && !(&term ==# 'xterm-256color')
+        " Avoid setting this variable when it is not absolutely neccesary
+        " since it is very very slow (10 times as long startuptime as
+        " everything else combined)
         set term=xterm-256color " Falls back to 'xterm' if it does not start with xtert
     endif
 endif
