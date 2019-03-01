@@ -130,8 +130,41 @@ export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 
-alias f='fzf --height 50% --border --preview "pygmentize -O style=monokai {}"'
-alias vimf='vim $(fzf --height 50% --border --preview "pygmentize -O style=monokai {}")'
+alias f='fzf --height 50% --border --preview "pygmentize -g -O style=monokai {}"'
+alias vimf='vim $(fzf --height 50% --border --preview "pygmentize -g -O style=monokai {}")'
+
+function ranger-run(){
+    zle kill-whole-line
+    BUFFER="ranger"
+    zle accept-line
+    zle reset-prompt
+    # eval 'command ranger'
+    # zle reset-prompt
+}
+
+zle      -N  ranger-run-widget ranger-run
+bindkey '^E' ranger-run-widget
+
+# Bind \eg to `git status`
+function _git-status {
+    zle kill-whole-line
+    # zle -U "git status"
+    BUFFER="git status"
+    zle accept-line
+}
+zle -N _git-status
+bindkey '\eg' _git-status
 
 alias gs="git status"
 alias gb="git branchs"
+alias cdd="cd ~/dotfiles"
+alias Control-F='vim $(fzf --height 50% --border --preview "pygmentize -g -O style=monokai {}")'
+
+function f_widget {
+    zle kill-whole-line
+    # zle -U "git status"
+    BUFFER='Control-F'
+    zle accept-line
+}
+zle -N f_widget
+bindkey '^F' f_widget
