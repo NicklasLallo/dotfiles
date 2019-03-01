@@ -654,10 +654,6 @@ set listchars=tab:>-,trail:.,extends:#,nbsp:~
 
 " }}}
  " Basic Settings {{{
-
-
-
-
 syntax enable         " enables syntax highlighting
 set guioptions=
 "set termguicolors
@@ -700,7 +696,7 @@ set iskeyword+=-      " Treat dash separated words as word text objects (for ciw
 set mouse=a           " enable mouse
 set scrolloff=9       " center coursor
 set nocp              " 'compatible' is not set
-set autochdir         " Change directory to the current buffer when opening files.
+" set autochdir         " Change directory to the current buffer when opening files.
 set background=dark
 "set foldmethod=indent   " fold based on indent level alternatives are: marker, manual, expr, syntax, diff, run :help foldmethod for info
 set wildignore=*.o,*.obj,*.bak,*.exe,*.pyc,*.class
@@ -847,7 +843,6 @@ inoremap ,; <C-n><C-r>=pumvisible()      ? "\<lt>Down>\<lt>C-p>\<lt>Down>" : ",;
 inoremap ,: <C-x><C-f><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>" : ",:"<CR>
 inoremap ,= <C-x><C-l><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>" : ",="<CR>
 " }}}
-
 " }}}
 " Functions {{{
 " Visual Selection tool {{{
