@@ -5,4 +5,4 @@ ranger_devicons
 powerline
 nerd-fonts (includes powerline symbols)
 cower (aur installations)
-compton (mainly to fix the round corners of the top bar)
+compton (fork to support blur)

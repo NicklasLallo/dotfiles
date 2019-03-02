@@ -348,7 +348,8 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 # Add this to your .xinitrc or whatever file starts programs on startup.
 exec --no-startup-id $HOME/.local/bin/wal -i "$(< "${HOME}/.cache/wal/wal")"
-exec --no-startup-id compton -b -f --backend glx -cCfFbG -I 0.05 -D 6 -r5 -l-6 -t-5 -o.99 --vsync opengl-mswc
+# exec --no-startup-id compton -b -f --backend glx -cCfFbG -I 0.05 -D 6 -r5 -l-6 -t-5 -o.99 --vsync opengl-mswc --config ~/.config/compton.conf
+exec --no-startup-id compton --config ~/.config/compton.conf
 # exec --no-startup-id compton -b -f --config ~/.config/compton.conf
 
 # exec compton -f
