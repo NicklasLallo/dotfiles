@@ -707,7 +707,7 @@ set wildignore=*.o,*.obj,*.bak,*.exe,*.pyc,*.class
 set title             " change the title of the terminal
 "set visualbell          " don't beep
 set noerrorbells      " don't beep
-set clipboard=unnamedplus " Copy & Paste with the system clipboard (the * register), no need to use the "* prefix when pasting or copying
+set clipboard=unnamedplus " Copy & Paste with the system clipboard (the + register)
 set modelines=1       " user last line of file for modelines
 set autoread          " automatically reread the file if it was changed from the outside without asking first
 set wrap              " wrap lines
