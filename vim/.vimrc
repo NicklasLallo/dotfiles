@@ -1544,9 +1544,13 @@ endfunction
 " }}}
 " Neovim {{{
 if has('nvim')
+    " In Neovim, you can set up fzf window using a Vim command
+    " let g:fzf_layout = { 'window': 'enew' }
+    " let g:fzf_layout = { 'window': '-tabnew' }
+    " let g:fzf_layout = { 'window': '10split' }
     set emoji
     let g:use_cursor_shapes = 1
-    tnoremap <Esc> <C-\><C-n>
+    tnoremap <C-n> <C-\><C-n>
     tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
 
     tnoremap <A-h> <C-\><C-N><C-w>h
