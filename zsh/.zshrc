@@ -130,7 +130,7 @@ export FZF_DEFAULT_OPS="--extended"
 export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-
+alias nv='nvim'
 alias :q='exit'
 alias please='sudo'
 alias kindly='sudo'
