@@ -131,6 +131,7 @@ export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 
+alias :q='exit'
 alias please='sudo'
 alias kindly='sudo'
 alias f='fzf --height 50% --border --preview "pygmentize -g -O style=monokai {}"'
