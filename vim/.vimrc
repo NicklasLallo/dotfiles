@@ -1,5 +1,4 @@
 " Plugins {{{
-let g:no_plugins = 'false'
 let mapleader=","       " leader is comma instead of \
 " Plug {{{
 call plug#begin('~/.vim/plugged')
@@ -91,6 +90,8 @@ Plug 'tpope/vim-repeat'
 Plug 'vim-scripts/ReplaceWithRegister'   " [\"x]gr{motion}
 Plug 'AndrewRadev/splitjoin.vim'         " gS (split) & gJ (join)
 Plug 'AndrewRadev/switch.vim'            " gs (switch, ex: true->false, '&&'->'||')
+Plug 'zirrostig/vim-schlepp'             " move visual selections around
+
 " if exists('##TextYankPost')
 Plug 'machakann/vim-highlightedyank'
 let g:highlightedyank_highlight_duration = 100
@@ -576,6 +577,7 @@ nnoremap <Leader>k :cprevious<CR>
 
 " }}}
 " Other {{{
+let g:no_plugins = 'false'
 " Multi cursor
 let g:multi_cursor_prev_key = '<C-S-n>'
 " Only return from visual to normal
@@ -653,8 +655,8 @@ match ExtraWhitespace /\s\+\%#\@<!$\| \+\ze\t/
 
 "Another way to find trailing whitespace, I toggle in lintmode
 "set list                " needed for listchars
-set listchars=tab:>-,trail:.,extends:#,nbsp:~
-
+" (uBB is right double angle, uB7 is middle dot)
+set listchars=tab:»·,trail:␣,nbsp:˷
 
 " }}}
  " Basic Settings {{{
@@ -666,10 +668,12 @@ set guioptions=
 "set shellpipe="2>&1| tee"
 set backspace=indent,eol,start
 set nobackup          " most files are in git anyways
+set autoread          "Always reload buffer when external changes detected
 set encoding=utf-8    " usually the case rather than latin1
 set textwidth=0       " disable automatic word wrapping (newlines)
 set hidden            " preserve buffers by hiding instead of closing them
 set showtabline=4     " t
+set fileformats=unix,mac,dos " Handle various end-of-line formats
 set tabstop=4         " number of visual spaces per tab
 set softtabstop=4     " number of spaces in tab when editing
 set shiftwidth=4      " number of spaces used for autoindent, command: <<, >>, == (auto entire doc: gg=G)
@@ -680,7 +684,7 @@ set relativenumber    " line numbers are relative to cursor position
 set showcmd           " show command in bottom bar
 set cursorline        " highlight current line
 set wildmenu          " visual autocomplete for command menu
-"set wildmode=list:longest,list:full " configure wildmenu
+" set wildmode=list:longest,full " configure wildmenu
 "set lazyredraw          " redraw less often
 set showmatch         " highlight matching {[()]}
 set incsearch         " display search results while writing
@@ -712,9 +716,15 @@ set modelines=1       " user last line of file for modelines
 set autoread          " automatically reread the file if it was changed from the outside without asking first
 set wrap              " wrap lines
 set autoindent
+set grepprg=ag\ --vimgrep\ $*
+set grepformat=%f:%l:%c:%m
+let g:GVI_use_ag = 1
 set smartindent
 set noshowmode        " Hide the default mode text (e.g. -- INSERT -- below the statusline)
 set formatoptions+=1  " Make pasting big things slightly smarter
+set virtualedit=block " Visual block will always be square shaped even if some lines are shorter
+
+
 if has('patch-7.3.541')
   set formatoptions+=j
 endif
@@ -753,10 +763,15 @@ let &t_ut=''
 " }}}
 " Keybindings {{{
 " nnoremap {{{
+" Extend previous match with new search
+nnoremap //   /<C-R>/
+nnoremap ///  /<C-R>/\<BAR>
 " space open/closes folds
 nnoremap <space> za
 " visualy select last inserted text
 nnoremap gV `[V`]
+" Yank to end of line (default Y=yy)
+nnoremap Y y$
 " edit this file
 nnoremap <silent> <leader>ev :tabedit $MYVIMRC<CR>
 " source this file after edits
@@ -818,8 +833,18 @@ nnoremap <leader>% :%s/\<<C-r>=expand('<cword>')<CR>\>/
 " allows jk to function like esc while in insert mode, if you ever need to write jk then wait a few sec between the letters - Removed because it interfered with multipleCursors which was more useful
 "inoremap jk <esc>
 
+" Visual Block mode is far more useful that Visual mode (so swap the commands)...
+nnoremap v <C-V>
+nnoremap <C-V> v
+
+xnoremap v <C-V>
+xnoremap <C-V> v
 " }}}
 " vnoremap {{{
+
+" no typo "u" when intending "y" in visual mode. "u" changed to "gu"
+vnoremap u <nop>
+vnoremap gu u
 
 " Visual Mode pressing * or # searches for the current selection
 " Very useful for finding all occurances of something
@@ -827,9 +852,27 @@ vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
 vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
 vnoremap < <gv
 vnoremap > >gv
-vnoremap <C-k> :m-2<CR>gv
-vnoremap <C-j> :m '>+<CR>gv
+" vnoremap <C-k> :m-2<CR>gv
+" vnoremap <C-j> :m '>+<CR>gv
+" Schlepp moves lines around
+vmap <C-j>    <Plug>SchleppUp
+vmap <C-k>    <Plug>SchleppDown
+vmap <C-h>    <Plug>SchleppLeft
+vmap <C-l>    <Plug>SchleppRight
 
+vmap <up>     <Plug>SchleppUp
+vmap <down>   <Plug>SchleppDown
+vmap <left>   <Plug>SchleppLeft
+vmap <right>  <Plug>SchleppRight
+
+vmap <S-up>   <Plug>SchleppIndentUp
+vmap <S-down> <Plug>SchleppIndentDown
+
+"=====[ Make jump-selections work better in visual block mode ]=================
+
+xnoremap <expr>  G   'G' . virtcol('.') . "\|"
+xnoremap <expr>  }   '}' . virtcol('.') . "\|"
+xnoremap <expr>  {   '{' . virtcol('.') . "\|"
 
 " make visual selection dot-able
 vnoremap . :norm. &lt;CR&lt;
@@ -854,6 +897,33 @@ inoremap ,= <C-x><C-l><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>" : ",=
 " }}}
 " }}}
 " Functions {{{
+nmap ; :%s//g<LEFT><LEFT>
+xmap ; :s//g<LEFT><LEFT>
+" Undo window {{{
+nnoremap <silent> <C-w><C-c> :call <SID>QuickSaveSession()<CR><C-w>c
+nnoremap <silent> <C-w><C-q> :call <SID>QuickSaveSession()<CR><C-w><C-q>
+nnoremap <silent> <C-w>c     :call <SID>QuickSaveSession()<CR><C-w>c
+nnoremap <silent> <C-w>q     :call <SID>QuickSaveSession()<CR><C-w>q
+nnoremap <silent> <C-w><C-a> :call <SID>QuickLoadSession()<CR>
+nnoremap <silent> <C-w>a     :call <SID>QuickLoadSession()<CR>
+
+function! s:QuickSaveSession()
+    if !exists(':pid')
+        let s:pid = getpid()
+    endif
+    call system('mkdir /tmp/$USER')
+    execute  'mksession! /tmp/$USER/lastwin'.s:pid.'.vim'
+endfunction
+
+function! s:QuickLoadSession()
+    if !exists(':pid')
+        let s:pid = getpid()
+    endif
+    execute  'source /tmp/$USER/lastwin'.s:pid.'.vim'
+endfunction
+
+" }}}
+"  }
 " Visual Selection tool {{{
 function! VisualSelection(direction, extra_filter) range
     let l:saved_reg = @"
@@ -1153,6 +1223,43 @@ endfunction
 
 autocmd! FileType GV nnoremap <buffer> <silent> + :call <sid>gv_expand()<cr>
 " }}}
+" }}}
+" Search {{{
+ "=====[ Completion during search (via Command window) ]======================
+
+function! s:search_mode_start()
+    cnoremap <tab> <c-f>:resize 1<CR>a<c-n>
+    let s:old_complete_opt = &completeopt
+    let s:old_last_status = &laststatus
+    set completeopt-=noinsert
+    set laststatus=0
+endfunction
+
+function! s:search_mode_stop()
+    try
+        silent cunmap <tab>
+    catch
+    finally
+        let &completeopt = s:old_complete_opt
+        let &laststatus  = s:old_last_status
+    endtry
+endfunction
+
+augroup SearchCompletions
+    autocmd!
+    autocmd CmdlineEnter [/\?] call <SID>search_mode_start()
+    autocmd CmdlineLeave [/\?] call <SID>search_mode_stop()
+augroup END
+
+
+"=====[ Make multi-selection incremental search prettier ]======================
+
+" augroup SearchIncremental
+"     autocmd!
+"     autocmd CmdlineEnter [/\?]   highlight  Search  ctermfg=DarkRed   ctermbg=Black cterm=NONE
+"     autocmd CmdlineLeave [/\?]   highlight  Search  ctermfg=White ctermbg=Black cterm=bold
+" augroup END
+
 " }}}
 " Netrw {{{
 " Hit enter in the file browser to open the selected
