@@ -206,7 +206,6 @@ set $inactive-bg-color   #2f343f
 set $text-color          #f3f4f5
 set $inactive-text-color #676E7D
 set $urgent-bg-color     #E53935
-
 # window colors
 #                       border              background         text                 indicator
 #client.focused          $bg-color           $bg-color          $text-color          #00ff00
@@ -224,14 +223,16 @@ set $urgent-bg-color     #E53935
 # it fails to get colors from Xresources for some reason.
 set_from_resource $fg i3wm.color7 #f0f0f0
 set_from_resource $bg i3wm.color2 #f0f0f0
+# set $tb                           #cc222222
+set $tb                           #ffdab922
 
 # class                     border  backgr. text indicator child_border
-client.focused              $bg     $bg     $fg  $bg       $bg
-client.focused_inactive     $bg     $bg     $fg  $bg       $bg
-client.unfocused            $bg     $bg     $fg  $bg       $bg
-client.urgent               $bg     $bg     $fg  $bg       $bg
-client.placeholder          $bg     $bg     $fg  $bg       $bg
-client.background           $bg
+client.focused              $tb     $tb     $fg  $bg       $tb
+client.focused_inactive     $tb     $tb     $fg  $bg       $tb
+client.unfocused            $tb     $tb     $fg  $bg       $tb
+client.urgent               $tb     $tb     $fg  $bg       $tb
+client.placeholder          $tb     $tb     $fg  $bg       $tb
+client.background           $tb
 
 
 # Media Keys
@@ -265,6 +266,7 @@ for_window [class=".*"] title_format "<span font='Artwiz Lime 0'> > %title</span
 for_window [class="^.*"] border pixel 0
 for_window [floating] border pixel 10
 for_window [tiling] border pixel 0
+for_window [class="kitty"] border pixel 20
 
 
 # Gaps
