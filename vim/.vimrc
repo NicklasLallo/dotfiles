@@ -1,6 +1,12 @@
 " Plugins {{{
 let mapleader=","       " leader is comma instead of \
 " Plug {{{
+" Install vim-plug if missing
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 call plug#begin('~/.vim/plugged')
 " Which-key similar to spacemacs
 Plug 'liuchengxu/vim-which-key'
@@ -50,6 +56,7 @@ Plug 'wellle/targets.vim'
 
 
 " Colorthemes
+Plug 'rakr/vim-one'
 Plug 'nightsense/carbonized'
 Plug 'crusoexia/vim-dream'
 Plug 'yuttie/hydrangea-vim'
@@ -145,6 +152,10 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 " highlight file icons with different colors
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
+if has('nvim')
+    Plug 'kassio/neoterm'
+endif
+
 call plug#end()
 " }}}
 " Vim Fugitive {{{
@@ -230,8 +241,12 @@ let g:airline#extensions#ale#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 " let g:airline#extensions#tabline#formatter = 'unique_tail'
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#left_sep = ''
+let g:airline#extensions#tabline#left_alt_sep = ''
+if has('gui_running')
+    let g:airline_right_sep = '' " kitty needs a space after any extra wide symbol to show it correctly, so this is the temporary solution until I feel like switchign terminal to something like alacritty.
+endif
+let g:airline_left_sep= ' ' " Seems to always be a space after the left sep
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#show_buffers = 0
 
@@ -773,7 +788,7 @@ nnoremap gV `[V`]
 " Yank to end of line (default Y=yy)
 nnoremap Y y$
 " edit this file
-nnoremap <silent> <leader>ev :tabedit $MYVIMRC<CR>
+nnoremap <silent> <leader>ev :tabedit ~/.vimrc<CR>
 " source this file after edits
 nnoremap <silent> <leader>sv :so $MYVIMRC<CR>
 " edit the .zshrc file
@@ -908,7 +923,7 @@ nnoremap <silent> <C-w><C-a> :call <SID>QuickLoadSession()<CR>
 nnoremap <silent> <C-w>a     :call <SID>QuickLoadSession()<CR>
 
 function! s:QuickSaveSession()
-    if !exists(':pid')
+    if !exists('s:pid')
         let s:pid = getpid()
     endif
     call system('mkdir /tmp/$USER')
@@ -916,7 +931,7 @@ function! s:QuickSaveSession()
 endfunction
 
 function! s:QuickLoadSession()
-    if !exists(':pid')
+    if !exists('s:pid')
         let s:pid = getpid()
     endif
     execute  'source /tmp/$USER/lastwin'.s:pid.'.vim'
@@ -1186,12 +1201,13 @@ let g:limelight_priority = -1
 
 function! s:goyo_enter()
   if has('gui_running')
-    set fullscreen
+    " set fullscreen
     set background=light
     set linespace=7
   elseif exists('$TMUX')
     silent !tmux set status off
   endif
+  set cursorline! 
   Limelight
   let &l:statusline = '%M'
   hi StatusLine ctermfg=red guifg=red cterm=NONE gui=NONE
@@ -1199,12 +1215,13 @@ endfunction
 
 function! s:goyo_leave()
   if has('gui_running')
-    set nofullscreen
+    " set nofullscreen
     set background=dark
     set linespace=0
   elseif exists('$TMUX')
     silent !tmux set status on
   endif
+  set cursorline! 
   Limelight!
 endfunction
 
@@ -1524,6 +1541,30 @@ endfunction
 "python3 powerline_setup()
 "python3 del powerline_setup
 
+" }}}
+" Neovim {{{
+if has('nvim')
+    set emoji
+    let g:use_cursor_shapes = 1
+    tnoremap <Esc> <C-\><C-n>
+    tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
+
+    tnoremap <A-h> <C-\><C-N><C-w>h
+    tnoremap <A-j> <C-\><C-N><C-w>j
+    tnoremap <A-k> <C-\><C-N><C-w>k
+    tnoremap <A-l> <C-\><C-N><C-w>l
+
+    inoremap <A-h> <C-\><C-N><C-w>h
+    inoremap <A-j> <C-\><C-N><C-w>j
+    inoremap <A-k> <C-\><C-N><C-w>k
+    inoremap <A-l> <C-\><C-N><C-w>l
+
+    nnoremap <A-h> <C-w>h
+    nnoremap <A-j> <C-w>j
+    nnoremap <A-k> <C-w>k
+    nnoremap <A-l> <C-w>l
+    nnoremap <silent> <leader>o :vertical botright Ttoggle<CR><C-w>l
+endif
 " }}}
 " Modelines
 " vim:foldmethod=marker:foldlevel=0

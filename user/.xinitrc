@@ -47,5 +47,6 @@ fi
 # exec xterm -geometry 80x66+0+0 -name login
 # exec i3 &
 setxkbmap -layout se
+setxkbmap -option caps:escape &
 # Add this to your .xinitrc or whatever file starts programs on startup.
 wal -i "$(< "${HOME}/.cache/wal/wal")"
