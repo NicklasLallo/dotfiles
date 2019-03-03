@@ -673,6 +673,9 @@ match ExtraWhitespace /\s\+\%#\@<!$\| \+\ze\t/
 " (uBB is right double angle, uB7 is middle dot)
 set listchars=tab:»·,trail:␣,nbsp:˷
 
+
+au BufWinEnter * let w:m2=matchadd('ColorColumn','\%>100v.\+', -1)
+
 " }}}
  " Basic Settings {{{
 syntax enable         " enables syntax highlighting
