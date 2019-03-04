@@ -67,10 +67,10 @@ bindsym $mod+c exec rofi -show run -lines 6 -separator-style solid -font "misc t
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # change focus
-#bindsym $mod+j focus left
-#bindsym $mod+k focus down
-#bindsym $mod+l focus up
-#bindsym $mod+semicolon focus right
+bindsym $mod+Mod1+h focus left
+bindsym $mod+Mod1+j focus down
+bindsym $mod+Mod1+k focus up
+bindsym $mod+Mod1+l focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
