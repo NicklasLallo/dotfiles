@@ -54,3 +54,15 @@ Thumbs.db
 .netrwhist
 *.tmp
 *.env
+
+# Generated files #
+###################
+powerline/.local/share/fonts/.uuid
+theme/.themes/wal/
+
+
+#  Other Plugins  #
+###################
+vim/.vim/autoload/
+vim/.vim/plugged/
+
