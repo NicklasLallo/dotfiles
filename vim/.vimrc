@@ -1,5 +1,8 @@
 " Plugins {{{
 let mapleader=","       " leader is comma instead of \
+" Optional built in package
+" packadd! matchit " Enhances % jumping.
+" packadd! cfilter " Allows filtering of the quickfix/location list, Ex: :Cfilter[!] /{pat}/
 " Plug {{{
 " Install vim-plug if missing
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -56,22 +59,41 @@ Plug 'wellle/targets.vim'
 
 
 " Colorthemes
-Plug 'rakr/vim-one'
-Plug 'nightsense/carbonized'
-Plug 'crusoexia/vim-dream'
-Plug 'yuttie/hydrangea-vim'
-Plug 'tomasr/molokai'
+Plug 'AlessandroYorba/Alduin'
+Plug 'AlessandroYorba/Despacio'
+Plug 'AlessandroYorba/Sierra'
+Plug 'KKPMW/sacredforest-vim', {'as': 'sacredforest'}
+Plug 'KabbAmine/yowish.vim', {'as': 'yowish'}
+Plug 'Nequo/vim-allomancer', {'as': 'allomancer'}
 Plug 'Zabanaa/neuromancer.vim'
 Plug 'altercation/vim-colors-solarized'
-Plug 'morhetz/gruvbox'
-Plug 'nightsense/stellarized'
 Plug 'arcticicestudio/nord-vim'
-Plug 'nightsense/snow'
-Plug 'w0ng/vim-hybrid'
-Plug 'cocopon/iceberg.vim'
-Plug 'AlessandroYorba/Despacio'
-Plug 'tyrannicaltoucan/vim-deep-space'
+Plug 'caksoylar/vim-mysticaltutor', {'as': 'mystical-tutor'}
+Plug 'challenger-deep-theme/vim', {'as': 'challenger-deep'}
 Plug 'chriskempson/vim-tomorrow-theme'
+Plug 'cocopon/iceberg.vim'
+Plug 'crusoexia/vim-dream'
+Plug 'dracula/vim', {'as': 'dracula'}
+Plug 'fcpg/vim-fahrenheit'
+Plug 'jacoborus/tender.vim', {'as': 'tender'}
+Plug 'morhetz/gruvbox'
+Plug 'nightsense/carbonized'
+Plug 'nightsense/cosmic_latte'
+Plug 'nightsense/snow'
+Plug 'nightsense/seabird'
+Plug 'nightsense/stellarized'
+Plug 'patstockwell/vim-monokai-tasty', {'as': 'monokai-tasty'}
+Plug 'rakr/vim-one'
+Plug 'rakr/vim-two-firewatch', {'as': 'two-firewatch'}
+Plug 'romainl/Apprentice'
+Plug 'sonph/onehalf'
+Plug 'srcery-colors/srcery-vim', {'as': 'srcery'}
+Plug 'tlhr/anderson.vim', {'as': 'Wes anderson'}
+Plug 'tomasr/molokai'
+Plug 'tpope/vim-vividchalk', {'as': 'vividchalk'}
+Plug 'tyrannicaltoucan/vim-deep-space'
+Plug 'w0ng/vim-hybrid'
+Plug 'yuttie/hydrangea-vim'
 
 " wal for colors
 Plug 'dylanaraps/wal'
@@ -98,6 +120,7 @@ Plug 'vim-scripts/ReplaceWithRegister'   " [\"x]gr{motion}
 Plug 'AndrewRadev/splitjoin.vim'         " gS (split) & gJ (join)
 Plug 'AndrewRadev/switch.vim'            " gs (switch, ex: true->false, '&&'->'||')
 Plug 'zirrostig/vim-schlepp'             " move visual selections around
+Plug 'google/vim-searchindex'            " prints 'At match #N out of M matches' after any search.
 
 " if exists('##TextYankPost')
 Plug 'machakann/vim-highlightedyank'
@@ -152,6 +175,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 " highlight file icons with different colors
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
+Plug 'ryanoasis/vim-devicons'
 if has('nvim')
     Plug 'kassio/neoterm'
 endif
@@ -311,6 +335,8 @@ autocmd! FileType fzf
 autocmd  FileType fzf set laststatus=0 noshowmode noruler
   \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 
+" Make fzf use the colors of the current vim colorscheme instead of any default
+" colors used in the terminal colorscheme
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
   \ 'bg':      ['bg', 'Normal'],
@@ -344,14 +370,14 @@ function! FZFOpen(command_str)
   exe 'normal! ' . a:command_str . "\<cr>"
 endfunction
 
-
-nnoremap <silent> <C-b> :call FZFOpen(':Buffers')<CR>
-nnoremap <silent> <C-g>g :call FZFOpen(':Ag')<CR>
 nnoremap <silent> <leader>a :call FZFOpen(':Ag')<CR>
 nnoremap <silent> <leader>g :call FZFOpen(':Tags')<CR>
+
+nnoremap <silent> <C-g>g :call FZFOpen(':Ag')<CR>
 nnoremap <silent> <C-g>c :call FZFOpen(':Commands')<CR>
 nnoremap <silent> <C-g>l :call FZFOpen(':BLines')<CR>
-nnoremap <silent> <C-a-p> :call FZFOpen(':Files')<CR>
+
+nnoremap <silent> <C-b> :call FZFOpen(':Buffers')<CR>
 nnoremap <silent> <C-f> :call FZFOpen(':Files')<CR>
 nnoremap <silent> <C-h> :call FZFOpen(':History')<CR>
 " nnoremap <silent> <C-p> :call FZFOpen(':call Fzf_dev()')<CR>
@@ -360,6 +386,8 @@ imap <c-x><c-k> <plug>(fzf-complete-word)
 imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 imap <c-x><c-l> <plug>(fzf-complete-line)
+inoremap <c-l> <C-x><C-l>
+
 
 " }}}
 " NERDTree {{{
@@ -397,6 +425,7 @@ augroup END
 " set where swap file and undo/backup files are saved
 set backupdir=~/.vim/tmp,.
 set directory=~/.vim/tmp,.
+set dictionary=/.vim/dict
 
 if has("persistent_undo")
     set undodir=~/.undodir/
@@ -591,6 +620,9 @@ nnoremap <Leader>j :cnext<CR>
 nnoremap <Leader>k :cprevious<CR>
 
 " }}}
+" ALE {{{
+
+" }}}
 " Other {{{
 let g:no_plugins = 'false'
 " Multi cursor
@@ -609,6 +641,11 @@ let g:signify_skip_filetype = { 'journal': 1 }
 " let g:signify_sign_add          = '│'
 " let g:signify_sign_change       = '│'
 " let g:signify_sign_changedelete = '│'
+"
+"
+" Disable IndentLine in json files (or change the default syntax file for json
+" to not use 'conceal' on quotation marks
+autocmd Filetype json :IndentLinesDisable
 "}}}
 
 " Enable the fuzzy finder fzf
@@ -668,6 +705,8 @@ match ExtraWhitespace /\s\+\%#\@<!$\| \+\ze\t/
 ":autocmd BufWinEnter * match ExtraWhitespace /^\s* \s*\|\s\+$/
 " autocmd BufWinLeave * call clearmatches()
 
+" automatically resize windows when vim is resized
+autocmd VimResized * wincmd =
 "Another way to find trailing whitespace, I toggle in lintmode
 "set list                " needed for listchars
 " (uBB is right double angle, uB7 is middle dot)
@@ -680,6 +719,8 @@ au BufWinEnter * let w:m2=matchadd('ColorColumn','\%>100v.\+', -1)
  " Basic Settings {{{
 syntax enable         " enables syntax highlighting
 set guioptions=
+" Always increment as base 10 (<C-a> & <C-x>)
+set nrformats=
 "set termguicolors
 "set shell="/bin/zsh"
 "set shellredir=">%s 2>&1"
@@ -708,8 +749,10 @@ set showmatch         " highlight matching {[()]}
 set incsearch         " display search results while writing
 set hlsearch          " high light search results
 set ignorecase        " ignore case when searching
+set infercase         " smart case when using insert mode completion (:h ins-completion)
 set smartcase         " ignore case if search pattern is all lowercase, otherwise case-sensitive
 set wrapscan          " wrap the searches around the document (/ ?)
+set timeoutlen=300    " fast fingers with multi key mappings, (default 1000)
 set ttyfast           " faster redraws
 set history=1000      " save a much longer history (default 50) of commands and searches
 set undolevels=1000   " save more levels of undo
@@ -781,9 +824,25 @@ let &t_ut=''
 " }}}
 " Keybindings {{{
 " nnoremap {{{
+" use 'normal' regex instead of vim 'magic' regex.
+" Not a huge difference. see :h magic
+nnoremap / /\v
+vnoremap / /\v
+" Perhaps I'm crazy
+" They still work in visual mode now
+nnoremap <up> <nop>
+nnoremap <down> <nop>
+nnoremap <left> <nop>
+nnoremap <right> <nop>
 " Extend previous match with new search
 nnoremap //   /<C-R>/
 nnoremap ///  /<C-R>/\<BAR>
+" <tab> is by default the same as <C-I> (opposite of <C-O>).
+" I don't need double shortcuts for that.
+" Some terminals can't send <tab> but always send <C-I> in which
+" case this shouldn't do anything at all.
+nnoremap <tab> %
+vnoremap <tab> %
 " space open/closes folds
 nnoremap <space> za
 " visualy select last inserted text
@@ -803,8 +862,9 @@ nnoremap <leader><space> :nohlsearch<CR>
 " `gf` opens file under cursor in new vertical split
 nnoremap gf :vertical wincmd f<CR>
 " move visual lines instead of real lines, less confusing together with wraping lines
-nnoremap j gj
-nnoremap k gk
+" j&k still work like normal when preceeded with a count, and any movement larger than 5 goes to the jumplist.
+nnoremap <expr> j v:count ? (v:count > 5 ? "m'" . v:count : '') . 'j' : 'gj'
+nnoremap <expr> k v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk'
 " move to beggining and end of line with capital B/E, overrides.
 " Normaly B & E functions almost identically to the more used b & e (or w) anyways, so overriding is fine
 nnoremap B ^
@@ -815,7 +875,13 @@ nnoremap E $
 nnoremap <C-d> <C-]>
 " Go back <C-t>
 
+" Scroll faster.
+nnoremap <C-e> 2<C-e>
+nnoremap <C-y> 2<C-y>
 
+
+nmap ; :%s//g<LEFT><LEFT>
+xmap ; :s//g<LEFT><LEFT>
 " Super Save, save all windows as a session, reopen with vim -S (vim/gvim/nvim -S)
 nnoremap <leader>s :mksession<CR>
 " Fast Saving
@@ -886,6 +952,9 @@ vmap <right>  <Plug>SchleppRight
 vmap <S-up>   <Plug>SchleppIndentUp
 vmap <S-down> <Plug>SchleppIndentDown
 
+" make the dot operator work on each line of visual selections
+xnoremap . :norm.<CR>
+
 "=====[ Make jump-selections work better in visual block mode ]=================
 
 xnoremap <expr>  G   'G' . virtcol('.') . "\|"
@@ -941,7 +1010,15 @@ function! s:QuickLoadSession()
 endfunction
 
 " }}}
-"  }
+" Change Register Content {{{
+function! ChangeReg() abort
+    let r = nr2char(getchar())
+    if r =~# '[a-zA-Z0-9"@\-:.%#=*"~_/]'
+        call feedkeys("q:ilet @" . r . " = \<C-r>\<C-r>=string(@" . r . ")\<CR>\<ESC>", 'n')
+    endif
+endfunction
+nnoremap <silent> cr :call ChangeReg()<CR>
+" }}}
 " Visual Selection tool {{{
 function! VisualSelection(direction, extra_filter) range
     let l:saved_reg = @"
@@ -1088,6 +1165,26 @@ endfunction
 command! A call s:a('e')
 command! AV call s:a('botright vertical split')
 " }}}
+" :Danger gives 777 permission for active file {{{
+command! Danger if !empty(expand('%'))
+         \|   write
+         \|   call system('chmod 777 '.expand('%'))
+         \|   silent e
+         \| else
+         \|   echohl WarningMsg
+         \|   echo 'Save the file first'
+         \|   echohl None
+         \| endif
+" :Share gives +w permission to group for active file {{{
+command! Share if !empty(expand('%'))
+         \|   write
+         \|   call system('chmod +gw '.expand('%'))
+         \|   silent e
+         \| else
+         \|   echohl WarningMsg
+         \|   echo 'Save the file first'
+         \|   echohl None
+         \| endif
 " :EX gives +x permission to active file {{{
 command! EX if !empty(expand('%'))
          \|   write
@@ -1271,6 +1368,13 @@ augroup SearchCompletions
     autocmd CmdlineLeave [/\?] call <SID>search_mode_stop()
 augroup END
 
+if has('patch-8.0.1206')
+    augroup SearchCompletions
+        autocmd!
+        autocmd CmdlineEnter [/\?] call <SID>search_mode_start()
+        autocmd CmdlineLeave [/\?] call <SID>search_mode_stop()
+    augroup END
+endif
 
 "=====[ Make multi-selection incremental search prettier ]======================
 
@@ -1552,6 +1656,7 @@ if has('nvim')
     " let g:fzf_layout = { 'window': '-tabnew' }
     " let g:fzf_layout = { 'window': '10split' }
     set emoji
+    set inccommand=nosplit
     let g:use_cursor_shapes = 1
     tnoremap <C-n> <C-\><C-n>
     tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'

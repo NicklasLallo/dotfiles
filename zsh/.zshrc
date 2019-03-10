@@ -5,7 +5,7 @@
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="robbyrussell"
+ZSH_THEME="spaceship"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -69,9 +69,9 @@ source $ZSH/oh-my-zsh.sh
 
 
 
-if [[ -r /usr/lib/python3.6/site-packages/powerline/bindings/zsh/powerline.zsh ]]; then
-    source /usr/lib/python3.6/site-packages/powerline/bindings/zsh/powerline.zsh
-fi
+# if [[ -r /usr/lib/python3.6/site-packages/powerline/bindings/zsh/powerline.zsh ]]; then
+#     source /usr/lib/python3.6/site-packages/powerline/bindings/zsh/powerline.zsh
+# fi
 
 export PATH=/opt/cuda/bin${PATH:+:${PATH}}
 export CUDA_HOME=/opt/cuda${CUDA_HOME:+:${CUDA_HOME}}
@@ -163,13 +163,181 @@ bindkey '\eg' _git-status
 alias gs="git status"
 alias gb="git branchs"
 alias cdd="cd ~/dotfiles"
-alias Control-F='vim $(fzf --height 50% --border --preview "pygmentize -g -O style=monokai {}")'
+alias Ctrl-f='vim $(fzf --height 50% --border --preview "pygmentize -g -O style=monokai {}")'
 
 function f_widget {
     zle kill-whole-line
     # zle -U "git status"
-    BUFFER='Control-F'
+    BUFFER='Ctrl-f'
     zle accept-line
 }
 zle -N f_widget
 bindkey '^F' f_widget
+
+# fuzzy grep open via ag with line number
+vg() {
+  local file
+  local line
+
+  read -r file line <<<"$(ag --nobreak --noheading $@ | fzf -0 -1 | awk -F: '{print $1, $2}')"
+
+  if [[ -n $file ]]
+  then
+     vim $file +$line
+  fi
+}
+
+# cdf - cd into the directory of the selected file
+cdf() {
+   local file
+   local dir
+   file=$(fzf +m -q "$1") && dir=$(dirname "$file") && cd "$dir"
+}
+
+# fkill - kill processes - list only the ones you can kill. Modified the earlier script.
+fkill() {
+    local pid 
+    if [ "$UID" != "0" ]; then
+        pid=$(ps -f -u $UID | sed 1d | fzf -m | awk '{print $2}')
+    else
+        pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+    fi  
+
+    if [ "x$pid" != "x" ]
+    then
+        echo $pid | xargs kill -${1:-9}
+    fi  
+}
+
+cdscuts_list_echo() {
+    # cat $1 | sed 's/#.*//g' | sed '/^\s*$/d'
+    cat $1 | sed '/^\s*$/d' 
+    # Same as above but includes the comments for the search
+}
+
+cdscuts_glob_echo() {
+    local user_filelist
+    user_filelist=''
+    if [ -r ~/.cdg_paths ]; then
+        user_filelist=$(cdscuts_list_echo ~/.cdg_paths)
+    fi
+    echo -e "$user_filelist" | sed '/^\s*$/d'
+}
+# Setup cdg function
+# cd to a bookmark, bookmarks are stored in ~./cdg_paths
+# unalias cdb 2> /dev/null
+cdb() {
+   local dest_dir="$(cdscuts_glob_echo | fzf )"
+   if [[ $dest_dir != '' ]]; then
+       cd $(echo "$dest_dir" | sed 's/#.*//g')
+   fi
+}
+# export cdb > /dev/null
+# Add current directory to bookmarks
+bm() {
+    local curr_dir="${PWD} # $*"
+    if ! grep -Fxq "$curr_dir" ~/.cdg_paths; then
+        echo "$curr_dir" >> ~/.cdg_paths
+    fi
+}
+alias bookmark='bm'
+# fshow - git commit browser (enter for show, ctrl-d for diff, ` toggles sort)
+fshow() {
+  local out shas sha q k
+  while out=$(
+      git log --graph --color=always \
+          --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |
+      fzf --ansi --multi --no-sort --reverse --query="$q" \
+          --print-query --expect=ctrl-d --toggle-sort=\`); do
+    q=$(head -1 <<< "$out")
+    k=$(head -2 <<< "$out" | tail -1)
+    shas=$(sed '1,2d;s/^[^a-z0-9]*//;/^$/d' <<< "$out" | awk '{print $1}')
+    [ -z "$shas" ] && continue
+    if [ "$k" = ctrl-d ]; then
+      git diff --color=always $shas | less -R
+    else
+      for sha in $shas; do
+        git show --color=always $sha | less -R
+      done
+    fi
+  done
+}
+
+# fzf Git commands.
+# CTRL-G CTRL-F for files
+# CTRL-G CTRL-B for branches
+# CTRL-G CTRL-T for tags
+# CTRL-G CTRL-R for remotes
+# CTRL-G CTRL-H for commit hashes
+# Will return non-zero status if the current directory is not managed by git
+is_in_git_repo() {
+  git rev-parse HEAD > /dev/null 2>&1
+}
+
+fzf-down() {
+  fzf --height 50% "$@" --border
+}
+
+fzf_gf() {
+  is_in_git_repo || return
+  git -c color.status=always status --short |
+  fzf-down -m --ansi --nth 2..,.. \
+    --preview '(git diff --color=always -- {-1} | sed 1,4d; cat {-1}) | head -500' |
+  cut -c4- | sed 's/.* -> //'
+}
+
+fzf_gb() {
+  is_in_git_repo || return
+  git branch -a --color=always | grep -v '/HEAD\s' | sort |
+  fzf-down --ansi --multi --tac --preview-window right:70% \
+    --preview 'git log --oneline --graph --date=short --pretty="format:%C(auto)%cd %h%d %s" $(sed s/^..// <<< {} | cut -d" " -f1) | head -'$LINES |
+  sed 's/^..//' | cut -d' ' -f1 |
+  sed 's#^remotes/##'
+}
+
+fzf_gt() {
+  is_in_git_repo || return
+  git tag --sort -version:refname |
+  fzf-down --multi --preview-window right:70% \
+    --preview 'git show --color=always {} | head -'$LINES
+}
+
+fzf_gh() {
+  is_in_git_repo || return
+  git log --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --graph --color=always |
+  fzf-down --ansi --no-sort --reverse --multi --bind 'ctrl-s:toggle-sort' \
+    --header 'Press CTRL-S to toggle sort' \
+    --preview 'grep -o "[a-f0-9]\{7,\}" <<< {} | head -1 | xargs git show --color=always | head -'$LINES |
+  grep -o "[a-f0-9]\{7,\}" | head -1
+}
+
+fzf_gr() {
+  is_in_git_repo || return
+  git remote -v | awk '{print $1 "\t" $2}' | uniq |
+  fzf-down --tac \
+    --preview 'git log --oneline --graph --date=short --pretty="format:%C(auto)%cd %h%d %s" --remote={1} | head -200' |
+  cut -d$'\t' -f1
+}
+
+join-lines() {
+  local item
+  while read item; do
+    echo -n "${(q)item} "
+  done
+}
+
+bind-git-helper() {
+  local c
+  for c in $@; do
+    eval "fzf-g$c-widget() { local result=\$(fzf_g$c | join-lines); zle reset-prompt; LBUFFER+=\$result }"
+    eval "zle -N fzf-g$c-widget"
+    eval "bindkey '^g^$c' fzf-g$c-widget"
+  done
+}
+bind-git-helper f b t r h
+unset -f bind-git-helper
+
+
+
+
+export LESS="-M -I -R"

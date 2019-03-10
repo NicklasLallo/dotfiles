@@ -466,7 +466,7 @@ exec = ~/.config/polybar/tempcores.sh
 [module/redshift]
 format-padding = ${const.format-padding}
 type = custom/script
-interval = 3.0
+interval = 2.0
 ;click-left = pkill -USR1 redshift
 click-left = pgrep redshift &> /dev/null || redshift &> /dev/null &
 click-right = pkill redshift

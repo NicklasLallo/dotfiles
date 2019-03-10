@@ -67,6 +67,10 @@ bindsym $mod+c exec rofi -show run -lines 6 -separator-style solid -font "misc t
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # change focus
+#bindsym $mod+j focus left
+#bindsym $mod+k focus down
+#bindsym $mod+l focus up
+#bindsym $mod+semicolon focus right
 bindsym $mod+Mod1+h focus left
 bindsym $mod+Mod1+j focus down
 bindsym $mod+Mod1+k focus up
@@ -286,13 +290,13 @@ smart_borders on
 
 
 #set workspace names
-set $workspace1 "" 
-set $workspace2 "🎶" 
-# set $workspace2 "⛧" 
-set $workspace3 "" 
-set $workspace4 "☥" 
-set $workspace5 "☕" 
-set $workspace6 "⚛" 
+set $workspace1 ""
+set $workspace2 "🎶"
+# set $workspace2 "⛧"
+set $workspace3 ""
+set $workspace4 "☥"
+set $workspace5 "☕"
+set $workspace6 "⚛"
 set $workspace7 "🐱"
 set $workspace8 ""
 
@@ -347,6 +351,11 @@ hide_edge_borders both
 # exec --no-startup-id redshift-gtk
 # Start Polybar (instead of i3bar)
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+# exec_always --no-startup-id kitty polybar -c ${HOME}/.config/polybar/config2 centerLeft -l warning
+# exec_always --no-startup-id kitty polybar -c ${HOME}/.config/polybar/config2 centerMiddle -l warning
+# exec_always --no-startup-id kitty polybar -c ${HOME}/.config/polybar/config2 centerRight -l warning
+# exec_always --no-startup-id kitty polybar -c ${HOME}/.config/polybar/config2 rightLeft -l warning
+# exec_always --no-startup-id kitty polybar -c ${HOME}/.config/polybar/config2 rightRight -l warning
 
 # Add this to your .xinitrc or whatever file starts programs on startup.
 exec --no-startup-id $HOME/.local/bin/wal -i "$(< "${HOME}/.cache/wal/wal")"
@@ -366,8 +375,8 @@ exec --no-startup-id compton --config ~/.config/compton.conf
 exec xrdb ~/.Xresources
 # exec feh --bg-scale ~/wallpapers/MpA1ygh.jpg
 exec setxkbmap -layout se
-exec --no-startup-id i3-msg 'workspace ; exec google-chrome-stable' 
-exec --no-startup-id i3-msg 'workspace 🎶; exec spotify' 
-# exec --no-startup-id i3-msg 'workspace ☕; exec discord' 
+exec --no-startup-id i3-msg 'workspace ; exec google-chrome-stable'
+exec --no-startup-id i3-msg 'workspace 🎶; exec spotify'
+# exec --no-startup-id i3-msg 'workspace ☕; exec discord'
 # exec --no-startup-id i3-msg 'workspace ☕; exec urxvt -e weechat'
 
