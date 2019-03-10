@@ -65,4 +65,6 @@ theme/.themes/wal/
 ###################
 vim/.vim/autoload/
 vim/.vim/plugged/
-
+cripts/terminfo-24bit.src
+scripts/terminal-colors.py
+scripts/print256colours.sh
