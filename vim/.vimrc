@@ -11,6 +11,12 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 call plug#begin('~/.vim/plugged')
+
+Plug 'markonm/traces.vim'
+
+" Go
+Plug 'fatih/vim-go'
+
 " Which-key similar to spacemacs
 Plug 'liuchengxu/vim-which-key'
 Plug 'PotatoesMaster/i3-vim-syntax'
@@ -73,14 +79,16 @@ Plug 'challenger-deep-theme/vim', {'as': 'challenger-deep'}
 Plug 'chriskempson/vim-tomorrow-theme'
 Plug 'cocopon/iceberg.vim'
 Plug 'crusoexia/vim-dream'
+Plug 'dikiaap/minimalist'
 Plug 'dracula/vim', {'as': 'dracula'}
+Plug 'drewtempelmeyer/palenight.vim', {'as': 'palenight'}
 Plug 'fcpg/vim-fahrenheit'
 Plug 'jacoborus/tender.vim', {'as': 'tender'}
 Plug 'morhetz/gruvbox'
 Plug 'nightsense/carbonized'
 Plug 'nightsense/cosmic_latte'
-Plug 'nightsense/snow'
 Plug 'nightsense/seabird'
+Plug 'nightsense/snow'
 Plug 'nightsense/stellarized'
 Plug 'patstockwell/vim-monokai-tasty', {'as': 'monokai-tasty'}
 Plug 'rakr/vim-one'
@@ -485,12 +493,12 @@ if has('cscope')
     "  a: Find places where this symbol is assigned a value
 
     nmap <C-c>s :cs find s <C-R>=expand("<cword>")<CR><CR>
-    nmap <F2> :cs find s <C-R>=expand("<cword>")<CR><CR>
+    " nmap <F2> :cs find s <C-R>=expand("<cword>")<CR><CR>
     nmap <C-c>g :cs find g <C-R>=expand("<cword>")<CR><CR>
-    nmap <F3> :cs find g <C-R>=expand("<cword>")<CR><CR>
+    " nmap <F3> :cs find g <C-R>=expand("<cword>")<CR><CR>
     nmap <C-c>d :cs find d <C-R>=expand("<cword>")<CR><CR>
     nmap <C-c>c :cs find c <C-R>=expand("<cword>")<CR><CR>
-    nmap <F4> :cs find c <C-R>=expand("<cword>")<CR><CR>
+    " nmap <F4> :cs find c <C-R>=expand("<cword>")<CR><CR>
     nmap <C-c>t :cs find t <C-R>=expand("<cword>")<CR><CR>
     nmap <C-c>e :cs find e <C-R>=expand("<cword>")<CR><CR>
     nmap <C-c>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
@@ -706,7 +714,7 @@ match ExtraWhitespace /\s\+\%#\@<!$\| \+\ze\t/
 " autocmd BufWinLeave * call clearmatches()
 
 " automatically resize windows when vim is resized
-autocmd VimResized * wincmd =
+" autocmd VimResized * wincmd =
 "Another way to find trailing whitespace, I toggle in lintmode
 "set list                " needed for listchars
 " (uBB is right double angle, uB7 is middle dot)
@@ -721,7 +729,7 @@ syntax enable         " enables syntax highlighting
 set guioptions=
 " Always increment as base 10 (<C-a> & <C-x>)
 set nrformats=
-"set termguicolors
+set termguicolors     " Doesn't work with all terminals but fixes a few colorschemes for the terminals that support it
 "set shell="/bin/zsh"
 "set shellredir=">%s 2>&1"
 "set shellpipe="2>&1| tee"
@@ -823,6 +831,31 @@ let &t_ut=''
 
 " }}}
 " Keybindings {{{
+" F-keys {{{
+
+nmap <F2> :cs find s <C-R>=expand("<cword>")<CR><CR>
+nmap <F3> :cs find g <C-R>=expand("<cword>")<CR><CR>
+nmap <F4> :cs find c <C-R>=expand("<cword>")<CR><CR>
+" Quick write session with F5
+map <F5> :mksession! ~/.vim_session<cr>
+" And load session with F6
+map <F6> :source ~/.vim_session<cr>
+" Fix indentation
+" map <F7> gg=G<C-o><C-o>
+" Toggle auto change directory
+" map <F8> :set autochdir! autochdir?<CR>
+nnoremap <silent> <F7> :call <SID>rotate_colors()<cr>
+
+
+" Unsure about this
+" Control-C Copy in visual mode
+vmap <C-C> y
+
+" Control-V Paste in insert and command mode
+" imap <C-V> <esc>pa
+" cmap <C-V> <C-r>0
+
+" }}}
 " nnoremap {{{
 " use 'normal' regex instead of vim 'magic' regex.
 " Not a huge difference. see :h magic
@@ -1138,7 +1171,7 @@ function! s:rotate_colors()
   redraw
   echo name
 endfunction
-nnoremap <silent> <F7> :call <SID>rotate_colors()<cr>
+" nnoremap <silent> <F7> :call <SID>rotate_colors()<cr>
 
 " }}}
 " :A opens corresponding header/source file for c projects {{{
@@ -1656,8 +1689,9 @@ if has('nvim')
     " let g:fzf_layout = { 'window': '-tabnew' }
     " let g:fzf_layout = { 'window': '10split' }
     set emoji
-    set inccommand=nosplit
+    " set inccommand=nosplit
     let g:use_cursor_shapes = 1
+
     tnoremap <C-n> <C-\><C-n>
     tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
 
@@ -1665,6 +1699,7 @@ if has('nvim')
     tnoremap <A-j> <C-\><C-N><C-w>j
     tnoremap <A-k> <C-\><C-N><C-w>k
     tnoremap <A-l> <C-\><C-N><C-w>l
+    tnoremap <C-w><C-w> <C-\><C-N><C-w><C-w>
 
     inoremap <A-h> <C-\><C-N><C-w>h
     inoremap <A-j> <C-\><C-N><C-w>j
@@ -1676,6 +1711,44 @@ if has('nvim')
     nnoremap <A-k> <C-w>k
     nnoremap <A-l> <C-w>l
     nnoremap <silent> <leader>o :vertical botright Ttoggle<CR><C-w>l
+" Nvim Functions {{{
+" Opens up a new buffer, either vertical or horizontal. Count can be used to
+" specify the number of visible columns or rows.
+fun! s:openBuffer(count, vertical)
+  let cmd = a:vertical ? 'vnew' : 'new'
+  let cmd = a:count ? a:count . cmd : cmd
+  exe cmd
+endf
+
+" Opens a new terminal buffer, but instead of doing so using 'enew' (same
+" window), it uses :vnew and :new instead. Usually, I want to open a new
+" terminal and not replace my current buffer.
+fun! s:openSplitTerm(args, count, vertical)
+  let direction = 1
+  call s:openBuffer(a:count, direction)
+  call s:openTerm(a:args)
+endf
+
+" Opens a new terminal buffer, but instead of doing so using split buffer, it
+" uses :tabnew instead.
+fun! s:openTabTerm(args)
+  exe 'tabnew'
+  call s:openTerm(a:args)
+endf
+
+" Open a new terminal in the active buffer, while defining default mappings
+" for this plugin.
+fun! s:openTerm(args)
+  exe 'terminal' a:args
+  exe 'startinsert'
+endf
+
+" }}}
+    command! -count -nargs=* Term call s:openSplitTerm(<q-args>, <count>, 0)
+    command! -count -nargs=* TermV call s:openSplitTerm(<q-args>, <count>, 1)
+
+
+
 endif
 " }}}
 " Modelines
