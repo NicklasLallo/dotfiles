@@ -7,6 +7,11 @@
 # time that oh-my-zsh is loaded.
 ZSH_THEME="spaceship"
 
+# Spaceship settings
+#
+local sepSymbol="❯"
+SPACESHIP_CHAR_SYMBOL="%F{red}${sepSymbol}%F{magenta}${sepSymbol}%F{cyan}${sepSymbol}%f "
+
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
@@ -126,6 +131,8 @@ python2.7 -c 'import sys, random, json; randnum = random.randint(0,99); response
 echo $showerthoughts | cowsay | lolcat
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export GOBIN="$HOME/go/bin"
+export GOPATH="$HOME/go"
 export FZF_DEFAULT_OPS="--extended"
 export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
