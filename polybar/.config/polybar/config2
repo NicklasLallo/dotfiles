@@ -40,7 +40,7 @@ line-height = 4
 line-size = 0
 
 radius = 0
-radius-top = 20 
+radius-top = 20
 radius-bottom = 0
 
 ;font-4 = FontAwesome:size=16;3
@@ -49,7 +49,7 @@ radius-bottom = 0
 ;font-2 = symbola:size=18;3
 ;font-0 = Wuncon Siji:pixelsize=11;3
 
-font-0 = Wuncon Siji:pixelsize=11;3
+font-0 = siji:pixelsize=11;3
 font-1 = misc tamsyn:pixelsize=18;2
 font-2 = FontAwesome5Free:style=Solid:size=15;3
 font-3 = FontAwesome5Brands:style=Solid:size=15;3
