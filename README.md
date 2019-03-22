@@ -1,7 +1,9 @@
 # ❤ Dotfiles ❤
-My current dotfiles. Could be yours as well.
-Uses GNU Stow to symlink the dotfiles. You can easily pick and choose the parts you like without having to use everything.
-Instructions:
+My current dotfiles. Could be yours as well.  
+
+Uses GNU Stow to symlink the dotfiles. You can easily pick and choose the parts you like without having to use everything.  
+
+Instructions:  
 1. Clone the repo into your home folder, ex: `~/dotfiles`.
 2. Install GNU Stow. (or do the symlinks manualy, see: `man ln`
 4. Backup any of your original config files you want to keep around.
@@ -31,6 +33,7 @@ Mostly defauly keybindings I believe. For more information check out the i3 conf
 + `super + hjkl` - Move focus with vim-keys
 
 ### vim
+A lot of custom settings, mostly documented inside `.vimrc`.
 + TODO
 
 ### tmux
@@ -42,11 +45,14 @@ Mostly defauly keybindings I believe. For more information check out the i3 conf
 ## Scripts & Aliases
 + `bm` (**b**ook**m**ark) - Appends the current working directory (path) into a file in your home directory. If passed aadditional text it will append that as a comment on the line in the file. I use this to bookmark all my most commonly visited locations in the file system.
 + `cdb` (**cd** **b**ookmark) - Opens the file of bookmarks from your home directory, passes the lines to [fzf](https://github.com/junegunn/fzf), allows you to fuzzy search select a bookmark based on path or comment, and then changes your current directory to that location.
-+ Various git log FZF scripts, see the `.zshrc` file for more details.
-+ `Control+r`, `Control+t`, `Alt+c` - Default fzf behaviour.
-+ `Control+f` - fzf fuzzy search for file recursively down from current location, opens selection for editing in vim.
-+ `l` - `ls -lah`
++ `fshow` - Git commit browser. `enter` for show, `Ctrl-d` for diff, \` toggles sort.
++ Various git log FZF scripts, see the `.zshrc` file for more details. , `
++ `Ctrl+r`, `Ctrl+t`, `Alt+c` - Default fzf behaviour.
++ `Ctrl+f` - fzf fuzzy search for file recursively down from current location, opens selection for editing in vim.
 + `cdd` - `cd ~/dotfiles`
++ `cdf` - cd to the directory of fzf fuzzy find filename.
++ `fkill` - fzf search all processes you have permission to kill, SIGTERM the selection.
++ `l` - `ls -lah`
 + `:e` - `vim`
 + `:q` - `exit`
 
@@ -67,3 +73,5 @@ Mostly defauly keybindings I believe. For more information check out the i3 conf
     - [Rofi](https://github.com/DaveDavenport/rofi) - A window switcher, application launcher and dmenu replacement.
     - [Compton](https://github.com/tryone144/compton) (Fork) - A compositor for X11. Allows for transparency and blur.
     - [Arc Theme](https://github.com/NicoHood/arc-theme) (Fork) - A flat theme with transparent elements for GTK 3, GTK 2, and GNOME Shell.
+    - misc tamsyn - font used in polybar
+    - Wuncon Siji - font used in polybar
