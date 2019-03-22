@@ -1,14 +1,6 @@
 # ❤ Dotfiles ❤
 My current dotfiles. Could be yours as well.  
 
-Uses GNU Stow to symlink the dotfiles. You can easily pick and choose the parts you like without having to use everything.  
-
-Instructions:  
-1. Clone the repo into your home folder, ex: `~/dotfiles`.
-2. Install GNU Stow. (or do the symlinks manualy, see: `man ln`
-4. Backup any of your original config files you want to keep around.
-3. Go to the repo and run `stow vim` or similar to symlink the files asociated with that part of the setup.
-
 ## Some details
 + **OS**: Arch
 + **WM**: i3
@@ -23,6 +15,21 @@ Instructions:
 
 ## Older picture:
 ![Preview of Setup](https://i.imgur.com/tewk8oJ.png)
+
+Uses GNU Stow to symlink the dotfiles. You can easily pick and choose the parts you like without having to use everything.  
+
+## Instructions:  
+1. Clone the repo into your home folder, ex: `~/dotfiles`.
+2. Install GNU Stow. (or do the symlinks manualy, see: `man ln`
+4. Backup any of your original config files you want to keep around.
+3. Go to the repo and run `stow vim` or similar to symlink the files asociated with that part of the setup.
+
+## Considerations
+My setup uses two monitors, one of which is an ultrawide monitor with higher than usual (1080p) resolution. If you use this on any other system you will have to manualy tweak the positioning of the polybar segments. This is not difficult, simple math should suffice. Same with the gaps/borders, they are most likely to large on for example only a single 1080p or 720p monitor.
+
+Many of the dotfiles require additional software/plugins or such that aren't imediately obvious, for example extra fonts, or other programs that don't require their own dotfiles, I have tried to document those in this file but I will have most likely missed one or more of them. Example:
++ ranger is using ranger_devicons
++ zsh was for a while running with powerline (but it is now using a customized spaceship instead)
 
 ## Custom keybinds
 ### i3
