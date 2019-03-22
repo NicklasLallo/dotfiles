@@ -16,11 +16,12 @@ My current dotfiles. Could be yours as well.
 ## Older picture:
 ![Preview of Setup](https://i.imgur.com/tewk8oJ.png)
 
-Uses GNU Stow to symlink the dotfiles. You can easily pick and choose the parts you like without having to use everything.  
-
 ## Instructions:  
-1. Clone the repo into your home folder, ex: `~/dotfiles`.
-2. Install GNU Stow. (or do the symlinks manualy, see: `man ln`
+You can easily pick and choose the parts you like without having to use everything. Each folder is named after a package and contains every configuration file used by that application. The files inside the folders are relative to home (e.g. the file `vim/.vimrc` goes to `~/.vimrc`).
+
+To more quickly set things up I recomend to use GNU Stow to symlink the dotfiles. 
+1. Clone the repo into your home folder, e.g. `~/dotfiles`.
+2. Install stow from your package manager. (or do the symlinks manualy, see: `man ln`)
 4. Backup any of your original config files you want to keep around.
 3. Go to the repo and run `stow vim` or similar to symlink the files asociated with that part of the setup.
 
@@ -38,6 +39,7 @@ Mostly defauly keybindings I believe. For more information check out the i3 conf
 + `super + Shift + enter` - Launch Kitty running ranger
 + `super + d` - Launch Rofi
 + `super + hjkl` - Move focus with vim-keys
++ `super + n` - run pywal, automatically select a new random wallpaper from `~/wallpapers/inuse`, generate new colorthemes for polybar, kitty, and much more, and automatically tell those applications to update (polybar restarts quietly). This is also done on each restart.
 
 ### vim
 A lot of custom settings, mostly documented inside `.vimrc`.
@@ -47,6 +49,8 @@ A lot of custom settings, mostly documented inside `.vimrc`.
 + TODO
 
 ## Wallpapers
+The wallpaper is set with feh in the i3 configuration, as startup command.
++ 
 + TODO
 
 ## Scripts & Aliases
@@ -64,7 +68,6 @@ A lot of custom settings, mostly documented inside `.vimrc`.
 + `:q` - `exit`
 
 ## Misc software recomendations.
-
 - CLI
     - [Zsh](https://github.com/zsh-users/zsh) - A shell similar to bash.
     - [Oh My Zsh](https://github.com/robbyrussell/oh-my-zsh) - An open source, community-driven framework for managing your Zsh configuration.
@@ -76,9 +79,14 @@ A lot of custom settings, mostly documented inside `.vimrc`.
     - [Ag](https://github.com/BurntSushi/ripgrep) - A line-oriented search tool that recursively searches directories for a regex pattern. Simiar to Grep, but faster.
     - [Nerd-Fonts](https://github.com/ryanoasis/nerd-fonts) - Patch fonts with a lot of extra symbols for use in terminal and more.
 - GUI
-    - [i3-gaps](https://github.com/Airblader/i3) - i3 fork with additional settings for spacing around/between windows. 
+    - [i3-gaps](https://github.com/Airblader/i3) - i3 fork with additional settings for spacing around/between windows.
+    - [pywal](https://github.com/dylanaraps/pywal) - Generate and change color-schemes on the fly. Change the wallpaper and the theme of most applications to match.
     - [Rofi](https://github.com/DaveDavenport/rofi) - A window switcher, application launcher and dmenu replacement.
     - [Compton](https://github.com/tryone144/compton) (Fork) - A compositor for X11. Allows for transparency and blur.
     - [Arc Theme](https://github.com/NicoHood/arc-theme) (Fork) - A flat theme with transparent elements for GTK 3, GTK 2, and GNOME Shell.
     - misc tamsyn - font used in polybar
     - Wuncon Siji - font used in polybar
+    - [Redshift](https://github.com/jonls/redshift) - Redshift adjusts the color temperature of your screen according to your surroundings. The lightbulb icon of the polybar lanches it and displays the current temperature.
+
+##Contributing
+I'm open to discuss suggestions, & changes. Feel free to send me a pull requests or message.
