@@ -1,5 +1,5 @@
 # ❤ Dotfiles ❤
-My current dotfiles. Could be yours as well.  
+My current dotfiles. Could be yours as well.
 
 ## Some details
 + **OS**: Arch
@@ -16,10 +16,10 @@ My current dotfiles. Could be yours as well.
 ## Older picture:
 ![Preview of Setup](https://i.imgur.com/tewk8oJ.png)
 
-## Instructions:  
+## Instructions:
 You can easily pick and choose the parts you like without having to use everything. Each folder is named after a package and contains every configuration file used by that application. The files inside the folders are relative to home (e.g. the file `vim/.vimrc` goes to `~/.vimrc`).
 
-To more quickly set things up I recomend to use GNU Stow to symlink the dotfiles. 
+To more quickly set things up I recomend to use GNU Stow to symlink the dotfiles.
 1. Clone the repo into your home folder, e.g. `~/dotfiles`.
 2. Install stow from your package manager. (or do the symlinks manualy, see: `man ln`)
 4. Backup any of your original config files you want to keep around.
@@ -50,7 +50,6 @@ A lot of custom settings, mostly documented inside `.vimrc`.
 
 ## Wallpapers
 The wallpaper is set with feh in the i3 configuration, as startup command.
-+ 
 + TODO
 
 ## Scripts & Aliases
@@ -74,10 +73,11 @@ The wallpaper is set with feh in the i3 configuration, as startup command.
     - [Bash](https://git.savannah.gnu.org/cgit/bash.git) - A Unix shell and command language.
     - [tmux](https://github.com/tmux/tmux) - A terminal multiplexer.
     - [Neovim](https://github.com/neovim/neovim) - Vim-fork focused on extensibility and usability.
-    - [htop](https://github.com/hishamhm/htop) - Better than top.
-    - [fzf](https://github.com/junegunn/fzf) - A command-line fuzzy finder.
+    - [htop](https://github.com/hishamhm/htop) - Nicer than top.
+    - [fzf](https://github.com/junegunn/fzf) - A command-line fuzzy finder. Used a lot in zshrc, vimrc, & tmux.conf.
     - [Ag](https://github.com/BurntSushi/ripgrep) - A line-oriented search tool that recursively searches directories for a regex pattern. Simiar to Grep, but faster.
     - [Nerd-Fonts](https://github.com/ryanoasis/nerd-fonts) - Patch fonts with a lot of extra symbols for use in terminal and more.
+    - [fpp](https://github.com/facebook/pathpicker) - Helps picks a file path with UI from from a messy shellscript's output and pipes it into any program (mainly $EDITOR).
 - GUI
     - [i3-gaps](https://github.com/Airblader/i3) - i3 fork with additional settings for spacing around/between windows.
     - [pywal](https://github.com/dylanaraps/pywal) - Generate and change color-schemes on the fly. Change the wallpaper and the theme of most applications to match.

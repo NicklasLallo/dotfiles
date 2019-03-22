@@ -954,7 +954,7 @@ autocmd TabLeave * let g:lasttab = tabpagenr()
 
 nnoremap <silent> <leader>i :call ToggleCC()<CR>
 "show trailing whitespaces, somewhat exessive
-nnoremap <silent> <C-T> /\S\zs\s\+$
+nnoremap <silent> <C-T> /\S\zs\s\+$<CR>
 
 " Replaced gundo with UndoTree, pure vimscript instead of dependencies
 nnoremap <leader>u :UndotreeToggle<CR>
