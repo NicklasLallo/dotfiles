@@ -13,6 +13,9 @@ endif
 call plug#begin('~/.vim/plugged')
 
 Plug 'markonm/traces.vim'
+" Make commands run on limited visual selections and not entire lines with 'B'. :'<,'>B cmd
+" Also add searching with 'S'. :'<,'>S pattern
+Plug 'vim-scripts/vis'
 
 " Go
 Plug 'fatih/vim-go'
@@ -157,7 +160,7 @@ endif
 " and you don't have to run install script if you use fzf only in Vim.
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'shell': '/bin/zsh' }
 Plug 'junegunn/fzf.vim'
-Plug 'junegunn/vim-easy-align'
+Plug 'junegunn/vim-easy-align'          " align, ex: gaip#
 Plug 'junegunn/goyo.vim'                " Distraction free writinga :Goyo
 " Plug 'junegunn/vim-github-dashboard'  " Use with :GHD , requires ruby support
 Plug 'junegunn/vim-peekaboo'            " Preview \" @ i<C-R>
@@ -167,6 +170,9 @@ Plug 'junegunn/gv.vim'                  " git commit browse, requires fugitive, 
 Plug 'junegunn/limelight.vim'           " Use together with goyo, :Limelight
 Plug 'junegunn/rainbow_parentheses.vim'
 
+
+Plug 'romainl/vim-cool'                 " Disable hlsearch when you are done searching
+" let g:CoolTotalMatches = 1
 " The ultimate undo history visualizer for VIM
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 " NERDTree... tree explorer for vim
@@ -437,7 +443,7 @@ augroup END
 " set where swap file and undo/backup files are saved
 set backupdir=~/.vim/tmp,.
 set directory=~/.vim/tmp,.
-set dictionary=/.vim/dict
+set dictionary=~/.vim/dict
 
 if has("persistent_undo")
     set undodir=~/.undodir/
@@ -509,6 +515,9 @@ if has('cscope')
     nmap <C-c>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
     nmap <C-c>a :cs find a <C-R>=expand("<cfile>")<CR><CR>
 
+    " tags navigation
+    " Go to definition (requires Ctags)
+    nnoremap <C-d> <C-]>
 
     " Using 'CTRL-spacebar' (intepreted as CTRL-@ by vim) then a search type
     " makes the vim window split horizontally, with search result displayed in
@@ -655,6 +664,14 @@ let g:signify_skip_filetype = { 'journal': 1 }
 " let g:signify_sign_changedelete = '│'
 "
 "
+map _ <Plug>(easymotion-s)
+nmap - <Plug>(easymotion-sn)
+xmap - <Esc><Plug>(easymotion-sn)\v%V
+omap - <Plug>(easymotion-tn)
+nnoremap g- -
+
+
+
 " Disable IndentLine in json files (or change the default syntax file for json
 " to not use 'conceal' on quotation marks
 autocmd Filetype json :IndentLinesDisable
@@ -667,8 +684,8 @@ autocmd Filetype json :IndentLinesDisable
 if version > 600
   filetype plugin indent on
 endif
-
-
+" Allows the :Man command to open manpages for software, ex: :Man grep
+runtime ftplugin/man.vim
 set laststatus=2 "always show the powerline statusbar in all windows
 set showtabline=2 "always display the tabline, even if there is only one tab
 
@@ -718,13 +735,19 @@ match ExtraWhitespace /\s\+\%#\@<!$\| \+\ze\t/
 " autocmd BufWinLeave * call clearmatches()
 
 " automatically resize windows when vim is resized
-" autocmd VimResized * wincmd =
+autocmd VimResized * wincmd =
 "Another way to find trailing whitespace, I toggle in lintmode
 "set list                " needed for listchars
 " (uBB is right double angle, uB7 is middle dot)
 set listchars=tab:»·,trail:␣,nbsp:˷
 
 
+" vim hardcodes background color erase even if the terminfo file does
+" not contain bce (not to mention that libvte based terminals
+" incorrectly contain bce in their terminfo files). This causes
+" incorrect background rendering when using a color theme with a
+" background color. (Kitty, tmux)
+let &t_ut=''
 au BufWinEnter * let w:m2=matchadd('ColorColumn','\%>100v.\+', -1)
 
 " }}}
@@ -738,8 +761,9 @@ set termguicolors     " Doesn't work with all terminals but fixes a few colorsch
 "set shellredir=">%s 2>&1"
 "set shellpipe="2>&1| tee"
 set backspace=indent,eol,start
+set guioptions=       " Always increment as base 10 (<C-a> & <C-x>)
 set nobackup          " most files are in git anyways
-set autoread          "Always reload buffer when external changes detected
+set autoread          " Always reload buffer when external changes detected
 set encoding=utf-8    " usually the case rather than latin1
 set textwidth=0       " disable automatic word wrapping (newlines)
 set hidden            " preserve buffers by hiding instead of closing them
@@ -764,7 +788,7 @@ set ignorecase        " ignore case when searching
 set infercase         " smart case when using insert mode completion (:h ins-completion)
 set smartcase         " ignore case if search pattern is all lowercase, otherwise case-sensitive
 set wrapscan          " wrap the searches around the document (/ ?)
-set timeoutlen=300    " fast fingers with multi key mappings, (default 1000)
+set timeoutlen=500    " fast fingers with multi key mappings, (default 1000)
 set ttyfast           " faster redraws
 set history=1000      " save a much longer history (default 50) of commands and searches
 set undolevels=1000   " save more levels of undo
@@ -837,18 +861,15 @@ let &t_ut=''
 " Keybindings {{{
 " F-keys {{{
 
-nmap <F2> :cs find s <C-R>=expand("<cword>")<CR><CR>
-nmap <F3> :cs find g <C-R>=expand("<cword>")<CR><CR>
-nmap <F4> :cs find c <C-R>=expand("<cword>")<CR><CR>
-" Quick write session with F5
+nmap <F2> :cs find s <C-R>=expand("<cword>")<CR><CR>:echo "Find C symbol"
+nmap <F3> :cs find g <C-R>=expand("<cword>")<CR><CR>:echo "Find function definition"
+nmap <F4> :cs find c <C-R>=expand("<cword>")<CR><CR>:echo "Find function calls"
 map <F5> :mksession! ~/.vim_session<cr>
-" And load session with F6
 map <F6> :source ~/.vim_session<cr>
-" Fix indentation
-" map <F7> gg=G<C-o><C-o>
 " Toggle auto change directory
 " map <F8> :set autochdir! autochdir?<CR>
 nnoremap <silent> <F7> :call <SID>rotate_colors()<cr>
+nnoremap <silent> <F8> :call <SID>light_colors()<cr>
 
 
 " Unsure about this
@@ -878,8 +899,8 @@ nnoremap ///  /<C-R>/\<BAR>
 " I don't need double shortcuts for that.
 " Some terminals can't send <tab> but always send <C-I> in which
 " case this shouldn't do anything at all.
-nnoremap <tab> %
-vnoremap <tab> %
+" nnoremap <tab> %
+" vnoremap <tab> %
 " space open/closes folds
 nnoremap <space> za
 " visualy select last inserted text
@@ -904,13 +925,14 @@ nnoremap <expr> j v:count ? (v:count > 5 ? "m'" . v:count : '') . 'j' : 'gj'
 nnoremap <expr> k v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk'
 " move to beggining and end of line with capital B/E, overrides.
 " Normaly B & E functions almost identically to the more used b & e (or w) anyways, so overriding is fine
-nnoremap B ^
-nnoremap E $
+nnoremap ^ H
+nnoremap $ L
+nnoremap H ^
+nnoremap L $
 
-" tags navigation
-" Go to definition (requires Ctags)
-nnoremap <C-d> <C-]>
-" Go back <C-t>
+" Use next
+" nnoremap <silent> <c-l>
+" inoremap <silent> <c-l>
 
 " Scroll faster.
 nnoremap <C-e> 2<C-e>
@@ -991,6 +1013,8 @@ vmap <S-down> <Plug>SchleppIndentDown
 
 " make the dot operator work on each line of visual selections
 xnoremap . :norm.<CR>
+" make visual selection dot-able
+vnoremap . :norm. &lt;CR&lt;
 
 "=====[ Make jump-selections work better in visual block mode ]=================
 
@@ -998,8 +1022,9 @@ xnoremap <expr>  G   'G' . virtcol('.') . "\|"
 xnoremap <expr>  }   '}' . virtcol('.') . "\|"
 xnoremap <expr>  {   '{' . virtcol('.') . "\|"
 
-" make visual selection dot-able
-vnoremap . :norm. &lt;CR&lt;
+" p & P are normaly the same in visual-mode
+" This makes P paste without replacing the content of the register instead.
+xnoremap <expr> P '"_d"'.v:register.'P'
 
 " leader+number jumps to window number, same as number<C-w><C-w> for those who prefer that
 " let yi = 1
@@ -1018,6 +1043,17 @@ inoremap ,, <C-x><C-o><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>" : ",,
 inoremap ,; <C-n><C-r>=pumvisible()      ? "\<lt>Down>\<lt>C-p>\<lt>Down>" : ",;"<CR>
 inoremap ,: <C-x><C-f><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>" : ",:"<CR>
 inoremap ,= <C-x><C-l><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>" : ",="<CR>
+" }}}
+" cnoremap {{{
+" allows incsearch highlighting for range commands
+cnoremap $t <CR>:t''<CR>
+" cnoremap $T <CR>:T''<CR>
+cnoremap $m <CR>:m''<CR>
+" cnoremap $M <CR>:M''<CR>
+cnoremap $d <CR>:d<CR>``
+" Example usecase: /regex$m  will move the next line matching regex to cursor pos
+
+
 " }}}
 " }}}
 " Functions {{{
@@ -1077,6 +1113,78 @@ function! CmdLine(str)
     call feedkeys(":" . a:str)
 endfunction
 "}}}
+" Charwise selections {{{
+
+vnoremap D :<C-U>echo RemoveSelectionFromBuffer(1)<CR>
+vnoremap d :<C-U>echo RemoveSelectionFromBuffer(0)<CR>
+" nnoremap _ :<C-U>NormS()<CR>
+
+function! NormS()
+    " Ask user for first location/mark
+    " TODO inccomand for regex selection
+    "
+    " Ask user for second location/mark
+    " TODO inccomand for regex selection
+    "
+    " Ask user for normal mode commands
+    " TODO demo inccomand for these normal? Probably not
+endfunction
+
+function! NS(begMark, endMark, func)
+    " let lines = GetVisualSelection()
+    " call map(lines, {})
+endfunction
+
+" Removes lines matching the selected text from buffer.
+function! RemoveSelectionFromBuffer(ignoreNumbers)
+    let lines = GetVisualSelection() " selected lines
+    " Escape backslashes and slashes (delimiters)
+    call map(lines, {k, v -> substitute(v, '\\\|/', '\\&', 'g')})
+    if a:ignoreNumbers == 1
+        " Substitute all numbers with \s*\d\s* - in formatted output matching
+        " lines may have whitespace instead of numbers. All backslashes need
+        " to be escaped because \V (very nomagic) will be used.
+        call map(lines, {k, v -> substitute(v, '\s*\d\+\s*', '\\s\\*\\d\\+\\s\\*', 'g')})
+    endif
+    let blc = line('$') " number of lines in buffer (before deletion)
+    let vlc = len(lines) " number of selected lines
+    let pattern = join(lines, '\_.') " support multiline patterns
+    let cmd = ':g/\V' . pattern . '/d_' . vlc " delete matching lines (d_3)
+    let pos = getpos('v') " save position
+    execute "silent " . cmd
+    call setpos('.', pos) " restore position
+    let dlc = blc - line('$') " number of deleted lines
+    let dmc = dlc / vlc " number of deleted matches
+    let cmd = substitute(cmd, '\(.\{50\}\).*', '\1...', '') " command output
+    let lout = dlc . ' line' . (dlc == 1 ? '' : 's')
+    let mout = '(' . dmc . ' match' . (dmc == 1 ? '' : 'es') . ')'
+    return printf('%s removed: %s', (vlc == 1 ? lout : lout . ' ' . mout), cmd)
+endfunction
+
+" VisualSelection selects charwise between start & end of selection instead of
+" linewise as is otherwise default. It should be useful for many other
+" commands as well.
+function! VisualSelection()
+    if mode()=="v"
+        let [line_start, column_start] = getpos("v")[1:2]
+        let [line_end, column_end] = getpos(".")[1:2]
+    else
+        let [line_start, column_start] = getpos("'<")[1:2]
+        let [line_end, column_end] = getpos("'>")[1:2]
+    end
+    if (line2byte(line_start)+column_start) > (line2byte(line_end)+column_end)
+        let [line_start, column_start, line_end, column_end] =
+        \   [line_end, column_end, line_start, column_start]
+    end
+    let lines = getline(line_start, line_end)
+    if len(lines) == 0
+            return ''
+    endif
+    let lines[-1] = lines[-1][: column_end - 1]
+    let lines[0] = lines[0][column_start - 1:]
+    return join(lines, "\n")
+endfunction
+" }}}
 " Toggle ColorColumn {{{
 " Toggle with leader+l
 function! ToggleCC()
@@ -1175,8 +1283,22 @@ function! s:rotate_colors()
   redraw
   echo name
 endfunction
-" nnoremap <silent> <F7> :call <SID>rotate_colors()<cr>
+" }}}
+" Quick switch to light colorscheme <F8>{{{
 
+function! s:light_colors()
+    if !exists('s:colorsreset')
+        let s:colorsreset = 1
+        set background=light
+        execute 'colorscheme seoul256-light'
+        execute 'AirlineTheme seagull'
+    else
+        unlet s:colorsreset
+        set background=dark
+        execute 'colorscheme seoul256'
+        execute 'AirlineTheme deus'
+    endif
+endfunction
 " }}}
 " :A opens corresponding header/source file for c projects {{{
 function! s:a(cmd)
@@ -1344,7 +1466,7 @@ function! s:goyo_enter()
   elseif exists('$TMUX')
     silent !tmux set status off
   endif
-  set cursorline! 
+  set cursorline!
   Limelight
   let &l:statusline = '%M'
   hi StatusLine ctermfg=red guifg=red cterm=NONE gui=NONE
@@ -1358,7 +1480,7 @@ function! s:goyo_leave()
   elseif exists('$TMUX')
     silent !tmux set status on
   endif
-  set cursorline! 
+  set cursorline!
   Limelight!
 endfunction
 
