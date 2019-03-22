@@ -58,6 +58,7 @@ plugins=(git zsh-autosuggestions)
 
 # User configuration
 
+  export EDITOR=nvim
   export RANGER_LOAD_DEFAULT_RC="FALSE"
   export PATH="/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl"
   export PATH=~/dotfiles/scripts/:$PATH

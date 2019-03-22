@@ -17,6 +17,10 @@ Plug 'markonm/traces.vim'
 " Go
 Plug 'fatih/vim-go'
 
+" Fix FocusGained/FocusLost in terminal vim together with tmux
+" And also fix autoread in terminal vim (otherwise only working in gvim)
+Plug 'tmux-plugins/vim-tmux-focus-events'
+
 " Which-key similar to spacemacs
 Plug 'liuchengxu/vim-which-key'
 Plug 'PotatoesMaster/i3-vim-syntax'
