@@ -19,6 +19,8 @@ My current dotfiles. Could be yours as well.
 ## Instructions:
 You can easily pick and choose the parts you like without having to use everything. Each folder is named after a package and contains every configuration file used by that application. The files inside the folders are relative to home (e.g. the file `vim/.vimrc` goes to `~/.vimrc`).
 
+Since these are dotfiles they obviously require you to also install the original software you want these files to configure for you, they are after all only the configuration files.
+
 To more quickly set things up I recomend to use GNU Stow to symlink the dotfiles.
 1. Clone the repo into your home folder, e.g. `~/dotfiles`.
 2. Install stow from your package manager. (or do the symlinks manualy, see: `man ln`)
@@ -28,9 +30,12 @@ To more quickly set things up I recomend to use GNU Stow to symlink the dotfiles
 ## Considerations
 My setup uses two monitors, one of which is an ultrawide monitor with higher than usual (1080p) resolution. If you use this on any other system you will have to manualy tweak the positioning of the polybar segments. This is not difficult, simple math should suffice. Same with the gaps/borders, they are most likely to large on for example only a single 1080p or 720p monitor.
 
-Many of the dotfiles require additional software/plugins or such that aren't imediately obvious, for example extra fonts, or other programs that don't require their own dotfiles, I have tried to document those in this file but I will have most likely missed one or more of them. Example:
-+ ranger is using ranger_devicons
-+ zsh was for a while running with powerline (but it is now using a customized spaceship instead)
+###Addons
+Many of the dotfiles require additional software/plugins or such that aren't imediately obvious, for example extra fonts, or other programs that don't require their own dotfiles, I have tried to document those in this file but I will have most likely missed one or more of them.
++ Various fonts for polybar. And Nerdfonts for Kitty.
++ ranger is using [ranger\_devicons](https://github.com/alexanderjeurissen/ranger_devicons).
++ tmux is using [powerline](https://github.com/powerline/powerline).
++ zsh is using [spaceship](https://denysdovhan.com/spaceship-prompt/).
 
 ## Custom keybinds
 ### i3
