@@ -63,6 +63,7 @@ plugins=(git zsh-autosuggestions)
   export PATH="/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl"
   export PATH=~/dotfiles/scripts/:$PATH
   export PATH="${PATH}:${HOME}/.local/bin/"
+  export PATH="${PATH}:${HOME}/.gem/ruby/2.6.0/bin/"
   export PATH="${PATH}:${HOME}/aur/imgur-screenshot/"
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -110,7 +111,6 @@ export LD_LIBRARY_PATH=/opt/cuda/extras/CUPTI/lib64${LD_LIBRARY_PATH:+:${LD_LIBR
 #
 
 if [[ $TERM == 'rxvt-unicode-256color' ]]; then
-
     # Import colorscheme from 'wal'
     # (wal -r &) # Old Wal
     ## Import colorscheme from 'wal' asynchronously

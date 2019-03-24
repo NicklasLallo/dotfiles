@@ -17,6 +17,10 @@ Plug 'markonm/traces.vim'
 " Also add searching with 'S'. :'<,'>S pattern
 Plug 'vim-scripts/vis'
 
+" Let vim interact with tmux
+" Automate things with :call VimuxRunCommand("shell command")
+Plug 'benmills/vimux'
+
 " Go
 Plug 'fatih/vim-go'
 
@@ -27,6 +31,7 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 " Which-key similar to spacemacs
 Plug 'liuchengxu/vim-which-key'
 Plug 'PotatoesMaster/i3-vim-syntax'
+
 
 " Emmet for vim
 Plug 'mattn/emmet-vim'
@@ -152,7 +157,13 @@ if v:version >= 703
 endif
 if v:version >= 703
   Plug 'mhinz/vim-signify'
+  let g:signify_vcs_list = [ 'git' ]    " Improve performance. Add more later if needed.
+  let g:signify_skip_filetype = { 'tmp': 1, 'bak': 1 }
 endif
+let g:SignatureMarkTextHLDynamic=1      " Allows for interaction with signify/gitgutter
+Plug 'kshenoy/vim-signature'            " displays marks on lefthand side
+
+
 
 " PlugInstall and PlugUpdate will clone fzf in ~/.fzf and run install script
 " Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -223,8 +234,6 @@ vnoremap <silent> <leader> :<c-u>WhichKeyVisual ','<CR>
 autocmd! FileType which_key
 autocmd  FileType which_key set laststatus=0 noshowmode noruler
   \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-" By default timeoutlen is 1000ms
-set timeoutlen=1000
 " Define prefix dictionary
 let g:which_key_map =  {}
 " Ignore <leader> <number>
@@ -441,12 +450,22 @@ augroup END
 " UndoTree {{{
 " Not quite undo related but enough so
 " set where swap file and undo/backup files are saved
+" Creates the directories if they don't exist
+if !isdirectory("${HOME}/.vim/tmp")
+    call mkdir("${HOME}/.vim/tmp", "p")
+endif
+if !isdirectory("${HOME}/.vim/undodir")
+    call mkdir("${HOME}/.vim/undodir", "p")
+endif
+if !isdirectory("${HOME}/.vim/dictionary")
+    call mkdir("${HOME}/.vim/undodir", "p")
+endif
 set backupdir=~/.vim/tmp,.
 set directory=~/.vim/tmp,.
-set dictionary=~/.vim/dict
+set dictionary=~/.vim/dictionary
 
 if has("persistent_undo")
-    set undodir=~/.undodir/
+    set undodir=~/.vim/undodir,~/.undodir/
     set undofile
 endif
 " }}}
@@ -645,6 +664,9 @@ nnoremap <Leader>k :cprevious<CR>
 
 " }}}
 " Other {{{
+nnoremap <silent> <M-j> :MultipleCursorsFind <C-R>/<CR>
+vnoremap <silent> <M-j> :MultipleCursorsFind <C-R>/<CR>
+
 let g:no_plugins = 'false'
 " Multi cursor
 let g:multi_cursor_prev_key = '<C-S-n>'
@@ -761,6 +783,7 @@ set termguicolors     " Doesn't work with all terminals but fixes a few colorsch
 "set shellredir=">%s 2>&1"
 "set shellpipe="2>&1| tee"
 set backspace=indent,eol,start
+set display+=lastline
 set guioptions=       " Always increment as base 10 (<C-a> & <C-x>)
 set nobackup          " most files are in git anyways
 set autoread          " Always reload buffer when external changes detected
@@ -800,7 +823,6 @@ set iskeyword+=-      " Treat dash separated words as word text objects (for ciw
 " set foldcolumn=1
 set mouse=a           " enable mouse
 set scrolloff=9       " center coursor
-set nocp              " 'compatible' is not set
 " set autochdir         " Change directory to the current buffer when opening files.
 set background=dark
 "set foldmethod=indent   " fold based on indent level alternatives are: marker, manual, expr, syntax, diff, run :help foldmethod for info
@@ -830,6 +852,7 @@ if has('patch-7.4.338')
   set breakindent        " retain indent
   set breakindentopt=sbr " Show the symbol
 endif
+
 " Annoying temporary files
 " set backupdir=/tmp//,.
 " set directory=/tmp//,.
@@ -877,7 +900,6 @@ nnoremap <silent> <F8> :call <SID>light_colors()<cr>
 vmap <C-C> y
 
 " Control-V Paste in insert and command mode
-" imap <C-V> <esc>pa
 " cmap <C-V> <C-r>0
 
 " }}}
@@ -886,6 +908,9 @@ vmap <C-C> y
 " Not a huge difference. see :h magic
 nnoremap / /\v
 vnoremap / /\v
+nnoremap ? ?\v
+vnoremap ? ?\v
+
 " Perhaps I'm crazy
 " They still work in visual mode now
 nnoremap <up> <nop>
@@ -923,8 +948,6 @@ nnoremap gf :vertical wincmd f<CR>
 " j&k still work like normal when preceeded with a count, and any movement larger than 5 goes to the jumplist.
 nnoremap <expr> j v:count ? (v:count > 5 ? "m'" . v:count : '') . 'j' : 'gj'
 nnoremap <expr> k v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk'
-" move to beggining and end of line with capital B/E, overrides.
-" Normaly B & E functions almost identically to the more used b & e (or w) anyways, so overriding is fine
 nnoremap ^ H
 nnoremap $ L
 nnoremap H ^
@@ -1047,6 +1070,7 @@ inoremap ,= <C-x><C-l><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>" : ",=
 " cnoremap {{{
 " allows incsearch highlighting for range commands
 cnoremap $t <CR>:t''<CR>
+" Example usecase: /regex$m  will move the next line matching regex to cursor pos
 " cnoremap $T <CR>:T''<CR>
 cnoremap $m <CR>:m''<CR>
 " cnoremap $M <CR>:M''<CR>
