@@ -39,8 +39,8 @@ Many of the dotfiles require additional software/plugins or such that aren't ime
 
 ## Custom keybinds
 ### i3
-Mostly defauly keybindings I believe. For more information check out the i3 config file.
-+ `super + enter` - Launch Kitty running zsh
+Mostly defauly keybindings as to not confuse other i3 users. For more information check out the i3 config file. Here are some additions:
++ `super + enter` - Launch Kitty running tmux
 + `super + Shift + enter` - Launch Kitty running ranger
 + `super + d` - Launch Rofi
 + `super + hjkl` - Move focus with vim-keys
@@ -51,6 +51,10 @@ A lot of custom settings, mostly documented inside `.vimrc`.
 + TODO
 
 ### tmux
+One of the main programs that have changed a lot from default in terms of keybindings.
++ `ctrl + w` - Prefix, instead of `ctrl + b`. More vim like. Double press sends `ctrl + w` to the underlaying application.
++ `Prefix + s` & `Prefix + v` - Split horisontaly and vertically, same as vim.
++ Mouse off - Current solution to make the mouse behave as expected when doing quick copy-paste from terminal. Not perfect.
 + TODO
 
 ## Wallpapers
