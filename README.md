@@ -62,14 +62,14 @@ One of the main programs that have changed a lot from default in terms of keybin
 + `Prefix + HJKL` - resize pane, repeatable.
 + `Prefix + q` - kill pane. Same as vim close window. (default display panes moved to `Prefix + ctrl-q`)
 + `Prefix + /`, go to copy mode and search.
-+ copy-mode-vi `/` - and `?` uses incremental search (same as vim incsearch).
++ copy-mode-vi `/` & `?` - Uses incremental search (same as vim incsearch).
 + copy-mode-vi `v` - begin selection.
 + copy-mode-vi `V` - select line.
 + copy-mode-vi `ctrl+v` - begin block-selection.
 + copy-mode-vi `Home` - start of line.
 + copy-mode-vi `End` - end of line.
 + copy-mode-vi `y` - copy selection.
-+ `Prefix + I` - Install plugins. Run once and forget.
++ `Prefix + I` - Install plugins. Run once and forget. (`Prefix + U` update plugins)
 + `Prefix + Tab` - Start [extrakto](https://github.com/laktak/extrakto) plugin. This is magic. Requires fzf.
 
 ## Wallpapers
