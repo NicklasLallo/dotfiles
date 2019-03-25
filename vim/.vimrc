@@ -458,7 +458,7 @@ if !isdirectory("${HOME}/.vim/undodir")
     call mkdir("${HOME}/.vim/undodir", "p")
 endif
 if !isdirectory("${HOME}/.vim/dictionary")
-    call mkdir("${HOME}/.vim/undodir", "p")
+    call mkdir("${HOME}/.vim/dictionary", "p")
 endif
 set backupdir=~/.vim/tmp,.
 set directory=~/.vim/tmp,.
