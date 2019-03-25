@@ -30,7 +30,7 @@ To more quickly set things up I recomend to use GNU Stow to symlink the dotfiles
 ## Considerations
 My setup uses two monitors, one of which is an ultrawide monitor with higher than usual (1080p) resolution. If you use this on any other system you will have to manualy tweak the positioning of the polybar segments. This is not difficult, simple math should suffice. Same with the gaps/borders, they are most likely to large on for example only a single 1080p or 720p monitor.
 
-###Addons
+### Addons
 Many of the dotfiles require additional software/plugins or such that aren't imediately obvious, for example extra fonts, or other programs that don't require their own dotfiles, I have tried to document those in this file but I will have most likely missed one or more of them.
 + Various fonts for polybar. And Nerdfonts for Kitty.
 + ranger is using [ranger\_devicons](https://github.com/alexanderjeurissen/ranger_devicons).
@@ -93,5 +93,5 @@ The wallpaper is set with feh in the i3 configuration, as startup command.
     - Wuncon Siji - font used in polybar
     - [Redshift](https://github.com/jonls/redshift) - Redshift adjusts the color temperature of your screen according to your surroundings. The lightbulb icon of the polybar lanches it and displays the current temperature.
 
-##Contributing
+## Contributing
 I'm open to discuss suggestions, & changes. Feel free to send me a pull requests or message.
