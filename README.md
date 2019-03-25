@@ -71,6 +71,9 @@ One of the main programs that have changed a lot from default in terms of keybin
 + copy-mode-vi `y` - copy selection.
 + `Prefix + I` - Install plugins. Run once and forget. (`Prefix + U` update plugins)
 + `Prefix + Tab` - Start [extrakto](https://github.com/laktak/extrakto) plugin. This is magic. Requires fzf.
++ No non prefix keybindings that start with `ctrl` due to risk of colisions with applications running inside, such as vim/fzf.
++ `Alt + Arrows` - Switch panes. Leave `Alt+hjkl` for the shell or vim.
++ `Shift + Left/Right` - Switch windows.
 
 ## Wallpapers
 The wallpaper is set with feh & pywal in the i3 configuration, as startup command.
