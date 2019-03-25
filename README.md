@@ -51,14 +51,29 @@ A lot of custom settings, mostly documented inside `.vimrc`.
 + TODO
 
 ### tmux
-One of the main programs that have changed a lot from default in terms of keybindings.
+One of the main programs that have changed a lot from default in terms of keybindings. Default terminal copy-paste should still work as expected (`ctrl+shift+c`, mouse double, & tripple click for copy; middle mouse button, or `ctrl+shift+v` for paste).
++ Enable default vi-bindings (expect in command mode).
 + `ctrl + w` - Prefix, instead of `ctrl + b`. More vim like. Double press sends `ctrl + w` to the underlaying application.
++ `Prefix + r` - Reload tmux config.
 + `Prefix + s` & `Prefix + v` - Split horisontaly and vertically, same as vim.
-+ Mouse off - Current solution to make the mouse behave as expected when doing quick copy-paste from terminal. Not perfect.
-+ TODO
++ Mouse off - Current solution to make the mouse behave as expected when doing quick copy-paste from terminal. Not perfect with vertical split panes. Try to use extrakto instead.
++ `Prefix + ctrl-c` - Copy-mode.
++ `Prefix + hjkl` - select pane.
++ `Prefix + HJKL` - resize pane, repeatable.
++ `Prefix + q` - kill pane. Same as vim close window. (default display panes moved to `Prefix + ctrl-q`)
++ `Prefix + /`, go to copy mode and search.
++ copy-mode-vi `/` - and `?` uses incremental search (same as vim incsearch).
++ copy-mode-vi `v` - begin selection.
++ copy-mode-vi `V` - select line.
++ copy-mode-vi `ctrl+v` - begin block-selection.
++ copy-mode-vi `Home` - start of line.
++ copy-mode-vi `End` - end of line.
++ copy-mode-vi `y` - copy selection.
++ `Prefix + I` - Install plugins. Run once and forget.
++ `Prefix + Tab` - Start [extrakto](https://github.com/laktak/extrakto) plugin. This is magic. Requires fzf.
 
 ## Wallpapers
-The wallpaper is set with feh in the i3 configuration, as startup command.
+The wallpaper is set with feh & pywal in the i3 configuration, as startup command.
 + TODO
 
 ## Scripts & Aliases
