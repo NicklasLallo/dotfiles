@@ -8,6 +8,7 @@ My current dotfiles. Could be yours as well.
 + **Shell**: zsh
 + **File Manager**: Thunar for GUI, Ranger for terminal
 + **Launcher**: Rofi
++ **Bar**: Polybar (3 instances on one monitor, 2 on the other)
 + **Editor**: Vim (main) & Spacemacs
 
 ## Updated view:
