@@ -78,7 +78,9 @@ One of the main programs that have changed a lot from default in terms of keybin
 
 ## Wallpapers
 The wallpaper is set with feh & pywal in the i3 configuration, as startup command.
-+ TODO
++ It selects a random wallpaper from a folder (default ~/wallpapers/inuse).
++ `Super + n` - Randomly select a new wallpaper, and redo the themes on surrounding applications to match using pywal.
++ TODO more info.
 
 ## Scripts & Aliases
 + `bm` (**b**ook**m**ark) - Appends the current working directory (path) into a file in your home directory. If passed aadditional text it will append that as a comment on the line in the file. I use this to bookmark all my most commonly visited locations in the file system.
