@@ -83,7 +83,7 @@ The wallpaper is set with feh & pywal in the i3 configuration, as startup comman
 + TODO more info.
 
 ## Scripts & Aliases
-+ `bm` (**b**ook**m**ark) - Appends the current working directory (path) into a file in your home directory. If passed aadditional text it will append that as a comment on the line in the file. I use this to bookmark all my most commonly visited locations in the file system.
++ `bm` (**b**ook**m**ark) - Appends the current working directory (path) into a file in your home directory. If passed any additional text it will append that as a comment on the line in the file. I use this to bookmark all my most commonly visited locations in the file system.
 + `cdb` (**cd** **b**ookmark) - Opens the file of bookmarks from your home directory, passes the lines to [fzf](https://github.com/junegunn/fzf), allows you to fuzzy search select a bookmark based on path or comment, and then changes your current directory to that location.
 + `fshow` - Git commit browser. `enter` for show, `Ctrl-d` for diff, \` toggles sort.
 + Various git log FZF scripts, see the `.zshrc` file for more details. , `
