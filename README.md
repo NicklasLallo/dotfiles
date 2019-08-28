@@ -8,6 +8,7 @@ My current dotfiles. Could be yours as well.
 + **Shell**: zsh
 + **File Manager**: Thunar for GUI, Ranger for terminal
 + **Launcher**: Rofi
++ **Bar**: Polybar (3 instances on one monitor, 2 on the other)
 + **Editor**: Vim (main) & Spacemacs
 
 ## Updated view:
@@ -30,7 +31,7 @@ To more quickly set things up I recomend to use GNU Stow to symlink the dotfiles
 ## Considerations
 My setup uses two monitors, one of which is an ultrawide monitor with higher than usual (1080p) resolution. If you use this on any other system you will have to manualy tweak the positioning of the polybar segments. This is not difficult, simple math should suffice. Same with the gaps/borders, they are most likely to large on for example only a single 1080p or 720p monitor.
 
-###Addons
+### Addons
 Many of the dotfiles require additional software/plugins or such that aren't imediately obvious, for example extra fonts, or other programs that don't require their own dotfiles, I have tried to document those in this file but I will have most likely missed one or more of them.
 + Various fonts for polybar. And Nerdfonts for Kitty.
 + ranger is using [ranger\_devicons](https://github.com/alexanderjeurissen/ranger_devicons).
@@ -39,8 +40,8 @@ Many of the dotfiles require additional software/plugins or such that aren't ime
 
 ## Custom keybinds
 ### i3
-Mostly defauly keybindings I believe. For more information check out the i3 config file.
-+ `super + enter` - Launch Kitty running zsh
+Mostly defauly keybindings as to not confuse other i3 users. For more information check out the i3 config file. Here are some additions:
++ `super + enter` - Launch Kitty running tmux
 + `super + Shift + enter` - Launch Kitty running ranger
 + `super + d` - Launch Rofi
 + `super + hjkl` - Move focus with vim-keys
@@ -51,14 +52,38 @@ A lot of custom settings, mostly documented inside `.vimrc`.
 + TODO
 
 ### tmux
-+ TODO
+One of the main programs that have changed a lot from default in terms of keybindings. Default terminal copy-paste should still work as expected (`ctrl+shift+c`, mouse double, & tripple click for copy; middle mouse button, or `ctrl+shift+v` for paste).
++ Enable default vi-bindings (expect in command mode).
++ `ctrl + w` - Prefix, instead of `ctrl + b`. More vim like. Double press sends `ctrl + w` to the underlaying application.
++ `Prefix + r` - Reload tmux config.
++ `Prefix + s` & `Prefix + v` - Split horisontaly and vertically, same as vim.
++ Mouse off - Current solution to make the mouse behave as expected when doing quick copy-paste from terminal. Not perfect with vertical split panes. Try to use extrakto instead.
++ `Prefix + ctrl-c` - Copy-mode.
++ `Prefix + hjkl` - select pane.
++ `Prefix + HJKL` - resize pane, repeatable.
++ `Prefix + q` - kill pane. Same as vim close window. (default display panes moved to `Prefix + ctrl-q`)
++ `Prefix + /`, go to copy mode and search.
++ copy-mode-vi `/` & `?` - Uses incremental search (same as vim incsearch).
++ copy-mode-vi `v` - begin selection.
++ copy-mode-vi `V` - select line.
++ copy-mode-vi `ctrl+v` - begin block-selection.
++ copy-mode-vi `Home` - start of line.
++ copy-mode-vi `End` - end of line.
++ copy-mode-vi `y` - copy selection.
++ `Prefix + I` - Install plugins. Run once and forget. (`Prefix + U` update plugins)
++ `Prefix + Tab` - Start [extrakto](https://github.com/laktak/extrakto) plugin. This is magic. Requires fzf.
++ No non prefix keybindings that start with `ctrl` due to risk of colisions with applications running inside, such as vim/fzf.
++ `Alt + Arrows` - Switch panes. Leave `Alt+hjkl` for the shell or vim.
++ `Shift + Left/Right` - Switch windows.
 
 ## Wallpapers
-The wallpaper is set with feh in the i3 configuration, as startup command.
-+ TODO
+The wallpaper is set with feh & pywal in the i3 configuration, as startup command.
++ It selects a random wallpaper from a folder (default ~/wallpapers/inuse).
++ `Super + n` - Randomly select a new wallpaper, and redo the themes on surrounding applications to match using pywal.
++ TODO more info.
 
 ## Scripts & Aliases
-+ `bm` (**b**ook**m**ark) - Appends the current working directory (path) into a file in your home directory. If passed aadditional text it will append that as a comment on the line in the file. I use this to bookmark all my most commonly visited locations in the file system.
++ `bm` (**b**ook**m**ark) - Appends the current working directory (path) into a file in your home directory. If passed any additional text it will append that as a comment on the line in the file. I use this to bookmark all my most commonly visited locations in the file system.
 + `cdb` (**cd** **b**ookmark) - Opens the file of bookmarks from your home directory, passes the lines to [fzf](https://github.com/junegunn/fzf), allows you to fuzzy search select a bookmark based on path or comment, and then changes your current directory to that location.
 + `fshow` - Git commit browser. `enter` for show, `Ctrl-d` for diff, \` toggles sort.
 + Various git log FZF scripts, see the `.zshrc` file for more details. , `
@@ -93,5 +118,5 @@ The wallpaper is set with feh in the i3 configuration, as startup command.
     - Wuncon Siji - font used in polybar
     - [Redshift](https://github.com/jonls/redshift) - Redshift adjusts the color temperature of your screen according to your surroundings. The lightbulb icon of the polybar lanches it and displays the current temperature.
 
-##Contributing
+## Contributing
 I'm open to discuss suggestions, & changes. Feel free to send me a pull requests or message.

@@ -171,16 +171,20 @@ bindkey '\eg' _git-status
 alias gs="git status"
 alias gb="git branchs"
 alias cdd="cd ~/dotfiles"
-alias Ctrl-f='vim $(fzf --height 50% --border --preview "pygmentize -g -O style=monokai {}")'
 
 function f_widget {
-    zle kill-whole-line
-    # zle -U "git status"
-    BUFFER='Ctrl-f'
-    zle accept-line
+    local file=$(fzf --height 50% --border --preview "pygmentize -g -O style=monokai {}")
+    if [[ -n $file ]] then;
+        zle kill-whole-line
+        zle reset-prompt
+        BUFFER="vim $file"
+        zle accept-line
+    fi
+    zle reset-prompt
 }
 zle -N f_widget
 bindkey '^F' f_widget
+
 
 # fuzzy grep open via ag with line number
 vg() {
