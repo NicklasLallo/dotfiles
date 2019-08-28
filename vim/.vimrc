@@ -83,8 +83,8 @@ Plug 'AlessandroYorba/Sierra'
 Plug 'KKPMW/sacredforest-vim', {'as': 'sacredforest'}
 Plug 'KabbAmine/yowish.vim', {'as': 'yowish'}
 Plug 'Nequo/vim-allomancer', {'as': 'allomancer'}
-Plug 'Zabanaa/neuromancer.vim'
-Plug 'altercation/vim-colors-solarized'
+" Plug 'Zabanaa/neuromancer.vim'
+" Plug 'altercation/vim-colors-solarized'
 Plug 'arcticicestudio/nord-vim'
 Plug 'caksoylar/vim-mysticaltutor', {'as': 'mystical-tutor'}
 Plug 'challenger-deep-theme/vim', {'as': 'challenger-deep'}
@@ -110,10 +110,12 @@ Plug 'sonph/onehalf'
 Plug 'srcery-colors/srcery-vim', {'as': 'srcery'}
 Plug 'tlhr/anderson.vim', {'as': 'Wes anderson'}
 Plug 'tomasr/molokai'
-Plug 'tpope/vim-vividchalk', {'as': 'vividchalk'}
+" Plug 'tpope/vim-vividchalk', {'as': 'vividchalk'}
 Plug 'tyrannicaltoucan/vim-deep-space'
 Plug 'w0ng/vim-hybrid'
 Plug 'yuttie/hydrangea-vim'
+Plug 'hzchirs/vim-material'
+
 
 " wal for colors
 Plug 'dylanaraps/wal'
@@ -136,6 +138,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive', { 'on': [] }  " git awesomeness
 Plug 'tpope/vim-surround'                " Vim-surround
 Plug 'tpope/vim-repeat'
+Plug 'kreskij/Repeatable.vim', { 'on': 'Repeatable' }
 Plug 'vim-scripts/ReplaceWithRegister'   " [\"x]gr{motion}
 Plug 'AndrewRadev/splitjoin.vim'         " gS (split) & gJ (join)
 Plug 'AndrewRadev/switch.vim'            " gs (switch, ex: true->false, '&&'->'||')
@@ -655,7 +658,7 @@ nnoremap <silent> <Leader>di :call CscopeQuery('7')<CR>
 nnoremap <silent> <Leader>ds :call CscopeQuery('8')<CR>
 nnoremap <silent> <Leader>dt :call CscopeQuery('9')<CR>
 
-" After loading into quickfix navigate the results using
+" After loading into quickfix navigate the  using
 nnoremap <Leader>j :cnext<CR>
 nnoremap <Leader>k :cprevious<CR>
 
@@ -664,6 +667,15 @@ nnoremap <Leader>k :cprevious<CR>
 
 " }}}
 " Other {{{
+
+nnoremap <silent> <Plug>AppendTextNext gn<esc>".p:call repeat#set("\<Plug>AppendTextNext")<CR>
+nnoremap <silent> <Plug>AppendText *Ncgn<C-r>"<C-o>:call repeat#set("\<Plug>AppendTextNext")<CR>
+nmap <silent> c>* <Plug>AppendText
+
+nnoremap <silent> <Plug>PrependTextNext n".P:call repeat#set("\<Plug>PrependTextNext")<CR>
+nnoremap <silent> <Plug>PrependText *Ncgn<C-r>"<C-o>`[<C-o>:call repeat#set("\<Plug>PrependTextNext")<CR>
+nmap <silent> c<* <Plug>PrependText
+
 nnoremap <silent> <M-j> :MultipleCursorsFind <C-R>/<CR>
 vnoremap <silent> <M-j> :MultipleCursorsFind <C-R>/<CR>
 
@@ -686,6 +698,8 @@ let g:signify_skip_filetype = { 'journal': 1 }
 " let g:signify_sign_changedelete = '│'
 "
 "
+
+" The - key is my easymotion key.
 map _ <Plug>(easymotion-s)
 nmap - <Plug>(easymotion-sn)
 xmap - <Esc><Plug>(easymotion-sn)\v%V
@@ -716,7 +730,7 @@ if has('gui_running')
   set background=dark
   colorscheme gruvbox
 else
-  colorscheme seoul256
+  colorscheme carbonized-dark
   set background=dark
     if has('terminal') && !(&term ==# 'xterm-kitty') && !(&term ==# 'xterm-256color')
         " Avoid setting this variable when it is not absolutely neccesary
@@ -731,20 +745,40 @@ endif
 " makes the background disapear (so that it uses default terminal color and transparency)
 " hi Normal ctermbg=NONE
 
-highlight ExtraWhitespace ctermbg=red guibg=darkgreen
+highlight ExtraWhitespace ctermbg=1 guibg=#db6c6c
 if has('autocmd')
 augroup maingroup
     autocmd!
-" if colorschemes mess up the highlights
-    autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
+    " if colorschemes mess up the highlights
+    " autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
     autocmd filetype html, xml set listchars-=tab:>.
 endif
+augroup custom_highlighting
+    autocmd!
+    " autocmd needed otherwise it only applies to the first window each
+    " session
+    autocmd VimEnter,WinEnter * match ErrorMsg /[^\t]\zs\t\+/
+    "Show tabs that are not at the start of a line
+    " Except when typing that line:
+    autocmd VimEnter,WinEnter * match ErrorMsg /\s\+\%#\@<!$\| \+\ze\t/
 
-match ExtraWhitespace /[^\t]\zs\t\+/    "Show tabs that are not at the start of a line
+
+    " Highlight plugin fix for the carbonized-dark theme:
+    if g:colors_name ==# 'carbonized-dark'
+        " ale
+        " ---
+        autocmd VimEnter,WinEnter * highlight ALEErrorSign ctermfg=161 guifg=#d7005f
+        autocmd VimEnter,WinEnter * highlight ALEWarningSign ctermfg=174 guifg=#d78787
+        " vim-signify
+        " -----------
+        autocmd VimEnter,WinEnter * highlight SignifySignAdd ctermfg=108 guifg=#87af87 ctermbg=10 guibg=#3b3b37
+        autocmd VimEnter,WinEnter * highlight SignifySignChange ctermfg=68 guifg=#5f87d7 ctermbg=10 guibg=#3b3b37
+        autocmd VimEnter,WinEnter * highlight SignifySignDelete ctermfg=161 guifg=#d7005 ctermbg=10 guibg=#3b3b37f
+    endif
+augroup END
 " :match ExtraWhitespace /\s\+$\| \+\ze\t/ "Show trailing whitespace and space before a tab
 
-" Except when typing that line:
-match ExtraWhitespace /\s\+\%#\@<!$\| \+\ze\t/
+" match ErrorMsg /\s\+\%#\@<!$\| \+\ze\t/
 ":autocmd InsertLeave * redraw!
 ":match "Switch off :match highlighting.
 
@@ -906,17 +940,17 @@ vmap <C-C> y
 " nnoremap {{{
 " use 'normal' regex instead of vim 'magic' regex.
 " Not a huge difference. see :h magic
-nnoremap / /\v
-vnoremap / /\v
-nnoremap ? ?\v
-vnoremap ? ?\v
+" nnoremap / /\v
+" vnoremap / /\v
+" nnoremap ? ?\v
+" vnoremap ? ?\v
 
 " Perhaps I'm crazy
 " They still work in visual mode now
-nnoremap <up> <nop>
-nnoremap <down> <nop>
-nnoremap <left> <nop>
-nnoremap <right> <nop>
+" nnoremap <up> <nop>
+" nnoremap <down> <nop>
+" nnoremap <left> <nop>
+" nnoremap <right> <nop>
 " Extend previous match with new search
 nnoremap //   /<C-R>/
 nnoremap ///  /<C-R>/\<BAR>
@@ -1137,78 +1171,6 @@ function! CmdLine(str)
     call feedkeys(":" . a:str)
 endfunction
 "}}}
-" Charwise selections {{{
-
-vnoremap D :<C-U>echo RemoveSelectionFromBuffer(1)<CR>
-vnoremap d :<C-U>echo RemoveSelectionFromBuffer(0)<CR>
-" nnoremap _ :<C-U>NormS()<CR>
-
-function! NormS()
-    " Ask user for first location/mark
-    " TODO inccomand for regex selection
-    "
-    " Ask user for second location/mark
-    " TODO inccomand for regex selection
-    "
-    " Ask user for normal mode commands
-    " TODO demo inccomand for these normal? Probably not
-endfunction
-
-function! NS(begMark, endMark, func)
-    " let lines = GetVisualSelection()
-    " call map(lines, {})
-endfunction
-
-" Removes lines matching the selected text from buffer.
-function! RemoveSelectionFromBuffer(ignoreNumbers)
-    let lines = GetVisualSelection() " selected lines
-    " Escape backslashes and slashes (delimiters)
-    call map(lines, {k, v -> substitute(v, '\\\|/', '\\&', 'g')})
-    if a:ignoreNumbers == 1
-        " Substitute all numbers with \s*\d\s* - in formatted output matching
-        " lines may have whitespace instead of numbers. All backslashes need
-        " to be escaped because \V (very nomagic) will be used.
-        call map(lines, {k, v -> substitute(v, '\s*\d\+\s*', '\\s\\*\\d\\+\\s\\*', 'g')})
-    endif
-    let blc = line('$') " number of lines in buffer (before deletion)
-    let vlc = len(lines) " number of selected lines
-    let pattern = join(lines, '\_.') " support multiline patterns
-    let cmd = ':g/\V' . pattern . '/d_' . vlc " delete matching lines (d_3)
-    let pos = getpos('v') " save position
-    execute "silent " . cmd
-    call setpos('.', pos) " restore position
-    let dlc = blc - line('$') " number of deleted lines
-    let dmc = dlc / vlc " number of deleted matches
-    let cmd = substitute(cmd, '\(.\{50\}\).*', '\1...', '') " command output
-    let lout = dlc . ' line' . (dlc == 1 ? '' : 's')
-    let mout = '(' . dmc . ' match' . (dmc == 1 ? '' : 'es') . ')'
-    return printf('%s removed: %s', (vlc == 1 ? lout : lout . ' ' . mout), cmd)
-endfunction
-
-" VisualSelection selects charwise between start & end of selection instead of
-" linewise as is otherwise default. It should be useful for many other
-" commands as well.
-function! VisualSelection()
-    if mode()=="v"
-        let [line_start, column_start] = getpos("v")[1:2]
-        let [line_end, column_end] = getpos(".")[1:2]
-    else
-        let [line_start, column_start] = getpos("'<")[1:2]
-        let [line_end, column_end] = getpos("'>")[1:2]
-    end
-    if (line2byte(line_start)+column_start) > (line2byte(line_end)+column_end)
-        let [line_start, column_start, line_end, column_end] =
-        \   [line_end, column_end, line_start, column_start]
-    end
-    let lines = getline(line_start, line_end)
-    if len(lines) == 0
-            return ''
-    endif
-    let lines[-1] = lines[-1][: column_end - 1]
-    let lines[0] = lines[0][column_start - 1:]
-    return join(lines, "\n")
-endfunction
-" }}}
 " Toggle ColorColumn {{{
 " Toggle with leader+l
 function! ToggleCC()
