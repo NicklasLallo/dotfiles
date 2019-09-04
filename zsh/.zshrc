@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-  export ZSH=/home/la1/.oh-my-zsh
+  export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -60,7 +60,7 @@ plugins=(git zsh-autosuggestions)
 
   export EDITOR=nvim
   export RANGER_LOAD_DEFAULT_RC="FALSE"
-  export PATH="/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl"
+  export PATH="/bin/:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl"
   export PATH=~/dotfiles/scripts/:$PATH
   export PATH="${PATH}:${HOME}/.local/bin/"
   export PATH="${PATH}:${HOME}/.gem/ruby/2.6.0/bin/"
@@ -126,10 +126,12 @@ if [[ $TERM == 'rxvt-unicode-256color' ]]; then
 fi
 
 
-showerthoughts=$(curl -s --connect-timeout 5 -A '/u/DrDoctor13' \
-'https://www.reddit.com/r/showerthoughts/top.json?sort=top&t=week&limit=100' | \
-python2.7 -c 'import sys, random, json; randnum = random.randint(0,99); response = json.load(sys.stdin)["data"]["children"][randnum]["data"]; print "\n\"" + response["title"] + "\""; print "    -" + response["author"] + "\n";')
-echo $showerthoughts | cowsay | lolcat
+if [[ $USER == 'la1']]; then
+    showerthoughts=$(curl -s --connect-timeout 5 -A '/u/DrDoctor13' \
+    'https://www.reddit.com/r/showerthoughts/top.json?sort=top&t=week&limit=100' | \
+    python2.7 -c 'import sys, random, json; randnum = random.randint(0,99); response = json.load(sys.stdin)["data"]["children"][randnum]["data"]; print "\n\"" + response["title"] + "\""; print "    -" + response["author"] + "\n";')
+    echo $showerthoughts | cowsay | lolcat
+fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export GOBIN="$HOME/go/bin"
