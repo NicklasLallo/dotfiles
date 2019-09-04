@@ -693,6 +693,7 @@ IndentLinesEnable " Display a small line with each indentationlevel
 " vim-signify
 let g:signify_vcs_list = ['git']
 let g:signify_skip_filetype = { 'journal': 1 }
+let g:signify_sign_delete        = '-'
 " let g:signify_sign_add          = '│'
 " let g:signify_sign_change       = '│'
 " let g:signify_sign_changedelete = '│'
@@ -773,7 +774,7 @@ augroup custom_highlighting
         " -----------
         autocmd VimEnter,WinEnter * highlight SignifySignAdd ctermfg=108 guifg=#87af87 ctermbg=10 guibg=#3b3b37
         autocmd VimEnter,WinEnter * highlight SignifySignChange ctermfg=68 guifg=#5f87d7 ctermbg=10 guibg=#3b3b37
-        autocmd VimEnter,WinEnter * highlight SignifySignDelete ctermfg=161 guifg=#d7005 ctermbg=10 guibg=#3b3b37f
+        autocmd VimEnter,WinEnter * highlight SignifySignDelete ctermfg=161 guifg=#d7005f ctermbg=10 guibg=#3b3b37
     endif
 augroup END
 " :match ExtraWhitespace /\s\+$\| \+\ze\t/ "Show trailing whitespace and space before a tab
@@ -804,7 +805,7 @@ set listchars=tab:»·,trail:␣,nbsp:˷
 " incorrect background rendering when using a color theme with a
 " background color. (Kitty, tmux)
 let &t_ut=''
-au BufWinEnter * let w:m2=matchadd('ColorColumn','\%>100v.\+', -1)
+au BufWinEnter * let w:m2=matchadd('ColorColumn','\%>140v.\+', -1)
 
 " }}}
  " Basic Settings {{{
