@@ -212,6 +212,9 @@ if has('nvim')
     Plug 'kassio/neoterm'
 endif
 
+" semantic-based completion
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+
 call plug#end()
 " }}}
 " Vim Fugitive {{{
@@ -389,6 +392,9 @@ command! -bang -nargs=? -complete=dir Files
 "let g:fzf_launcher= 'urxvt -geometry 120*30 -e sh -c %s'
 " set fzf's default input to fd instead of find. This also removes gitignore etc
 
+if (executable('ag'))
+    let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
+endif
 " let $FZF_DEFAULT_COMMAND = 'fd --type f --hidden --follow --color=always --exclude .git'
 " let $FZF_DEFAULT_OPTS="--extended"
 "let g:fzf_files_options = '--preview "(head -'.&lines.' | rougify {} || bat --color \"always\" --line-range 0:100 {} || head -'.&lines.' {})"'
@@ -454,14 +460,14 @@ augroup END
 " Not quite undo related but enough so
 " set where swap file and undo/backup files are saved
 " Creates the directories if they don't exist
-if !isdirectory("${HOME}/.vim/tmp")
-    call mkdir("${HOME}/.vim/tmp", "p")
+if !isdirectory($HOME . "/.vim/tmp")
+    call mkdir($HOME . "/.vim/tmp", "p")
 endif
-if !isdirectory("${HOME}/.vim/undodir")
-    call mkdir("${HOME}/.vim/undodir", "p")
+if !isdirectory($HOME . "/.vim/undodir")
+    call mkdir($HOME . "/.vim/undodir", "p")
 endif
-if !isdirectory("${HOME}/.vim/dictionary")
-    call mkdir("${HOME}/.vim/dictionary", "p")
+if !isdirectory($HOME . "/.vim/dictionary")
+    call mkdir($HOME . "/.vim/dictionary", "p")
 endif
 set backupdir=~/.vim/tmp,.
 set directory=~/.vim/tmp,.
@@ -664,6 +670,10 @@ nnoremap <Leader>k :cprevious<CR>
 
 " }}}
 " ALE {{{
+
+" use nice symbols for errors and warnings
+let g:ale_sign_error = '✗\ '
+let g:ale_sign_warning = '⚠\ '
 
 " }}}
 " Other {{{
@@ -1114,6 +1124,13 @@ cnoremap $d <CR>:d<CR>``
 
 
 " }}}
+" commands {{{
+:command WQ wq
+:command Wq wq
+:command W w
+:command Q q
+" }}}
+"  }
 " }}}
 " Functions {{{
 nmap ; :%s//g<LEFT><LEFT>
