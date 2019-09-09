@@ -56,6 +56,7 @@ SPACESHIP_CHAR_SYMBOL="%F{red}${sepSymbol}%F{magenta}${sepSymbol}%F{cyan}${sepSy
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(fzf-z git forgit z zsh-autosuggestions colored-man-pages command-not-found fancy-ctrl-z)
+# dune-quotes included as well
 # Most plugins are bundled in oh-my-zsh but these are manually downloaded into .oh-my-zsh/custom/plugins:
 # fzf-z
 # zsh-syntax-highlighting
@@ -361,6 +362,22 @@ unset -f bind-git-helper
 
 
 
+
+# if exa is installed add some aliases:
+# if hash exa &> /dev/null; then
+if (( $+commands[exa] )); then
+    # general use
+    alias ls='exa'                                                         # ls
+    alias l='exa -lbF --git'                                               # list, size, type, git
+    alias ll='exa -lbGF --git'                                             # long list
+    alias llm='exa -lbGF --git --sort=modified'                            # long list, modified date sort
+    alias la='exa -lbhHigUmuSa --time-style=long-iso --git --color-scale'  # all list
+    alias lx='exa -lbhHigUmuSa@ --time-style=long-iso --git --color-scale' # all + extended list
+
+    # speciality views
+    alias lS='exa -1'			                                                  # one column, just names
+    alias lt='exa --tree --level=2'                                         # tree
+fi
 
 # make git use diff-so-fancy if it's sourced:
 if [[ -f $HOME/diff-so-fancy ]]; then
