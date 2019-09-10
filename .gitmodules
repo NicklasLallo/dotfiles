@@ -1,0 +1,21 @@
+[submodule "zshPlugins/.oh-my-zsh/custom/themes/spaceship-prompt"]
+	path = zshPlugins/.oh-my-zsh/custom/themes/spaceship-prompt
+	url = https://github.com/denysdovhan/spaceship-prompt
+[submodule "zshPlugins/.oh-my-zsh/custom/plugins/forgit"]
+	path = zshPlugins/.oh-my-zsh/custom/plugins/forgit
+	url = https://github.com/wfxr/forgit
+[submodule "zshPlugins/.oh-my-zsh/custom/plugins/fzf-z"]
+	path = zshPlugins/.oh-my-zsh/custom/plugins/fzf-z
+	url = https://github.com/andrewferrier/fzf-z
+[submodule "zshPlugins/.oh-my-zsh/custom/plugins/zsh-autosuggestions"]
+	path = zshPlugins/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions
+[submodule "zshPlugins/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"]
+	path = zshPlugins/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting
+[submodule "zshPlugins/.oh-my-zsh/custom/plugins/dune-quotes"]
+	path = zshPlugins/.oh-my-zsh/custom/plugins/dune-quotes
+	url = https://github.com/brokendisk/dune-quotes
+[submodule "zsh/oh-my-zsh"]
+	path = zsh/oh-my-zsh
+	url = https://github.com/robbyrussell/oh-my-zsh
