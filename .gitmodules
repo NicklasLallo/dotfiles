@@ -16,3 +16,6 @@
 [submodule "zshPlugins/.oh-my-zsh/custom/plugins/dune-quotes"]
 	path = zshPlugins/.oh-my-zsh/custom/plugins/dune-quotes
 	url = https://github.com/brokendisk/dune-quotes
+[submodule "zsh/.oh-my-zsh"]
+	path = zsh/.oh-my-zsh
+	url = https://github.com/robbyrussell/oh-my-zsh
