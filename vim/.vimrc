@@ -115,6 +115,9 @@ Plug 'tyrannicaltoucan/vim-deep-space'
 Plug 'w0ng/vim-hybrid'
 Plug 'yuttie/hydrangea-vim'
 Plug 'hzchirs/vim-material'
+Plug 'ayu-theme/ayu-vim'
+Plug 'joshdick/onedark.vim'
+Plug 'NewProggie/NewProggie-Color-Scheme'
 
 
 " wal for colors
@@ -218,17 +221,22 @@ call plug#end()
 " only allow dp & do while using fugitive to avoid any pauses while pressing d
 " in other modes.
 autocmd BufRead fugitive\:* xnoremap <buffer> dp :diffput<cr>|xnoremap <buffer> do :diffget<cr>
-command! Gstatus call LazyLoadFugitive('Gstatus')
-command! Gdiff call LazyLoadFugitive('Gdiff')
-command! Glog call LazyLoadFugitive('Glog')
-command! Gblame call LazyLoadFugitive('Gblame')
-command! Gcd call LazyLoadFugitive('Gcd')
 
-function! LazyLoadFugitive(cmd)
-  call plug#load('vim-fugitive')
-  call fugitive#detect(expand('%:p'))
-  exe a:cmd
-endfunction
+" Simply load fugitive non lazily for now.
+call plug#load('vim-fugitive')
+call fugitive#detect(expand('%:p'))
+" I had some problems with recursive LazyLoadFugitive calls.
+" command! Gstatus call s:LazyLoadFugitive('Gstatus')
+" command! Gdiff call s:LazyLoadFugitive('Gdiff')
+" command! Glog call s:LazyLoadFugitive('Glog')
+" command! Gblame call s:LazyLoadFugitive('Gblame')
+" command! Gcd call s:LazyLoadFugitive('Gcd')
+
+" function! s:LazyLoadFugitive(cmd)
+"   call plug#load('vim-fugitive')
+"   call fugitive#detect(expand('%:p'))
+"   exe a:cmd
+" endfunction
 " }}}
 " WhichKey {{{
 call which_key#register(',', "g:which_key_map")
@@ -757,10 +765,10 @@ augroup custom_highlighting
     autocmd!
     " autocmd needed otherwise it only applies to the first window each
     " session
-    autocmd VimEnter,WinEnter * match ErrorMsg /[^\t]\zs\t\+/
+    autocmd VimEnter,WinEnter * match DiffDelete /[^\t]\zs\t\+/
     "Show tabs that are not at the start of a line
     " Except when typing that line:
-    autocmd VimEnter,WinEnter * match ErrorMsg /\s\+\%#\@<!$\| \+\ze\t/
+    autocmd VimEnter,WinEnter * match DiffDelete /\s\+\%#\@<!$\| \+\ze\t/
 
 
     " Highlight plugin fix for the carbonized-dark theme:
@@ -1804,6 +1812,7 @@ if has('nvim')
     " set inccommand=nosplit
     let g:use_cursor_shapes = 1
 
+    tnoremap <Esc> <C-\><C-n>
     tnoremap <C-n> <C-\><C-n>
     tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
 
