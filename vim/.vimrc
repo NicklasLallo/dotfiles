@@ -20,6 +20,12 @@ Plug 'vim-scripts/vis'
 " Let vim interact with tmux
 " Automate things with :call VimuxRunCommand("shell command")
 Plug 'benmills/vimux'
+" This a vim plugin that enables MATLAB-style cell mode execution for python scripts in vim, assuming an ipython interpreter running in screen (or tmux).
+"    C-c sends the currently selected lines to tmux
+"    C-g sends the current cell to tmux
+"    C-b sends the current cell to tmux, moving to the next one
+Plug 'julienr/vim-cellmode'
+
 
 " Go
 Plug 'fatih/vim-go'
@@ -678,6 +684,18 @@ let g:ale_sign_warning = '⚠\ '
 " }}}
 " Other {{{
 
+" vim-ipython tmux integration
+let g:cellmode_tmux_sessionname=''  " Will try to automatically pickup tmux session
+let g:cellmode_tmux_windowname=''
+let g:cellmode_tmux_panenumber='2'
+let g:cellmode_default_mappings='0'
+vmap <silent> <C-c> :call RunTmuxPythonChunk()<CR>
+" noremap <silent> <C-b> :call RunTmuxPythonCell(0)<CR>
+noremap <silent> <C-g> :call RunTmuxPythonCell(1)<CR>
+" let g:cellmode_screen_sessionname='ipython'
+" let g:cellmode_screen_window='0'
+
+
 nnoremap <silent> <Plug>AppendTextNext gn<esc>".p:call repeat#set("\<Plug>AppendTextNext")<CR>
 nnoremap <silent> <Plug>AppendText *Ncgn<C-r>"<C-o>:call repeat#set("\<Plug>AppendTextNext")<CR>
 nmap <silent> c>* <Plug>AppendText
@@ -756,14 +774,59 @@ endif
 " makes the background disapear (so that it uses default terminal color and transparency)
 " hi Normal ctermbg=NONE
 
+function! GuiVSCterm()
+    let s:CtermOnly = ['dream', 'dream-light', 'wal'] " Add themes manually if they don't support termguicolors
+    if (index(s:CtermOnly, g:colors_name) >= 0)
+        set notermguicolors
+    else
+        set termguicolors
+    endif
+endfunction
+
+function! ReturnHighlightTerm(group, term)
+   " Store output of group to variable
+   let output = execute('hi ' . a:group)
+
+   " Find the term we're looking for
+   let value = matchstr(output, a:term.'=\zs\S*')
+   if value ==# ''
+       let value = 'NONE'
+   endif
+   return value
+endfunction
+
+function! FixBrokenColors()
+    let s:leftColCtermBg  = ReturnHighlightTerm('LineNr', 'ctermbg')
+    let s:leftColGuiBg    = ReturnHighlightTerm('LineNr', 'guibg')
+
+    execute('hi SignColumn ctermbg=' . s:leftColCtermBg . ' guibg=' . s:leftColGuiBg)
+
+    " Use diff colors for Sign as well:
+    let s:DiffAddCterm       = ReturnHighlightTerm('DiffAdd', 'ctermfg')
+    let s:DiffChangeCterm    = ReturnHighlightTerm('DiffChange', 'ctermfg')
+    let s:DiffDeleteCterm    = ReturnHighlightTerm('DiffDelete', 'ctermfg')
+    let s:DiffAddGui         = ReturnHighlightTerm('DiffAdd', 'guifg')
+    let s:DiffChangeGui      = ReturnHighlightTerm('DiffChange', 'guifg')
+    let s:DiffDeleteGui      = ReturnHighlightTerm('DiffDelete', 'guifg')
+
+    " Optionally force to always use these gree/blue/red defaults:
+    " Add ctermfg=108 guifg=#87af87
+    " Change ctermfg=68 guifg=#5f87d7
+    " Delete ctermfg=161 guifg=#d7005f
+
+    execute('hi SignifySignAdd ctermbg='    . s:leftColCtermBg . ' guibg=' . s:leftColGuiBg . ' ctermfg=' . s:DiffAddCterm . ' guifg=' . s:DiffAddGui)
+    execute('hi SignifySignChange ctermbg=' . s:leftColCtermBg . ' guibg=' . s:leftColGuiBg . ' ctermfg=' . s:DiffChangeCterm . ' guifg=' . s:DiffChangeGui)
+    execute('hi SignifySignDelete ctermbg=' . s:leftColCtermBg . ' guibg=' . s:leftColGuiBg . ' ctermfg=' . s:DiffDeleteCterm . ' guifg=' . s:DiffDeleteGui)
+
+    execute('hi ALEErrorSign ctermbg=' . s:leftColCtermBg . ' guibg=' . s:leftColGuiBg . ' ctermfg=161 guifg=#d7005f')
+    execute('hi ALEWarningSign ctermbg=' . s:leftColCtermBg . ' guibg=' . s:leftColGuiBg . ' ctermfg=161 guifg=#d7005f')
+
+    call GuiVSCterm()
+endfunction
+
+
+
 highlight ExtraWhitespace ctermbg=1 guibg=#db6c6c
-if has('autocmd')
-augroup maingroup
-    autocmd!
-    " if colorschemes mess up the highlights
-    " autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
-    autocmd filetype html, xml set listchars-=tab:>.
-endif
 augroup custom_highlighting
     autocmd!
     " autocmd needed otherwise it only applies to the first window each
@@ -773,33 +836,18 @@ augroup custom_highlighting
     " Except when typing that line:
     autocmd VimEnter,WinEnter * match ErrorMsg /\s\+\%#\@<!$\| \+\ze\t/
 
-
-    " Highlight plugin fix for the carbonized-dark theme:
-    if g:colors_name ==# 'carbonized-dark'
-        " ale
-        " ---
-        autocmd VimEnter,WinEnter * highlight ALEErrorSign ctermfg=161 guifg=#d7005f
-        autocmd VimEnter,WinEnter * highlight ALEWarningSign ctermfg=174 guifg=#d78787
-        " vim-signify
-        " -----------
-        autocmd VimEnter,WinEnter * highlight SignifySignAdd ctermfg=108 guifg=#87af87 ctermbg=10 guibg=#3b3b37
-        autocmd VimEnter,WinEnter * highlight SignifySignChange ctermfg=68 guifg=#5f87d7 ctermbg=10 guibg=#3b3b37
-        autocmd VimEnter,WinEnter * highlight SignifySignDelete ctermfg=161 guifg=#d7005f ctermbg=10 guibg=#3b3b37
+    autocmd VimEnter,WinEnter * call FixBrokenColors()
+    if exists('##ColorScheme')
+        autocmd ColorScheme * call FixBrokenColors()
     endif
 augroup END
-" :match ExtraWhitespace /\s\+$\| \+\ze\t/ "Show trailing whitespace and space before a tab
 
-" match ErrorMsg /\s\+\%#\@<!$\| \+\ze\t/
-":autocmd InsertLeave * redraw!
-":match "Switch off :match highlighting.
 
-" to avoid screen flashing use this
-":au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-":au InsertLeave * match ExtraWhitespace /\s\+$/
 
-" apply highlighting in all windows and not only current
-":autocmd BufWinEnter * match ExtraWhitespace /^\s* \s*\|\s\+$/
-" autocmd BufWinLeave * call clearmatches()
+augroup maingroup
+    autocmd!
+    autocmd filetype html, xml set listchars-=tab:>.
+augroup END
 
 " automatically resize windows when vim is resized
 autocmd VimResized * wincmd =
@@ -929,9 +977,14 @@ let &t_ut=''
 " Keybindings {{{
 " F-keys {{{
 
-nmap <F2> :cs find s <C-R>=expand("<cword>")<CR><CR>:echo "Find C symbol"
-nmap <F3> :cs find g <C-R>=expand("<cword>")<CR><CR>:echo "Find function definition"
-nmap <F4> :cs find c <C-R>=expand("<cword>")<CR><CR>:echo "Find function calls"
+
+" Automate things with :call VimuxRunCommand("shell command")
+
+" By default F1 is for help. But :help does the same thing so.
+nmap <F1> :call <SID>Runfile()<CR>:echo "Ran file in tmux split"<CR>
+nmap <F2> :cs find s <C-R>=expand("<cword>")<CR><CR>:echo "Find C symbol"<CR>
+nmap <F3> :cs find g <C-R>=expand("<cword>")<CR><CR>:echo "Find function definition"<CR>
+nmap <F4> :cs find c <C-R>=expand("<cword>")<CR><CR>:echo "Find function calls"<CR>
 map <F5> :mksession! ~/.vim_session<cr>
 map <F6> :source ~/.vim_session<cr>
 " Toggle auto change directory
@@ -946,6 +999,12 @@ vmap <C-C> y
 
 " Control-V Paste in insert and command mode
 " cmap <C-V> <C-r>0
+function! s:Runfile()
+  if &filetype ==# 'python'
+    call VimuxRunCommand("clear; python3 " . bufname("%"))
+    "TODO add support for more filetypes when needed
+  endif
+endfunction
 
 " }}}
 " nnoremap {{{
