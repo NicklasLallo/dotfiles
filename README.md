@@ -25,13 +25,17 @@ Since these are dotfiles they obviously require you to also install the original
 To more quickly set things up I recomend to use GNU Stow to symlink the dotfiles.
 1. Clone the repo into your home folder, e.g. `~/dotfiles`.
 2. Install stow from your package manager. (or do the symlinks manualy, see: `man ln`)
-4. Backup any of your original config files you want to keep around.
-3. Go to the repo and run `stow vim` or similar to symlink the files asociated with that part of the setup.
+3. Backup any of your original config files you want to keep around.
+4. Download the submodules (additional git repos) with `git submodule init` & `git submodule update`.
+5. Go to the repo and run `stow vim` or similar to symlink the files asociated with that part of the setup.
 
 ## Considerations
 My setup uses two monitors, one of which is an ultrawide monitor with higher than usual (1080p) resolution. If you use this on any other system you will have to manualy tweak the positioning of the polybar segments. This is not difficult, simple math should suffice. Same with the gaps/borders, they are most likely to large on for example only a single 1080p or 720p monitor.
 
 Also, even those I intend for these configuration files to be modular and somewhat independant, I still highly recomend that you read through every file before you use it. Who knows what I might have included in here.
+
+## Submodules
+In order to not copy others' repos into this repo some things such as oh-my-zsh are included in the form of submodules. This means that after you `git clone` this repo you will need to also run `git submodule init` and then `git submodule update`.
 
 ### Addons
 Many of the dotfiles require additional software/plugins or such that aren't imediately obvious, for example extra fonts, or other programs that don't require their own dotfiles, I have tried to document those in this file but I will have most likely missed one or more of them.
