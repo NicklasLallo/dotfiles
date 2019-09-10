@@ -1,6 +1,7 @@
 # Path to your oh-my-zsh installation.
-  export ZSH=/home/la1/.oh-my-zsh
+  export ZSH=$HOME/.oh-my-zsh
 
+# . $HOME/.z.sh
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
@@ -54,13 +55,18 @@ SPACESHIP_CHAR_SYMBOL="%F{red}${sepSymbol}%F{magenta}${sepSymbol}%F{cyan}${sepSy
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions)
+plugins=(fzf-z git forgit z zsh-autosuggestions colored-man-pages command-not-found fancy-ctrl-z)
+# dune-quotes included as well
+# Most plugins are bundled in oh-my-zsh but these are manually downloaded into .oh-my-zsh/custom/plugins:
+# fzf-z
+# zsh-syntax-highlighting
+# forgit - fzf+git! commands: ga (add), glo (log), gi (ignore create), gd (diff), grh (reset head), gcf (checkout), gss (stash view), gclean (clean). Hotkeys: Strl+S (sort), ? (toggle preview), Ctrl+R (toggle selection), Ctrl+k/j (selection move), alt+w (toggle preview wrap), alt+j/k (previe move)
 
 # User configuration
 
   export EDITOR=nvim
   export RANGER_LOAD_DEFAULT_RC="FALSE"
-  export PATH="/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl"
+  export PATH="/bin/:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl"
   export PATH=~/dotfiles/scripts/:$PATH
   export PATH="${PATH}:${HOME}/.local/bin/"
   export PATH="${PATH}:${HOME}/.gem/ruby/2.6.0/bin/"
@@ -126,16 +132,20 @@ if [[ $TERM == 'rxvt-unicode-256color' ]]; then
 fi
 
 
-showerthoughts=$(curl -s --connect-timeout 5 -A '/u/DrDoctor13' \
-'https://www.reddit.com/r/showerthoughts/top.json?sort=top&t=week&limit=100' | \
-python2.7 -c 'import sys, random, json; randnum = random.randint(0,99); response = json.load(sys.stdin)["data"]["children"][randnum]["data"]; print "\n\"" + response["title"] + "\""; print "    -" + response["author"] + "\n";')
-echo $showerthoughts | cowsay | lolcat
+if [[ $USER == 'la1' ]]; then
+    showerthoughts=$(curl -s --connect-timeout 5 -A '/u/DrDoctor13' \
+    'https://www.reddit.com/r/showerthoughts/top.json?sort=top&t=week&limit=100' | \
+    python2.7 -c 'import sys, random, json; randnum = random.randint(0,99); response = json.load(sys.stdin)["data"]["children"][randnum]["data"]; print "\n\"" + response["title"] + "\""; print "    -" + response["author"] + "\n";')
+    echo $showerthoughts | cowsay | lolcat
+fi
 
+alias fd='fdfind'
+export FD_COMMAND="fdfind"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export GOBIN="$HOME/go/bin"
 export GOPATH="$HOME/go"
 export FZF_DEFAULT_OPS="--extended"
-export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git"
+export FZF_DEFAULT_COMMAND="$FD_COMMAND --type f --hidden --follow --exclude .git"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 alias vim='nvim'
@@ -143,8 +153,9 @@ alias nv='nvim'
 alias :q='exit'
 alias please='sudo'
 alias kindly='sudo'
-alias f='fzf --height 50% --border --preview "pygmentize -g -O style=monokai {}"'
-alias vimf='vim $(fzf --height 50% --border --preview "pygmentize -g -O style=monokai {}")'
+# alias f='fzf --height 50% --border --preview "pygmentize -g -O style=monokai {}"'
+alias f='fzf --height 50% --border --preview "bat --color=always {}"'
+alias vimf='vim $(fzf --height 50% --border --preview "bat {}")'
 
 function ranger-run(){
     zle kill-whole-line
@@ -173,7 +184,7 @@ alias gb="git branchs"
 alias cdd="cd ~/dotfiles"
 
 function f_widget {
-    local file=$(fzf --height 50% --border --preview "pygmentize -g -O style=monokai {}")
+    local file=$(fzf --height 50% --border --preview "bat {}")
     if [[ -n $file ]] then;
         zle kill-whole-line
         zle reset-prompt
@@ -352,4 +363,37 @@ unset -f bind-git-helper
 
 
 
+# if exa is installed add some aliases:
+# if hash exa &> /dev/null; then
+if (( $+commands[exa] )); then
+    # general use
+    alias ls='exa'                                                         # ls
+    alias l='exa -lbF --git'                                               # list, size, type, git
+    alias ll='exa -lbGF --git'                                             # long list
+    alias llm='exa -lbGF --git --sort=modified'                            # long list, modified date sort
+    alias la='exa -lbhHigUmuSa --time-style=long-iso --git --color-scale'  # all list
+    alias lx='exa -lbhHigUmuSa@ --time-style=long-iso --git --color-scale' # all + extended list
+
+    # speciality views
+    alias lS='exa -1'			                                                  # one column, just names
+    alias lt='exa --tree --level=2'                                         # tree
+fi
+
+# make git use diff-so-fancy if it's sourced:
+if [[ -f $HOME/diff-so-fancy ]]; then
+    git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
+    git config --bool --global diff-so-fancy.markEmptyLines false
+    git config --global color.ui true
+    git config --global color.diff-highlight.oldNormal    "red bold"
+    git config --global color.diff-highlight.oldHighlight "red bold 52"
+    git config --global color.diff-highlight.newNormal    "green bold"
+    git config --global color.diff-highlight.newHighlight "green bold 22"
+    git config --global color.diff.meta       "11"
+    git config --global color.diff.frag       "magenta bold"
+    git config --global color.diff.commit     "yellow bold"
+    git config --global color.diff.old        "red bold"
+    git config --global color.diff.new        "green bold"
+    git config --global color.diff.whitespace "red reverse"
+fi
 export LESS="-M -I -R"
+source $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

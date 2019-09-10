@@ -31,12 +31,15 @@ To more quickly set things up I recomend to use GNU Stow to symlink the dotfiles
 ## Considerations
 My setup uses two monitors, one of which is an ultrawide monitor with higher than usual (1080p) resolution. If you use this on any other system you will have to manualy tweak the positioning of the polybar segments. This is not difficult, simple math should suffice. Same with the gaps/borders, they are most likely to large on for example only a single 1080p or 720p monitor.
 
+Also, even those I intend for these configuration files to be modular and somewhat independant, I still highly recomend that you read through every file before you use it. Who knows what I might have included in here.
+
 ### Addons
 Many of the dotfiles require additional software/plugins or such that aren't imediately obvious, for example extra fonts, or other programs that don't require their own dotfiles, I have tried to document those in this file but I will have most likely missed one or more of them.
 + Various fonts for polybar. And Nerdfonts for Kitty.
 + ranger is using [ranger\_devicons](https://github.com/alexanderjeurissen/ranger_devicons).
 + tmux is using [powerline](https://github.com/powerline/powerline).
 + zsh is using [spaceship](https://denysdovhan.com/spaceship-prompt/).
++ zsh is using oh-my-zsh with various plugins.
 
 ## Custom keybinds
 ### i3
@@ -88,13 +91,19 @@ The wallpaper is set with feh & pywal in the i3 configuration, as startup comman
 + `fshow` - Git commit browser. `enter` for show, `Ctrl-d` for diff, \` toggles sort.
 + Various git log FZF scripts, see the `.zshrc` file for more details. , `
 + `Ctrl+r`, `Ctrl+t`, `Alt+c` - Default fzf behaviour.
-+ `Ctrl+f` - fzf fuzzy search for file recursively down from current location, opens selection for editing in vim.
++ `Ctrl+f` - fzf fuzzy search for file recursively down from current location, opens selection for editing in vim. By default requires that fd is installed.
++ `Ctrl+j` - fzf fuzzy search the result of [z](https://github.com/rupa/z). z is installed as a plugin bundled with oh-my-zsh.
 + `cdd` - `cd ~/dotfiles`
 + `cdf` - cd to the directory of fzf fuzzy find filename.
 + `fkill` - fzf search all processes you have permission to kill, SIGTERM the selection.
++ `gs[tatus] - git status (These and a few others come from the oh-my-zsh bundled git plugin)
++ `gp[ush]` - git push (These and a few others come from the oh-my-zsh bundled git plugin)
++ `gl` - git pull (These and a few others come from the oh-my-zsh bundled git plugin)
++ `ga glo gi gd grh gcf gss gclean` - git+fzf magic from [forgit](https://github.com/wfxr/forgit). Included copy in `oh-my-zsh/custom/plugin`
 + `l` - `ls -lah`
 + `:e` - `vim`
 + `:q` - `exit`
++ Read the `.zshrc` file for more information
 
 ## Misc software recomendations.
 - CLI
@@ -107,7 +116,11 @@ The wallpaper is set with feh & pywal in the i3 configuration, as startup comman
     - [fzf](https://github.com/junegunn/fzf) - A command-line fuzzy finder. Used a lot in zshrc, vimrc, & tmux.conf.
     - [Ag](https://github.com/BurntSushi/ripgrep) - A line-oriented search tool that recursively searches directories for a regex pattern. Simiar to Grep, but faster.
     - [Nerd-Fonts](https://github.com/ryanoasis/nerd-fonts) - Patch fonts with a lot of extra symbols for use in terminal and more.
+    - [fd](https://github.com/sharkdp/fd) - A simple, fast and user-friendly alternative to 'find'.
     - [fpp](https://github.com/facebook/pathpicker) - Helps picks a file path with UI from from a messy shellscript's output and pipes it into any program (mainly $EDITOR).
+    - pygments - python pip package for syntax highlighting, I mainly use it for the preview window in fzf.
+    - [bat](https://github.com/sharkdp/bat) - A cat(1) clone with wings.
+
 - GUI
     - [i3-gaps](https://github.com/Airblader/i3) - i3 fork with additional settings for spacing around/between windows.
     - [pywal](https://github.com/dylanaraps/pywal) - Generate and change color-schemes on the fly. Change the wallpaper and the theme of most applications to match.
