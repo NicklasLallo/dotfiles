@@ -218,7 +218,10 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 Plug 'ryanoasis/vim-devicons'
 if has('nvim')
-    Plug 'kassio/neoterm'
+    " Strange Undefined Variable warnings together
+    " with ipython3
+    " Plug 'kassio/neoterm'
+    " let g:neoterm_repl_python = 'ipython3'
 endif
 
 " semantic-based completion
@@ -844,9 +847,10 @@ augroup custom_highlighting
     " Except when typing that line:
     autocmd VimEnter,WinEnter * match DiffDelete /\s\+\%#\@<!$\| \+\ze\t/
 
-    autocmd VimEnter,WinEnter * call FixBrokenColors()
     if exists('##ColorScheme')
         autocmd ColorScheme * call FixBrokenColors()
+    else
+        autocmd VimEnter,WinEnter * call FixBrokenColors()
     endif
 augroup END
 
