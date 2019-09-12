@@ -45,6 +45,9 @@ Many of the dotfiles require additional software/plugins or such that aren't ime
 + zsh is using [spaceship](https://denysdovhan.com/spaceship-prompt/).
 + zsh is using oh-my-zsh with various plugins.
 
+### Fonts
+Some fonts are included in here, such as a version of Iosevka Mono that it patched with ligatures that actually work in Kitty (from Fira Code), as well as nerdfonts Hack (so that Iosevka call fallback onto Hack for any strange Nerdfonts symbols). After doing `stow fonts` it is also neccessary to do `sudo fc-cache -f` to get the fonts working.
+
 ## Custom keybinds
 ### i3
 Mostly defauly keybindings as to not confuse other i3 users. For more information check out the i3 config file. Here are some additions:
