@@ -274,7 +274,7 @@ font pango:lemon 0
 for_window [class=".*"] title_format "<span font='Artwiz Lime 0'> > %title</span>"
 
 for_window [class="^.*"] border pixel 0
-for_window [floating] border pixel 10
+for_window [floating] border pixel 20
 for_window [tiling] border pixel 0
 for_window [class="kitty"] border pixel 20
 
