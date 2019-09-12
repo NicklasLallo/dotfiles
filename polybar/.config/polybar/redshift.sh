@@ -10,23 +10,25 @@ if [[ $? -eq 0 ]]; then
     temp=${temp//K/}
 fi
 
-# OPTIONAL: Append ' ${temp}K' after $icon
+# Depending on the time of day & year readshift will report a "temperature"
+# This temperature is then printed on the polybar in the top right corner with
+# a hand picked color depending on how late it is.
 if [[ -z $temp ]]; then
     echo "$icon%{F#677} ${temp}K"       # Greyed out (not running)
 elif [[ $temp -ge 5500 ]]; then
-    echo "$icon%{F#5AE} ${temp}"       # Daytime, temp≈5000+
+    echo "$icon%{F#5AE} ${temp}K"       # Daytime
 elif [[ $temp -ge 5300 ]]; then
-    echo "$icon%{F#78D} ${temp}"       # Daytime, temp≈5000+
+    echo "$icon%{F#78D} ${temp}K"       # Daytime
 elif [[ $temp -ge 5000 ]]; then
-    echo "$icon%{F#88C} ${temp}"       # Daytime, temp≈5000+
+    echo "$icon%{F#88C} ${temp}K"       # Daytime
 elif [[ $temp -ge 4500 ]]; then
-    echo "$icon%{F#98A} ${temp}"       # Evening, temp≈4000+
+    echo "$icon%{F#98A} ${temp}K"       # Evening
 elif [[ $temp -ge 4200 ]]; then
-    echo "$icon%{F#A88} ${temp}"       # Evening, temp≈4000+
+    echo "$icon%{F#A88} ${temp}K"       # Evening
 elif [[ $temp -ge 4000 ]]; then
-    echo "$icon%{F#B76} ${temp}"       # Evening, temp≈4000+
+    echo "$icon%{F#B76} ${temp}K"       # Evening
 elif [[ $temp -ge 3700 ]]; then
-    echo "$icon%{F#D64} ${temp}"       # Nighttime, temp<4000
+    echo "$icon%{F#D64} ${temp}K"       # Nighttime
 else
-    echo "$icon%{F#F52} ${temp}K"      # Nighttime, temp<3800
+    echo "$icon%{F#F52} ${temp}K"      # Nighttime
 fi
