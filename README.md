@@ -40,20 +40,23 @@ To more quickly set things up I recomend to use GNU Stow to symlink the dotfiles
 5. Go to the repo and run `stow vim` or similar to symlink the files asociated with that part of the setup.
 
 ## Considerations
-My setup uses two monitors, one of which is an ultrawide monitor with higher than usual (1080p) resolution. If you use this on any other system you will have to manualy tweak the positioning of the polybar segments. This is not difficult, simple math should suffice. Same with the gaps/borders, they are most likely to large on for example only a single 1080p or 720p monitor.
+My setup uses two monitors, one of which is an ultrawide monitor with an unusually high resolution (3440x1440). If you use this on any other system you will have to manualy tweak the positioning of the polybar segments. This is not difficult, simple math should suffice. Same with the gaps/borders, they are most likely to large on for example only a single 1080p or 720p monitor. The i3 config file also says wich workspace should go on which monitor (use `xrandr` to find the names of your monitors).
 
-Also, even those I intend for these configuration files to be modular and somewhat independant, I still highly recomend that you read through every file before you use it. Who knows what I might have included in here.
+Also, even though I intend for these configuration files to be modular and somewhat independant, I still highly recomend that you read through every file before you use it. Who knows what I might have included in here.
 
 ## Submodules
 In order to not copy others' repos into this repo some things such as oh-my-zsh are included in the form of submodules. This means that after you `git clone` this repo you will need to also run `git submodule init` and then `git submodule update`.
 
+Some other things that could be submodules aren't at the moment, such as some fonts or small scripts. That might change in the future.
+
 ### Addons
 Many of the dotfiles require additional software/plugins or such that aren't imediately obvious, for example extra fonts, or other programs that don't require their own dotfiles, I have tried to document those in this file but I will have most likely missed one or more of them.
-+ Various fonts for polybar. And Nerdfonts for Kitty.
++ Various fonts for polybar (check the polybar config file). And Nerdfonts for Kitty (should be included for now).
 + ranger is using [ranger\_devicons](https://github.com/alexanderjeurissen/ranger_devicons).
 + tmux is using [powerline](https://github.com/powerline/powerline).
-+ zsh is using [spaceship](https://denysdovhan.com/spaceship-prompt/).
-+ zsh is using oh-my-zsh with various plugins.
++ tmux also has a plugin manager, run `prefix shift+i` once first time you start it and it should set everything up by itself.
++ zsh is using multiple plugins such as [spaceship](https://denysdovhan.com/spaceship-prompt/). They should all be included as submoduels for now.
++ vim has a lot of plugins, they are managed by Plug from inside vim.
 
 ### Fonts
 Some fonts are included in here, such as a version of Iosevka Mono that it patched with ligatures that actually work in Kitty (from Fira Code), as well as nerdfonts Hack (so that Iosevka call fallback onto Hack for any strange Nerdfonts symbols). After doing `stow fonts` it is also neccessary to do `sudo fc-cache -f` to get the fonts working.
