@@ -19,8 +19,6 @@ Vim running in a floating terminal windows with the Iosevka font. It supports li
 
 ![Vim Showing some simple code](https://github.com/NicklasLallo/dotfiles/raw/master/Pictures/Readme/vimRedshift1.png)
 With Redshift disabled (evening)
-![Vim Showing some simple code](https://raw.githubusercontent.com/NicklasLallo/dotfiles/master/Pictures/Readme/vimRedshift2.png)
-With Redshift enabled (evening)
 ![Vim Showing some simple code](https://raw.githubusercontent.com/NicklasLallo/dotfiles/master/Pictures/Readme/vimRedshift3.png)
 Different background and vim colortheme.
 
