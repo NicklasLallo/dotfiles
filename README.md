@@ -12,10 +12,21 @@ My current dotfiles. Could be yours as well.
 + **Editor**: Vim (main) & Spacemacs
 
 ## Updated view:
-![2019 Preview of Setup](https://i.imgur.com/yLiOPFK.png)
+![2019 Preview of Setup](https://github.com/NicklasLallo/dotfiles/raw/master/Pictures/Readme/yLiOPFK.png)
+
+![Vim With Iosevka Font](https://github.com/NicklasLallo/dotfiles/raw/master/Pictures/Readme/VimWithIosevkaFont.png)
+Vim running in a floating terminal windows with the Iosevka font. It supports ligatures and all powerline & nerdfont symbols.
+
+![Vim Showing some simple code](https://github.com/NicklasLallo/dotfiles/raw/master/Pictures/Readme/vimRedshift1.png)
+With Redshift disabled (evening)
+![Vim Showing some simple code](https://raw.githubusercontent.com/NicklasLallo/dotfiles/master/Pictures/Readme/vimRedshift2.png)
+With Redshift enabled (evening)
+![Vim Showing some simple code](https://raw.githubusercontent.com/NicklasLallo/dotfiles/master/Pictures/Readme/vimRedshift3.png)
+Different background and vim colortheme.
 
 ## Older picture:
-![Preview of Setup](https://i.imgur.com/tewk8oJ.png)
+![Preview of Setup](https://github.com/NicklasLallo/dotfiles/raw/master/Pictures/Readme/Old.png)
+This picture isn't quite accurate any more.
 
 ## Instructions:
 You can easily pick and choose the parts you like without having to use everything. Each folder is named after a package and contains every configuration file used by that application. The files inside the folders are relative to home (e.g. the file `vim/.vimrc` goes to `~/.vimrc`).
