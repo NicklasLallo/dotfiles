@@ -16,7 +16,8 @@ My current dotfiles. Could be yours as well.
 
 ![Vim With Iosevka Font](https://github.com/NicklasLallo/dotfiles/raw/master/Pictures/Readme/VimWithIosevkaFont.png)
 Vim running in a floating terminal windows with the Iosevka font. It supports ligatures and all powerline & nerdfont symbols.
-
+![1080p Terminal and Browser](https://raw.githubusercontent.com/NicklasLallo/dotfiles/master/Pictures/Readme/1080pTerminalAndBrowser.png)
+More common 1080p monitor. Every time a new terminal is opened you get a fresh showerthought quote presented to you buy a rainbow cow.
 ![Vim Showing some simple code](https://github.com/NicklasLallo/dotfiles/raw/master/Pictures/Readme/vimRedshift1.png)
 With Redshift disabled (evening)
 ![Vim Showing some simple code](https://raw.githubusercontent.com/NicklasLallo/dotfiles/master/Pictures/Readme/vimRedshift3.png)
