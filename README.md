@@ -77,11 +77,13 @@ A lot of custom settings, mostly documented inside `.vimrc`.
 ### tmux
 One of the main programs that have changed a lot from default in terms of keybindings. Default terminal copy-paste should still work as expected (`ctrl+shift+c`, mouse double, & tripple click for copy; middle mouse button, or `ctrl+shift+v` for paste).
 + Enable default vi-bindings (expect in command mode).
-+ `ctrl + w` - Prefix, instead of `ctrl + b`. More vim like. Double press sends `ctrl + w` to the underlaying application.
++ `ctrl + w` - Prefix, instead of `ctrl + b`. More vim like. Double press sends `ctrl + w` to the underlaying application. I prefer to not use splits much in vim anyways, and instead use buffers (fzf switch with `ctrl+b`) or tabs. And it is still possible to do the vim window splits it just requires more work right now.
 + `Prefix + r` - Reload tmux config.
-+ `Prefix + s` & `Prefix + v` - Split horisontaly and vertically, same as vim.
-+ Mouse off - Current solution to make the mouse behave as expected when doing quick copy-paste from terminal. Not perfect with vertical split panes. Try to use extrakto instead.
-+ `Prefix + ctrl-c` - Copy-mode.
++ `Prefix + w` - choose-tree -Zw, useful for managing multiple tmux windows/sessions.
++ `Prefix + s` & `Prefix + v` - Split horisontaly and vertically, same as vim. (using `"` or `%` is also still possible)
++ Mouse off - Current solution to make the mouse behave as expected when doing quick copy-paste from terminal. Not perfect with selecting text from vertical split panes. Try to use extrakto instead.
++ `Prefix + ctrl-u` - Copy-mode.
++ `Prefix + c` - New windows (commonly reffered to as a tab outside of tmux lingo)
 + `Prefix + hjkl` - select pane.
 + `Prefix + HJKL` - resize pane, repeatable.
 + `Prefix + q` - kill pane. Same as vim close window. (default display panes moved to `Prefix + ctrl-q`)
@@ -93,7 +95,7 @@ One of the main programs that have changed a lot from default in terms of keybin
 + copy-mode-vi `Home` - start of line.
 + copy-mode-vi `End` - end of line.
 + copy-mode-vi `y` - copy selection.
-+ `Prefix + I` - Install plugins. Run once and forget. (`Prefix + U` update plugins)
++ `Prefix + I` - Install plugins. Run once and forget. (`Prefix + U` update plugins), shift+i
 + `Prefix + Tab` - Start [extrakto](https://github.com/laktak/extrakto) plugin. This is magic. Requires fzf.
 + No non prefix keybindings that start with `ctrl` due to risk of colisions with applications running inside, such as vim/fzf.
 + `Alt + Arrows` - Switch panes. Leave `Alt+hjkl` for the shell or vim.
@@ -106,7 +108,7 @@ The wallpaper is set with feh & pywal in the i3 configuration, as startup comman
 + TODO more info.
 
 ## Scripts & Aliases
-+ `bm` (**b**ook**m**ark) - Appends the current working directory (path) into a file in your home directory. If passed any additional text it will append that as a comment on the line in the file. I use this to bookmark all my most commonly visited locations in the file system.
++ `bm` (**b**ook**m**ark) - Appends the current working directory (path) into a file in your home directory. If passed any additional text it will append that as a comment on the line in the file. I use this to bookmark all my most commonly visited locations in the file system. Another option is to use z.
 + `cdb` (**cd** **b**ookmark) - Opens the file of bookmarks from your home directory, passes the lines to [fzf](https://github.com/junegunn/fzf), allows you to fuzzy search select a bookmark based on path or comment, and then changes your current directory to that location.
 + `fshow` - Git commit browser. `enter` for show, `Ctrl-d` for diff, \` toggles sort.
 + Various git log FZF scripts, see the `.zshrc` file for more details. , `
@@ -138,7 +140,7 @@ The wallpaper is set with feh & pywal in the i3 configuration, as startup comman
     - [Nerd-Fonts](https://github.com/ryanoasis/nerd-fonts) - Patch fonts with a lot of extra symbols for use in terminal and more.
     - [fd](https://github.com/sharkdp/fd) - A simple, fast and user-friendly alternative to 'find'.
     - [fpp](https://github.com/facebook/pathpicker) - Helps picks a file path with UI from from a messy shellscript's output and pipes it into any program (mainly $EDITOR).
-    - pygments - python pip package for syntax highlighting, I mainly use it for the preview window in fzf.
+    - pygments - python pip package for syntax highlighting, I mainly use it for the preview window in fzf. (replaced by bat bellow)
     - [bat](https://github.com/sharkdp/bat) - A cat(1) clone with wings.
 
 - GUI
