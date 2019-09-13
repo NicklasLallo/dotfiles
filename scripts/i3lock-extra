@@ -68,7 +68,7 @@ image_prepare() {
     # RX=640
     # RY=360
 
-    SR=$(xrandr --query | grep ' connected' | cut -f3 -d' ')
+    SR=$(xrandr --query | grep -P ' connected [0-9]+' | cut -f3 -d' ')
     for RES in $SR
     do
         # monitor position/offset
