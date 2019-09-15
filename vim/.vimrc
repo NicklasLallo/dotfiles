@@ -36,8 +36,26 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 
 " Which-key similar to spacemacs
 Plug 'liuchengxu/vim-which-key'
+
+" Syntax Highlighting for i3 config file
 Plug 'PotatoesMaster/i3-vim-syntax'
 
+" Nice opening screen
+Plug 'mhinz/vim-startify'
+
+        let g:startify_commands = [
+        \   { 'up': [ 'Update Plugins', ':PlugUpdate' ] },
+        \   { 'ug': [ 'Upgrade Plugin Manager', ':PlugUpgrade' ] },
+        \ ]
+        
+        let g:startify_bookmarks = [
+            \ { 'c': '~/.vimrc' },
+            \ { 'g': '~/dotfiles/.gitconfig' },
+            \ { 'z': '~/.zshrc' }
+        \ ]
+
+        autocmd User Startified setlocal cursorline
+        nmap <leader>st :Startify<cr>
 
 " Emmet for vim
 Plug 'mattn/emmet-vim'
@@ -441,6 +459,29 @@ imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 imap <c-x><c-l> <plug>(fzf-complete-line)
 inoremap <c-l> <C-x><C-l>
 
+        nnoremap <silent> <Leader>C :call fzf#run({
+        \   'source':
+        \     map(split(globpath(&rtp, "colors/*.vim"), "\n"),
+        \         "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
+        \   'sink':    'colo',
+        \   'options': '+m',
+        \   'left':    30
+        \ })<CR>
+
+
+        command! FZFMru call fzf#run({
+        \  'source':  v:oldfiles,
+        \  'sink':    'e',
+        \  'options': '-m -x +s',
+        \  'down':    '40%'})
+        
+        command! -bang -nargs=* Find call fzf#vim#grep(
+            \ 'rg --column --line-number --no-heading --follow --color=always '.<q-args>, 1,
+            \ <bang>0 ? fzf#vim#with_preview('up:60%') : fzf#vim#with_preview('right:50%:hidden', '?'), <bang>0)
+        command! -bang -nargs=? -complete=dir Files
+            \ call fzf#vim#files(<q-args>, fzf#vim#with_preview('right:50%', '?'), <bang>0)
+        command! -bang -nargs=? -complete=dir GitFiles
+            \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview('right:50%', '?'), <bang>0)
 
 " }}}
 " NERDTree {{{
@@ -923,7 +964,7 @@ set undolevels=1000   " save more levels of undo
 set foldenable        " enable folding
 set foldlevelstart=10 " open most folds by default
 set foldnestmax=10    " 10 nested fold max
-set foldmethod=manual
+vim:set foldmethod=manual
 set iskeyword+=-      " Treat dash separated words as word text objects (for ciw etc)
 " set foldcolumn=1
 set mouse=a           " enable mouse
