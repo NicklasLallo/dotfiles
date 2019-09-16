@@ -964,7 +964,7 @@ set undolevels=1000   " save more levels of undo
 set foldenable        " enable folding
 set foldlevelstart=10 " open most folds by default
 set foldnestmax=10    " 10 nested fold max
-vim:set foldmethod=manual
+set foldmethod=manual
 set iskeyword+=-      " Treat dash separated words as word text objects (for ciw etc)
 " set foldcolumn=1
 set mouse=a           " enable mouse
