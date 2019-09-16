@@ -858,7 +858,7 @@ augroup END
 
 augroup maingroup
     autocmd!
-    autocmd filetype html, xml set listchars-=tab:>.
+    " autocmd filetype html, xml set listchars-=tab:>.
 augroup END
 
 " automatically resize windows when vim is resized
