@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-  export ZSH=$HOME/.oh-my-zsh
+export ZSH=$HOME/.oh-my-zsh
 
 # . $HOME/.z.sh
 # Set name of the theme to load.
@@ -64,19 +64,7 @@ plugins=(fzf-z git forgit z zsh-autosuggestions colored-man-pages command-not-fo
 
 # User configuration
 
-  export EDITOR=nvim
-  export RANGER_LOAD_DEFAULT_RC="FALSE"
-  export PATH="/bin/:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl"
-  export PATH=~/dotfiles/scripts/:$PATH
-  export PATH="${PATH}:${HOME}/.local/bin/"
-  export PATH="${PATH}:${HOME}/.gem/ruby/2.6.0/bin/"
-  export PATH="${PATH}:${HOME}/aur/imgur-screenshot/"
-# export MANPATH="/usr/local/man:$MANPATH"
-
-export ANDROID_HOME=/opt/android-sdk
-#  export TERM="xterm-256color"
-
-  setxkbmap -layout se
+setxkbmap -layout se
 
 source $ZSH/oh-my-zsh.sh
 
@@ -86,10 +74,6 @@ source $ZSH/oh-my-zsh.sh
 #     source /usr/lib/python3.6/site-packages/powerline/bindings/zsh/powerline.zsh
 # fi
 
-export PATH=/opt/cuda/bin${PATH:+:${PATH}}
-export CUDA_HOME=/opt/cuda${CUDA_HOME:+:${CUDA_HOME}}
-export LD_LIBRARY_PATH=/opt/cuda/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
-export LD_LIBRARY_PATH=/opt/cuda/extras/CUPTI/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
@@ -142,11 +126,6 @@ fi
 alias fd='fdfind'
 export FD_COMMAND="fdfind"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export GOBIN="$HOME/go/bin"
-export GOPATH="$HOME/go"
-export FZF_DEFAULT_OPS="--extended"
-export FZF_DEFAULT_COMMAND="$FD_COMMAND --type f --hidden --follow --exclude .git"
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 alias vim='nvim'
 alias nv='nvim'
@@ -219,22 +198,22 @@ cdf() {
 
 # fkill - kill processes - list only the ones you can kill. Modified the earlier script.
 fkill() {
-    local pid 
+    local pid
     if [ "$UID" != "0" ]; then
         pid=$(ps -f -u $UID | sed 1d | fzf -m | awk '{print $2}')
     else
         pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
-    fi  
+    fi
 
     if [ "x$pid" != "x" ]
     then
         echo $pid | xargs kill -${1:-9}
-    fi  
+    fi
 }
 
 cdscuts_list_echo() {
     # cat $1 | sed 's/#.*//g' | sed '/^\s*$/d'
-    cat $1 | sed '/^\s*$/d' 
+    cat $1 | sed '/^\s*$/d'
     # Same as above but includes the comments for the search
 }
 
@@ -395,5 +374,4 @@ if [[ -f $HOME/diff-so-fancy ]]; then
     git config --global color.diff.new        "green bold"
     git config --global color.diff.whitespace "red reverse"
 fi
-export LESS="-M -I -R"
 source $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
