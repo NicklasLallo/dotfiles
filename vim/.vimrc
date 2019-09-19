@@ -34,28 +34,25 @@ Plug 'fatih/vim-go'
 " And also fix autoread in terminal vim (otherwise only working in gvim)
 Plug 'tmux-plugins/vim-tmux-focus-events'
 
-" Which-key similar to spacemacs
-Plug 'liuchengxu/vim-which-key'
-
 " Syntax Highlighting for i3 config file
 Plug 'PotatoesMaster/i3-vim-syntax'
 
 " Nice opening screen
 Plug 'mhinz/vim-startify'
 
-        let g:startify_commands = [
-        \   { 'up': [ 'Update Plugins', ':PlugUpdate' ] },
-        \   { 'ug': [ 'Upgrade Plugin Manager', ':PlugUpgrade' ] },
-        \ ]
-        
-        let g:startify_bookmarks = [
-            \ { 'c': '~/.vimrc' },
-            \ { 'g': '~/dotfiles/.gitconfig' },
-            \ { 'z': '~/.zshrc' }
-        \ ]
+let g:startify_commands = [
+\   { 'up': [ 'Update Plugins', ':PlugUpdate' ] },
+\   { 'ug': [ 'Upgrade Plugin Manager', ':PlugUpgrade' ] },
+\ ]
 
-        autocmd User Startified setlocal cursorline
-        nmap <leader>st :Startify<cr>
+let g:startify_bookmarks = [
+    \ { 'c': '~/.vimrc' },
+    \ { 'g': '~/dotfiles/.gitconfig' },
+    \ { 'z': '~/.zshrc' }
+\ ]
+
+autocmd User Startified setlocal cursorline
+nmap <leader>st :Startify<cr>
 
 " Emmet for vim
 Plug 'mattn/emmet-vim'
@@ -243,7 +240,13 @@ if has('nvim')
 endif
 
 " semantic-based completion
+let g:ycm_key_detailed_diagnostics = '<leader>D'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+
+
+" Which-key similar to spacemacs
+Plug 'liuchengxu/vim-which-key'
+
 
 call plug#end()
 " }}}
@@ -292,6 +295,11 @@ let g:which_key_map['g'] = ':Tags Fuzzy search'
 let g:which_key_map['w'] = 'Write / Save'
 let g:which_key_map['i'] = 'Toggle Invisible'
 let g:which_key_map['l'] = 'Go To last Tab'
+let g:which_key_map['C'] = 'color test'
+let g:which_key_map['f'] = 'Search/Replace cWord paragraph'
+let g:which_key_map['%'] = 'Search/Replace cWord global'
+let g:which_key_map['?'] = 'Google cWord'
+let g:which_key_map['!'] = 'Google cWord FeelingLucky'
 
 let g:which_key_map['n'] = {'name' : '+NERDTree'}
 let g:which_key_map['e'] = {'name' : '+Edit file'}
@@ -459,29 +467,44 @@ imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 imap <c-x><c-l> <plug>(fzf-complete-line)
 inoremap <c-l> <C-x><C-l>
 
-        nnoremap <silent> <Leader>C :call fzf#run({
-        \   'source':
-        \     map(split(globpath(&rtp, "colors/*.vim"), "\n"),
-        \         "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
-        \   'sink':    'colo',
-        \   'options': '+m',
-        \   'left':    30
-        \ })<CR>
+nnoremap <silent> <Leader>C :call fzf#run({
+\   'source':
+\     map(split(globpath(&rtp, "colors/*.vim"), "\n"),
+\         "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
+\   'sink':    'colo',
+\   'options': '+m',
+\   'left':    30
+\ })<CR>
+
+command! FZFMru call fzf#run({
+\  'source':  v:oldfiles,
+\  'sink':    'e',
+\  'options': '-m -x +s',
+\  'down':    '40%'})
+
+command! -bang -nargs=* Find call fzf#vim#grep(
+    \ 'rg --column --line-number --no-heading --follow --color=always '.<q-args>, 1,
+    \ <bang>0 ? fzf#vim#with_preview('up:60%') : fzf#vim#with_preview('right:50%:hidden', '?'), <bang>0)
+command! -bang -nargs=? -complete=dir Files
+    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview('right:50%', '?'), <bang>0)
+command! -bang -nargs=? -complete=dir GitFiles
+    \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview('right:50%', '?'), <bang>0)
 
 
-        command! FZFMru call fzf#run({
-        \  'source':  v:oldfiles,
-        \  'sink':    'e',
-        \  'options': '-m -x +s',
-        \  'down':    '40%'})
-        
-        command! -bang -nargs=* Find call fzf#vim#grep(
-            \ 'rg --column --line-number --no-heading --follow --color=always '.<q-args>, 1,
-            \ <bang>0 ? fzf#vim#with_preview('up:60%') : fzf#vim#with_preview('right:50%:hidden', '?'), <bang>0)
-        command! -bang -nargs=? -complete=dir Files
-            \ call fzf#vim#files(<q-args>, fzf#vim#with_preview('right:50%', '?'), <bang>0)
-        command! -bang -nargs=? -complete=dir GitFiles
-            \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview('right:50%', '?'), <bang>0)
+
+" Use FZF for spellchecking instead of the default full screen thingy.
+" overrides the normal mode command: z=
+" optionally spellsuggest can take more arguments, 2nd is for number of
+" suggestions
+function! FzfSpellSink(word)
+  exe 'normal! "_ciw'.a:word
+endfunction
+
+function! FzfSpell()
+  let suggestions = spellsuggest(expand("<cword>"))
+  return fzf#run({'source': suggestions, 'sink': function("FzfSpellSink"), 'down': 10 })
+endfunction
+nnoremap z= :call FzfSpell()<CR>
 
 " }}}
 " NERDTree {{{
@@ -780,6 +803,8 @@ let g:signify_sign_delete        = '-'
 "
 "
 
+" Disable the default <leader><leader> maps
+let g:EasyMotion_do_mapping = 0
 " The - key is my easymotion key.
 map _ <Plug>(easymotion-s)
 nmap - <Plug>(easymotion-sn)
@@ -873,6 +898,12 @@ function! FixBrokenColors()
     execute('hi ALEErrorSign ctermbg=' . s:leftColCtermBg . ' guibg=' . s:leftColGuiBg . ' ctermfg=161 guifg=#d7005f')
     execute('hi ALEWarningSign ctermbg=' . s:leftColCtermBg . ' guibg=' . s:leftColGuiBg . ' ctermfg=161 guifg=#d7005f')
 
+    " Spelling errors fix
+    execute('hi SpellBad   ctermfg=255 ctermbg=167 gui=undercurl guifg=#EEEEEE guibg=#D75F5F guisp=Red')
+    execute('hi SpellCap   ctermfg=255 ctermbg=74 gui=undercurl guifg=#EEEEEE guibg=#5FAFD7 guisp=Blue')
+    execute('hi SpellRare  ctermfg=255 ctermbg=140 gui=undercurl guifg=#EEEEEE guibg=#AF87D7 guisp=Magenta')
+    execute('hi SpellLocal ctermfg=255 ctermbg=14 gui=undercurl guifg=#EEEEEE guibg=#5FB3B3 guisp=Cyan')
+
     call GuiVSCterm()
 endfunction
 
@@ -909,6 +940,13 @@ autocmd VimResized * wincmd =
 " (uBB is right double angle, uB7 is middle dot)
 set listchars=tab:»·,trail:␣,nbsp:˷
 
+autocmd FileType markdown setlocal spell
+autocmd FileType markdown setlocal complete+=kspell
+
+autocmd FileType gitcommit setlocal spell
+autocmd FileType gitcommit setlocal complete+=kspell
+
+
 
 " vim hardcodes background color erase even if the terminfo file does
 " not contain bce (not to mention that libvte based terminals
@@ -916,7 +954,7 @@ set listchars=tab:»·,trail:␣,nbsp:˷
 " incorrect background rendering when using a color theme with a
 " background color. (Kitty, tmux)
 let &t_ut=''
-au BufWinEnter * let w:m2=matchadd('ColorColumn','\%>140v.\+', -1)
+" au BufWinEnter * let w:m2=matchadd('ColorColumn','\%>140v.\+', -1)
 
 " }}}
  " Basic Settings {{{
@@ -925,18 +963,18 @@ set guioptions=
 " Always increment as base 10 (<C-a> & <C-x>)
 set nrformats=
 set termguicolors     " Doesn't work with all terminals but fixes a few colorschemes for the terminals that support it
-"set shell="/bin/zsh"
+"set shell="/bin/zsh" " There are better places to fix this
 "set shellredir=">%s 2>&1"
 "set shellpipe="2>&1| tee"
-set backspace=indent,eol,start
-set display+=lastline
+set backspace=indent,eol,start " make backspace behave as expected
+set display+=lastline " avoid '@@@' filler, default in nvim but not in older regular vim
 set guioptions=       " Always increment as base 10 (<C-a> & <C-x>)
 set nobackup          " most files are in git anyways
-set autoread          " Always reload buffer when external changes detected
+set autoread          " Alway reload buffer when external changes detected
 set encoding=utf-8    " usually the case rather than latin1
 set textwidth=0       " disable automatic word wrapping (newlines)
 set hidden            " preserve buffers by hiding instead of closing them
-set showtabline=4     " t
+set showtabline=2     " always
 set fileformats=unix,mac,dos " Handle various end-of-line formats
 set tabstop=4         " number of visual spaces per tab
 set softtabstop=4     " number of spaces in tab when editing
@@ -1125,8 +1163,8 @@ xmap ; :s//g<LEFT><LEFT>
 nnoremap <leader>s :mksession<CR>
 " Fast Saving
 nnoremap <leader>w :w!<CR>
-" Fast tab
-nnoremap <leader>t :tabnew<CR>
+" Toggle spellchecking
+nnoremap <silent> <leader>t :setlocal spell!<CR>
 " Fast tab switching (Leader+Last)
 let g:lasttab = 1
 nnoremap <leader>l :exe "tabn ".g:lasttab<CR>
@@ -1400,7 +1438,7 @@ function! s:rotate_colors()
   echo name
 endfunction
 " }}}
-" Quick switch to light colorscheme <F8>{{{
+" Quick toggle to light colorscheme <F8>{{{
 
 function! s:light_colors()
     if !exists('s:colorsreset')
@@ -1450,6 +1488,7 @@ command! Danger if !empty(expand('%'))
          \|   echo 'Save the file first'
          \|   echohl None
          \| endif
+" }}}
 " :Share gives +w permission to group for active file {{{
 command! Share if !empty(expand('%'))
          \|   write
@@ -1460,6 +1499,7 @@ command! Share if !empty(expand('%'))
          \|   echo 'Save the file first'
          \|   echohl None
          \| endif
+" }}}
 " :EX gives +x permission to active file {{{
 command! EX if !empty(expand('%'))
          \|   write
@@ -1531,9 +1571,6 @@ xnoremap <silent> io :<c-u>call <SID>indent_object('==', 0, line("'<"), line("'>
 onoremap <silent> io :<c-u>call <SID>indent_object('==', 0, line('.'), line('.'), 0, 0)<cr>
 " }}}
 " Various {{{
-" <Leader>I/A | Prepend/Append to all adjacent lines with same indentation
-nmap <silent> <leader>I ^vio<C-V>I
-nmap <silent> <leader>A ^vio<C-V>$A
 " ?il | inner line
 xnoremap <silent> il <Esc>^vg_
 onoremap <silent> il :<C-U>normal! ^vg_<CR>
@@ -1618,6 +1655,7 @@ autocmd! FileType GV nnoremap <buffer> <silent> + :call <sid>gv_expand()<cr>
 " }}}
 " Search {{{
  "=====[ Completion during search (via Command window) ]======================
+ "Press TAB while searching to see options
 
 function! s:search_mode_start()
     cnoremap <tab> <c-f>:resize 1<CR>a<c-n>
@@ -1650,14 +1688,6 @@ if has('patch-8.0.1206')
         autocmd CmdlineLeave [/\?] call <SID>search_mode_stop()
     augroup END
 endif
-
-"=====[ Make multi-selection incremental search prettier ]======================
-
-" augroup SearchIncremental
-"     autocmd!
-"     autocmd CmdlineEnter [/\?]   highlight  Search  ctermfg=DarkRed   ctermbg=Black cterm=NONE
-"     autocmd CmdlineLeave [/\?]   highlight  Search  ctermfg=White ctermbg=Black cterm=bold
-" augroup END
 
 " }}}
 " Netrw {{{
@@ -1847,83 +1877,6 @@ endfunction
 
 
 " }}}
-" Unused Stuff {{{
-" Toggle Vexplore with Ctrl-E
-"function! ToggleVExplorer()
-"  if exists("t:expl_buf_num") "global variable for current tap, since only one instance of explorer
-"                              "per tab is preffered, replace t with w to change to window
-"    let expl_win_num = bufwinnr(t:expl_buf_num)
-"    if expl_win_num != -1
-"      let cur_win_nr = winnr()
-"      exec expl_win_num . 'wincmd w'
-"      close
-"      if expl_win_num > cur_win_nr
-"        exec cur_win_nr . 'wincmd w'
-"      elseif cur_win_nr==2
-"        exec '1wincmd w'
-"      else
-"        exec cur_win_nr . 'wincmd w'
-"      endif
-"      unlet t:expl_buf_num
-"    else
-"      unlet t:expl_buf_num
-"    endif
-"  else
-"    "exec '1wincmd w'
-"    Vexplore
-"    let t:expl_buf_num = bufnr("%")
-"  endif
-"endfunction
-"map <silent> <C-E> :call ToggleVExplorer()<CR>
-"let g:currentmode={
-"    \ 'n'   :   'N ',
-"    \ 'no'  :   'N·Operator Pending ',
-"    \ 'v'   :   'V ',
-"    \ 'V'   :   'V·Line ',
-"    \ ''  :   'V·Block ',
-"    \ 's'   :   'Select ',
-"    \ 'S'   :   'S·Line ',
-"    \ ''  :   'S·Block ',
-"    \ 'i'   :   'I ',
-"    \ 'R'   :   'R',
-"    \ 'Rv'  :   'V·Replace',
-"    \ 'c'   :   'Command ',
-"    \ 'cv'  :   'Vim Ex ',
-"    \ 'ce'  :   'Ex ',
-"    \ 'r'   :   'Prompt ',
-"    \ 'rm'  :   'More ',
-"    \ 'r?'  :   'Confirm ',
-"    \ '!'   :   'Shell ',
-"    \ 't'   :   'Terminal '
-"    \}
-"
-"" Automatically adjust statusline colors
-"function! ChangeStatuslineColor()
-"    if (mode() =~# '\v(n|no)')
-"        exe 'hi! StatusLine ctermfg=008 guifg=#fe8019'
-"    elseif (mode() =~# '\v(v|V)' || g:currentmode[mode()] ==# 'V·Block ' || get(g:currentmode, mode(), '') ==# 't')
-"        exe 'hi! StatusLine ctermfg=005 guifg=#8ec07c'
-"    elseif (mode() ==# 'i')
-"        exe 'hi! StatusLine ctermfg=004 guifg=#fabd2f'
-"    else
-"        exe 'hi! StatusLine ctermfg=006'
-"    endif
-"
-"    return ''
-"endfunction
-
-
-" Replaced Powerline with Airline since it was pure vimscript instead of
-" python
-" Enable powerline using one of the two solutions bellow (should both work
-" similarly. Top solution usually creates fewer errors on systems without
-" powerline.
-" set rtp+=/usr/lib/python3.6/site-packages/powerline/bindings/vim
-"python3 from powerline.vim import setup as powerline_setup
-"python3 powerline_setup()
-"python3 del powerline_setup
-
-" }}}
 " Neovim {{{
 if has('nvim')
     " In Neovim, you can set up fzf window using a Vim command
@@ -1953,40 +1906,42 @@ if has('nvim')
     nnoremap <A-j> <C-w>j
     nnoremap <A-k> <C-w>k
     nnoremap <A-l> <C-w>l
-    nnoremap <silent> <leader>o :vertical botright Ttoggle<CR><C-w>l
-" Nvim Functions {{{
-" Opens up a new buffer, either vertical or horizontal. Count can be used to
-" specify the number of visible columns or rows.
-fun! s:openBuffer(count, vertical)
-  let cmd = a:vertical ? 'vnew' : 'new'
-  let cmd = a:count ? a:count . cmd : cmd
-  exe cmd
-endf
+    " requires neoterm I believe
+    " nnoremap <silent> <leader>o :vertical botright Ttoggle<CR><C-w>l
 
-" Opens a new terminal buffer, but instead of doing so using 'enew' (same
-" window), it uses :vnew and :new instead. Usually, I want to open a new
-" terminal and not replace my current buffer.
-fun! s:openSplitTerm(args, count, vertical)
-  let direction = 1
-  call s:openBuffer(a:count, direction)
-  call s:openTerm(a:args)
-endf
+    " Nvim Functions {{{
+    " Opens up a new buffer, either vertical or horizontal. Count can be used to
+    " specify the number of visible columns or rows.
+    fun! s:openBuffer(count, vertical)
+    let cmd = a:vertical ? 'vnew' : 'new'
+    let cmd = a:count ? a:count . cmd : cmd
+    exe cmd
+    endf
 
-" Opens a new terminal buffer, but instead of doing so using split buffer, it
-" uses :tabnew instead.
-fun! s:openTabTerm(args)
-  exe 'tabnew'
-  call s:openTerm(a:args)
-endf
+    " Opens a new terminal buffer, but instead of doing so using 'enew' (same
+    " window), it uses :vnew and :new instead. Usually, I want to open a new
+    " terminal and not replace my current buffer.
+    fun! s:openSplitTerm(args, count, vertical)
+    let direction = 1
+    call s:openBuffer(a:count, direction)
+    call s:openTerm(a:args)
+    endf
 
-" Open a new terminal in the active buffer, while defining default mappings
-" for this plugin.
-fun! s:openTerm(args)
-  exe 'terminal' a:args
-  exe 'startinsert'
-endf
+    " Opens a new terminal buffer, but instead of doing so using split buffer, it
+    " uses :tabnew instead.
+    fun! s:openTabTerm(args)
+    exe 'tabnew'
+    call s:openTerm(a:args)
+    endf
 
-" }}}
+    " Open a new terminal in the active buffer, while defining default mappings
+    " for this plugin.
+    fun! s:openTerm(args)
+    exe 'terminal' a:args
+    exe 'startinsert'
+    endf
+    " }}}
+
     command! -count -nargs=* Term call s:openSplitTerm(<q-args>, <count>, 0)
     command! -count -nargs=* TermV call s:openSplitTerm(<q-args>, <count>, 1)
 
