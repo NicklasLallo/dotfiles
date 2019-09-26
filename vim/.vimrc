@@ -1,8 +1,5 @@
 " Plugins {{{
 let mapleader=","       " leader is comma instead of \
-" Optional built in package
-" packadd! matchit " Enhances % jumping.
-" packadd! cfilter " Allows filtering of the quickfix/location list, Ex: :Cfilter[!] /{pat}/
 " Plug {{{
 " Install vim-plug if missing
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -12,92 +9,9 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 call plug#begin('~/.vim/plugged')
 
-Plug 'markonm/traces.vim'
-" Make commands run on limited visual selections and not entire lines with 'B'. :'<,'>B cmd
-" Also add searching with 'S'. :'<,'>S pattern
-Plug 'vim-scripts/vis'
-
-" Let vim interact with tmux
-" Automate things with :call VimuxRunCommand("shell command")
-Plug 'benmills/vimux'
-" This a vim plugin that enables MATLAB-style cell mode execution for python scripts in vim, assuming an ipython interpreter running in screen (or tmux).
-"    C-c sends the currently selected lines to tmux
-"    C-g sends the current cell to tmux
-"    C-b sends the current cell to tmux, moving to the next one
-Plug 'julienr/vim-cellmode'
-
-
-" Go
-Plug 'fatih/vim-go'
-
-" Fix FocusGained/FocusLost in terminal vim together with tmux
-" And also fix autoread in terminal vim (otherwise only working in gvim)
-Plug 'tmux-plugins/vim-tmux-focus-events'
-
-" Syntax Highlighting for i3 config file
-Plug 'PotatoesMaster/i3-vim-syntax'
-
-" Nice opening screen
-Plug 'mhinz/vim-startify'
-
-let g:startify_commands = [
-\   { 'up': [ 'Update Plugins', ':PlugUpdate' ] },
-\   { 'ug': [ 'Upgrade Plugin Manager', ':PlugUpgrade' ] },
-\ ]
-
-let g:startify_bookmarks = [
-    \ { 'c': '~/.vimrc' },
-    \ { 'g': '~/dotfiles/.gitconfig' },
-    \ { 'z': '~/.zshrc' }
-\ ]
-
-autocmd User Startified setlocal cursorline
-nmap <leader>st :Startify<cr>
-
-" Emmet for vim
-Plug 'mattn/emmet-vim'
-" Use with <C-y>,
-
-" Change how motions work
-Plug 'easymotion/vim-easymotion'
-" trigger with <leader><leader>
-" slightly buggy if you wait for too long after <leader><leader> in
-" combination with which-key
-
-" transpose csv/tsv
-Plug 'salsifis/vim-transpose'
-
-" Plugin from git directory
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-" Plug 'enricobacis/vim-airline-clock'
-" Linter
-Plug 'w0rp/ale'
-Plug 'tweekmonster/startuptime.vim'
-
-" allows opening files with syntax: vim fileName:lineNr
-Plug 'bogado/file-line'
-" Cscope
-"Plug '~/.vim/locals/cscope_maps.vim'
-
-" Vim Indent Object, simple plugin that adds the 'i' text-object for current indentation level.
-" Example: vii, vai, vaI, viI
-" Plug 'michaeljsmith/vim-indent-object' " Replaced by vimscript in this file
-
-" Plugin that expands the power of text-objects:
-" Example: cin) will change in the next () (searches forward from cursor).
-" This is mainly useful together with '.' to repeat the command many times.
-" Also allows searching backwards with l (last) instead of n (next).
-" Does some seeking even when n/l are missing.
-" Also allows for count, ex: d2i) (delete 2 levels deep).
-" Also adds many new separators, Ex: i, i. i; i: i+ i- i= i~ i_ i* i# i/ i| i\ i& i$
-" Adds Argument as a text-object, Ex: cia. Arguments are comma separated lists inside braces, Ex: def func(a,b,c,d)
-" Adds multi text objects, any block & any quote, Ex: inb anb Inb Anb ilb alb Ilb Alb & inq anq Inq Anq ilq alq Ilq Alq
-" vanw & vanp not yet implemented. Simply doesn't touch w,W,p,P,s,S word objects (but overrides the other defaults)
-Plug 'wellle/targets.vim'
-
-
-" Colorthemes
+" Plugins are sorted by category
+" {{{ colorthemes
+" TODO, cleanup and remove more of those that I never use
 Plug 'AlessandroYorba/Alduin'
 Plug 'AlessandroYorba/Despacio'
 Plug 'AlessandroYorba/Sierra'
@@ -139,6 +53,9 @@ Plug 'hzchirs/vim-material'
 Plug 'ayu-theme/ayu-vim'
 Plug 'joshdick/onedark.vim'
 Plug 'NewProggie/NewProggie-Color-Scheme'
+Plug 'junegunn/seoul256.vim'
+" :VsdContrast cycles contrast :VsdOptions show options
+Plug 'mg979/vim-studio-dark'
 
 
 " wal for colors
@@ -147,109 +64,217 @@ Plug 'dylanaraps/wal'
 " Make gvim-only colorschemes work better in terminal vim
 Plug 'godlygeek/csapprox'
 
-" multifile find & replace
-Plug 'brooth/far.vim'
-" :Far foo bar **/*.c     This finds the pattern to replace
-" :Fardo                  This does the replacement
-" :Farundo                Undo in panic
+" }}}
+" Styling {{{
 
-" Real multiple cursors
-Plug 'terryma/vim-multiple-cursors'
-" Use easily with <C-n>
-
-" Simple comment toggeling with :gcc (line) or gc (target of a motion)
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive', { 'on': [] }  " git awesomeness
-Plug 'tpope/vim-surround'                " Vim-surround
-Plug 'tpope/vim-repeat'
-Plug 'kreskij/Repeatable.vim', { 'on': 'Repeatable' }
-Plug 'vim-scripts/ReplaceWithRegister'   " [\"x]gr{motion}
-Plug 'AndrewRadev/splitjoin.vim'         " gS (split) & gJ (join)
-Plug 'AndrewRadev/switch.vim'            " gs (switch, ex: true->false, '&&'->'||')
-Plug 'zirrostig/vim-schlepp'             " move visual selections around
-Plug 'google/vim-searchindex'            " prints 'At match #N out of M matches' after any search.
-
-" if exists('##TextYankPost')
-Plug 'machakann/vim-highlightedyank'
-let g:highlightedyank_highlight_duration = 100
-" endif
-if !exists('##TextYankPost')
-  map y <Plug>(highlightedyank)
-endif
-
-Plug 'Yggdroot/indentLine', { 'on': 'IndentLinesEnable' }
-autocmd! User indentLine doautocmd indentLine Syntax
-if v:version >= 703
-  Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
-endif
-if v:version >= 703
-  Plug 'mhinz/vim-signify'
-  let g:signify_vcs_list = [ 'git' ]    " Improve performance. Add more later if needed.
-  let g:signify_skip_filetype = { 'tmp': 1, 'bak': 1 }
-endif
-let g:SignatureMarkTextHLDynamic=1      " Allows for interaction with signify/gitgutter
-Plug 'kshenoy/vim-signature'            " displays marks on lefthand side
+    Plug 'ryanoasis/vim-devicons'
+    Plug 'junegunn/rainbow_parentheses.vim'
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
+    Plug 'Yggdroot/indentLine', { 'on': 'IndentLinesEnable' }
+    autocmd! User indentLine doautocmd indentLine Syntax
+"  }}}
+" {{{ Visual feedback
+    " See what's going on
 
 
+    " visual feedback for f, F, t, T
+    Plug 'deris/vim-shot-f'
+    " Displays function signatures from completions in the command line.
+    Plug 'Shougo/echodoc.vim'
 
-" PlugInstall and PlugUpdate will clone fzf in ~/.fzf and run install script
-" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-" Both options are optional. You don't have to install fzf in ~/.fzf
-" and you don't have to run install script if you use fzf only in Vim.
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'shell': '/bin/zsh' }
-Plug 'junegunn/fzf.vim'
-Plug 'junegunn/vim-easy-align'          " align, ex: gaip#
-Plug 'junegunn/goyo.vim'                " Distraction free writinga :Goyo
-" Plug 'junegunn/vim-github-dashboard'  " Use with :GHD , requires ruby support
-Plug 'junegunn/vim-peekaboo'            " Preview \" @ i<C-R>
-Plug 'junegunn/vim-journal'             " poor mans Org-mode
-Plug 'junegunn/seoul256.vim'            " Color theme
-Plug 'junegunn/gv.vim'                  " git commit browse, requires fugitive, :GV
-Plug 'junegunn/limelight.vim'           " Use together with goyo, :Limelight
-Plug 'junegunn/rainbow_parentheses.vim'
+    Plug 'junegunn/vim-peekaboo'            " Preview \" @ i<C-R>
+    " Gives visual feedback for patterns and ranges for Ex commands.
+    " And live preview for :substitute :smagic :snomagic
+    Plug 'markonm/traces.vim'
 
+    " Show what just got yanked
+    Plug 'machakann/vim-highlightedyank'
+    let g:highlightedyank_highlight_duration = 100
+    " endif
+    if !exists('##TextYankPost')
+    map y <Plug>(highlightedyank)
+    endif
 
-Plug 'romainl/vim-cool'                 " Disable hlsearch when you are done searching
-" let g:CoolTotalMatches = 1
-" The ultimate undo history visualizer for VIM
-Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
-" NERDTree... tree explorer for vim
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-augroup nerd_loader
-  autocmd!
-  autocmd VimEnter * silent! autocmd! FileExplorer
-  autocmd BufEnter,BufNew *
-        \  if isdirectory(expand('<amatch>'))
-        \|   call plug#load('nerdtree')
-        \|   execute 'autocmd! nerd_loader'
-        \| endif
-augroup END
+    if v:version >= 703
+    Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
+    endif
 
-" Nerdtree show git status
-Plug 'Xuyuanp/nerdtree-git-plugin'
-
-" highlight file icons with different colors
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-
-Plug 'ryanoasis/vim-devicons'
-if has('nvim')
-    " Strange Undefined Variable warnings together
-    " with ipython3
-    " Plug 'kassio/neoterm'
-    " let g:neoterm_repl_python = 'ipython3'
-endif
-
-" semantic-based completion
-let g:ycm_key_detailed_diagnostics = '<leader>D'
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+    " This combination bellow shows both all vim-marks as well as all git/vcs
+    " changes in the left side bar.
+    if v:version >= 703
+    Plug 'mhinz/vim-signify'
+    let g:signify_vcs_list = [ 'git' ]    " Improve performance. Add more later if needed.
+    let g:signify_skip_filetype = { 'tmp': 1, 'bak': 1 }
+    endif
+    let g:SignatureMarkTextHLDynamic=1      " Allows for interaction with signify/gitgutter
+    Plug 'kshenoy/vim-signature'            " displays marks on lefthand side
 
 
-" Which-key similar to spacemacs
-Plug 'liuchengxu/vim-which-key'
+    " Make hlsearch bearable without having to type :nohl all the time
+    Plug 'romainl/vim-cool'                 " Disable hlsearch when you are done searching
 
+    " Which-key similar to spacemacs
+    Plug 'liuchengxu/vim-which-key'
+
+" }}}
+" {{{ Outside tools
+    " Let vim interact with tmux
+    " Automate things with :call VimuxRunCommand("shell command")
+    Plug 'benmills/vimux'
+    " This a vim plugin that enables MATLAB-style cell mode execution for python scripts in vim, assuming an ipython interpreter running in screen (or tmux).
+    "    C-c sends the currently selected lines to tmux
+    "    C-g sends the current cell to tmux
+    "    C-b sends the current cell to tmux, moving to the next one
+    Plug 'julienr/vim-cellmode'
+    " Fix FocusGained/FocusLost in terminal vim together with tmux
+    " And also fix autoread in terminal vim (otherwise only working in gvim)
+    Plug 'tmux-plugins/vim-tmux-focus-events'
+
+    " automatically handles the tag files
+    " Requires ctags/universal-ctags
+    Plug 'ludovicchabant/vim-gutentags'
+" }}}
+" Language Specific {{{
+    Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'} " crazy python syntax
+    " Go
+    Plug 'fatih/vim-go'
+    " Syntax Highlighting for i3 config file
+    Plug 'PotatoesMaster/i3-vim-syntax'
+    " Emmet for vim
+    " Plug 'mattn/emmet-vim'
+    " Use with <C-y>,
+" }}}
+" Other {{{
+    Plug 'zirrostig/vim-schlepp'             " move visual selections around
+    Plug 'google/vim-searchindex'            " prints 'At match #N out of M matches' after any search.
+    " multifile find & replace
+    Plug 'brooth/far.vim'
+    " :Far foo bar **/*.c     This finds the pattern to replace
+    " :Fardo                  This does the replacement
+    " :Farundo                Undo in panic
+
+    " allows opening files with syntax: vim fileName:lineNr
+    Plug 'bogado/file-line'
+    Plug 'tweekmonster/startuptime.vim'
+    " transpose csv/tsv
+    Plug 'salsifis/vim-transpose'
+    " Nice opening screen
+    Plug 'mhinz/vim-startify'
+
+    let g:startify_commands = [
+    \   { 'up': [ 'Update Plugins', ':PlugUpdate' ] },
+    \   { 'ug': [ 'Upgrade Plugin Manager', ':PlugUpgrade' ] },
+    \ ]
+
+    let g:startify_bookmarks = [
+        \ { 'c': '~/.vimrc' },
+        \ { 'g': '~/dotfiles/.gitconfig' },
+        \ { 'z': '~/.zshrc' }
+    \ ]
+
+    autocmd User Startified setlocal cursorline
+    nmap <leader>st :Startify<cr>
+    " Simple comment toggeling with :gcc (line) or gc (target of a motion)
+    Plug 'tpope/vim-commentary'
+    Plug 'tpope/vim-surround'                " Vim-surround
+    Plug 'tpope/vim-repeat'
+    Plug 'kreskij/Repeatable.vim', { 'on': 'Repeatable' }
+" }}}
+" Additional commands, tools, and maps {{{
+    Plug 'AndrewRadev/splitjoin.vim'         " gS (split) & gJ (join)
+    Plug 'AndrewRadev/switch.vim'            " gs (switch, ex: true->false, '&&'->'||')
+    Plug 'junegunn/goyo.vim'                " Distraction free writinga :Goyo
+    Plug 'junegunn/limelight.vim'           " Use together with goyo, :Limelight
+    " The ultimate undo history visualizer for VIM
+    Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
+    " NERDTree... tree explorer for vim
+    Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+    augroup nerd_loader
+    autocmd!
+    autocmd VimEnter * silent! autocmd! FileExplorer
+    autocmd BufEnter,BufNew *
+            \  if isdirectory(expand('<amatch>'))
+            \|   call plug#load('nerdtree')
+            \|   execute 'autocmd! nerd_loader'
+            \| endif
+    augroup END
+    " Nerdtree show git status
+    Plug 'Xuyuanp/nerdtree-git-plugin'
+    " highlight file icons with different colors
+    Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+" }}}
+" Motions, Movements & Text Objects {{{
+    " Plugin that expands the power of text-objects:
+    " Example: cin) will change in the next () (searches forward from cursor).
+    " This is mainly useful together with '.' to repeat the command many times.
+    " Also allows searching backwards with l (last) instead of n (next).
+    " Does some seeking even when n/l are missing.
+    " Also allows for count, ex: d2i) (delete 2 levels deep).
+    " Also adds many new separators, Ex: i, i. i; i: i+ i- i= i~ i_ i* i# i/ i| i\ i& i$
+    " Adds Argument as a text-object, Ex: cia. Arguments are comma separated lists inside braces, Ex: def func(a,b,c,d)
+    " Adds multi text objects, any block & any quote, Ex: inb anb Inb Anb ilb alb Ilb Alb & inq anq Inq Anq ilq alq Ilq Alq
+    " vanw & vanp not yet implemented. Simply doesn't touch w,W,p,P,s,S word objects (but overrides the other defaults)
+    Plug 'wellle/targets.vim'
+
+    " Change how motions work
+    " Is currently maped to '-' & '_'
+    Plug 'easymotion/vim-easymotion'
+
+    " Vim Indent Object, simple plugin that adds the 'i' text-object for current indentation level.
+    " Example: vii, vai, vaI, viI
+    " Plug 'michaeljsmith/vim-indent-object' " Replaced by vimscript in this file
+"  }}}
+" Advanced {{{
+    " If you are going to use these plugins make sure to read their help files
+    " first. On the other hand these are also some of the most awesome plugins.
+
+
+    Plug 'tpope/vim-fugitive', { 'on': [] }  " git awesomeness
+    Plug 'junegunn/gv.vim'                   " git commit browse, requires fugitive, :GV
+
+    " Linter
+    Plug 'w0rp/ale'
+    " semantic-based completion
+    let g:ycm_key_detailed_diagnostics = '<leader>D'
+    Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+
+    " 'yankstack', cCxX'Del' black hole redirection, swap-&-paste, visual move
+    " paste don't override default register, replace operator, duplicate operator,
+    " interactive paste with fzf, and more
+    let g:yanktools_main_key = 's' " unfortunate sacrifice
+    nmap S s$
+    " :help yanktools.txt
+    Plug 'mg979/vim-yanktools'   " M-p & M-P to cycle stack, ]y & [y cycle with preview
+
+    " Real multiple cursors
+    " Plug 'terryma/vim-multiple-cursors'
+    " Better newer faster stronger
+    " To run the tutorial:
+    " vim -Nu path/to/visual-multi/tutorialrc
+    let g:VM_leader = '+'
+    Plug 'mg979/vim-visual-multi'
+    " Use easily with <C-n>
+
+    " PlugInstall and PlugUpdate will clone fzf in ~/.fzf and run install script
+    " Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    " Both options are optional. You don't have to install fzf in ~/.fzf
+    " and you don't have to run install script if you use fzf only in Vim.
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'shell': '/bin/zsh' }
+    Plug 'junegunn/fzf.vim'
+
+
+" }}}
+" Potentially unnecessary {{{
+    Plug 'junegunn/vim-journal'             " poor mans Org-mode
+    " align, ex: gaip#
+    " This functionality is also in visual-multi
+    Plug 'junegunn/vim-easy-align'
+"  }}}
 
 call plug#end()
 " }}}
+" Plugin settings {{{
 " Vim Fugitive {{{
 " only allow dp & do while using fugitive to avoid any pauses while pressing d
 " in other modes.
@@ -291,7 +316,7 @@ let g:which_key_map =  {}
 " let g:which_key_map.8 = 'which_key_ignore'
 " let g:which_key_map.9 = 'which_key_ignore'
 let g:which_key_map['a'] = ':Ag Fuzzy search'
-let g:which_key_map['g'] = ':Tags Fuzzy search'
+let g:which_key_map['T'] = ':Tags Fuzzy search'
 let g:which_key_map['w'] = 'Write / Save'
 let g:which_key_map['i'] = 'Toggle Invisible'
 let g:which_key_map['l'] = 'Go To last Tab'
@@ -450,7 +475,7 @@ function! FZFOpen(command_str)
 endfunction
 
 nnoremap <silent> <leader>a :call FZFOpen(':Ag')<CR>
-nnoremap <silent> <leader>g :call FZFOpen(':Tags')<CR>
+nnoremap <silent> <leader>T :call FZFOpen(':Tags')<CR>
 
 nnoremap <silent> <C-g>g :call FZFOpen(':Ag')<CR>
 nnoremap <silent> <C-g>c :call FZFOpen(':Commands')<CR>
@@ -626,7 +651,7 @@ if has('cscope')
 
     " tags navigation
     " Go to definition (requires Ctags)
-    nnoremap <C-d> <C-]>
+    " nnoremap <C-d> <C-]>
 
     " Using 'CTRL-spacebar' (intepreted as CTRL-@ by vim) then a search type
     " makes the vim window split horizontally, with search result displayed in
@@ -672,7 +697,7 @@ endif
 set tags=./tags;/
 
 " }}}
-" FZF + cscope{{{
+" Cscope (with fzf) {{{
 
 function! Cscope(option, query)
   let color = '{ x = $1; $1 = ""; z = $3; $3 = ""; printf "\033[34m%s\033[0m:\033[31m%s\033[0m\011\033[37m%s\033[0m\n", x,z,$0; }'
@@ -791,7 +816,6 @@ let g:multi_cursor_exit_from_visual_mode = 0
 let g:multi_cursor_exit_from_insert_mode = 0
 nnoremap <silent> <M-j> :MultipleCursorsFind <C-R>/<CR>
 vnoremap <silent> <M-j> :MultipleCursorsFind <C-R>/<CR>
-nmap <F8> :TagbarToggle<CR>
 IndentLinesEnable " Display a small line with each indentationlevel
 " vim-signify
 let g:signify_vcs_list = ['git']
@@ -818,9 +842,7 @@ nnoremap g- -
 " to not use 'conceal' on quotation marks
 autocmd Filetype json :IndentLinesDisable
 "}}}
-
-" Enable the fuzzy finder fzf
-" set rtp+=~/.fzf
+" }}}
 " }}}
 "Intro Settings {{{
 if version > 600
@@ -1082,7 +1104,7 @@ map <F6> :source ~/.vim_session<cr>
 " map <F8> :set autochdir! autochdir?<CR>
 nnoremap <silent> <F7> :call <SID>rotate_colors()<cr>
 nnoremap <silent> <F8> :call <SID>light_colors()<cr>
-
+nmap <F9> :TagbarToggle<CR>
 
 " Unsure about this
 " Control-C Copy in visual mode
@@ -1256,6 +1278,9 @@ xnoremap <expr> P '"_d"'.v:register.'P'
 
 inoremap (<CR> (<CR><SPACE><CR>)<Esc>k$xa
 inoremap {<CR> {<CR><SPACE><CR>}<Esc>k$xa
+
+inoremap <c-a> <home>
+inoremap <c-e> <end>
 
 inoremap ,, <C-x><C-o><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>" : ",,"<CR>
 inoremap ,; <C-n><C-r>=pumvisible()      ? "\<lt>Down>\<lt>C-p>\<lt>Down>" : ",;"<CR>
