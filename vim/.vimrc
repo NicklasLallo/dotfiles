@@ -43,7 +43,7 @@ Plug 'rakr/vim-two-firewatch', {'as': 'two-firewatch'}
 Plug 'romainl/Apprentice'
 Plug 'sonph/onehalf'
 Plug 'srcery-colors/srcery-vim', {'as': 'srcery'}
-Plug 'tlhr/anderson.vim', {'as': 'Wes anderson'}
+Plug 'tlhr/anderson.vim'
 Plug 'tomasr/molokai'
 " Plug 'tpope/vim-vividchalk', {'as': 'vividchalk'}
 Plug 'tyrannicaltoucan/vim-deep-space'
@@ -73,6 +73,9 @@ Plug 'godlygeek/csapprox'
     Plug 'vim-airline/vim-airline-themes'
     Plug 'Yggdroot/indentLine', { 'on': 'IndentLinesEnable' }
     autocmd! User indentLine doautocmd indentLine Syntax
+    if has('nvim')
+        Plug 'gelguy/wilder.nvim',         { 'do': ':UpdateRemotePlugins' }
+    endif
 "  }}}
 " {{{ Visual feedback
     " See what's going on
@@ -113,7 +116,7 @@ Plug 'godlygeek/csapprox'
 
     " Which-key similar to spacemacs
     Plug 'liuchengxu/vim-which-key'
-
+    Plug 'lilydjwg/colorizer'
 " }}}
 " {{{ Outside tools
     " Let vim interact with tmux
@@ -177,6 +180,7 @@ Plug 'godlygeek/csapprox'
     Plug 'tpope/vim-surround'                " Vim-surround
     Plug 'NicklasLallo/vim-repeat'           " Fork to support undo highlights as well
     Plug 'kreskij/Repeatable.vim', { 'on': 'Repeatable' }
+    Plug 'rhysd/git-messenger.vim'           " <leader>gm or :GitMessenger
 " }}}
 " Additional commands, tools, and maps {{{
     Plug 'AndrewRadev/splitjoin.vim'         " gS (split) & gJ (join)
@@ -778,6 +782,51 @@ let g:ale_sign_error = '✗\ '
 let g:ale_sign_warning = '⚠\ '
 
 " }}}
+" Wilder {{{
+if has('nvim')
+    call wilder#enable_cmdline_enter()
+    cmap <expr> <Tab> wilder#in_context() ? wilder#next() : "\<Tab>"
+    cmap <expr> <S-Tab> wilder#in_context() ? wilder#previous() : "\<S-Tab>"
+    set wildcharm=<Tab>
+
+    let s:status_hl = wilder#make_hl('WilderStatus', 'WildStatus')
+    let s:mode_hl   = wilder#make_hl('WilderMode', 'WildMode')
+    let s:index_hl  = wilder#make_hl('WilderIndex', 'airline_z')
+    let s:sep_hl    = wilder#make_hl('WilderSep', 'WilderSeparator')
+
+    " call wilder#set_option('pipeline', [
+    "             \   wilder#branch(
+    "             \     [
+    "             \       wilder#check({_, x -> empty(x)}),
+    "             \       wilder#history(10),
+    "             \     ],
+    "             \     wilder#cmdline_pipeline(),
+    "             \     [
+    "             \       wilder#python_fuzzy_delimiter(),
+    "             \       wilder#python_search({'engine': 're'}),
+    "             \       wilder#result_output_escape('^$,*~[]/\'),
+    "             \     ],
+    "             \   ),
+    "             \ ])
+
+    call wilder#set_option('renderer', wilder#statusline_renderer({
+                \ 'separator':' • ',
+                \ 'separator_hl': s:sep_hl,
+                \ 'hl': s:status_hl,
+                \ 'left': [
+                \    {'value': [{-> getcmdtype() ==# ':' ? ' Command ' : ' Search '}, wilder#spinner()], 'hl': s:mode_hl},
+                \    wilder#separator('', s:mode_hl, s:status_hl, 'left'), ' ',
+                \ ],
+                \ 'right': [
+                \    ' ', wilder#separator('', s:index_hl, s:status_hl, 'right'),
+                \    wilder#index({'hl': s:index_hl}),
+                \ ],
+                \ }))
+
+    " Enable cmdline completion (for Neovim only)
+    call wilder#set_option('modes', ['/', '?', ':'])
+endif
+" }}}
 " Other {{{
     " Visual {{{
     let g:highlightedyank_highlight_duration = 100
@@ -941,6 +990,11 @@ function! FixBrokenColors()
     execute('hi ALEErrorSign ctermbg=' . s:leftColCtermBg . ' guibg=' . s:leftColGuiBg . ' ctermfg=161 guifg=#d7005f')
     execute('hi ALEWarningSign ctermbg=' . s:leftColCtermBg . ' guibg=' . s:leftColGuiBg . ' ctermfg=161 guifg=#d7005f')
 
+    " Wilder {{{
+    hi WildMode             ctermfg=1     ctermbg=NONE    cterm=NONE guifg=#e0e0e0    guibg=#8F575A gui=italic
+    hi WildStatus           ctermfg=1     ctermbg=NONE    cterm=NONE guifg=#988C99    guibg=#153C63 gui=NONE
+    hi WilderSeparator      ctermfg=1     ctermbg=NONE    cterm=NONE guifg=#FA2C77    guibg=#153C63 gui=NONE
+    " }}}
     " Spelling errors fix
     execute('hi SpellBad   ctermfg=255 ctermbg=167 gui=undercurl guifg=#EEEEEE guibg=#D75F5F guisp=Red')
     execute('hi SpellCap   ctermfg=255 ctermbg=74 gui=undercurl guifg=#EEEEEE guibg=#5FAFD7 guisp=Blue')
@@ -1151,6 +1205,8 @@ endfunction
 " nnoremap ? ?\v
 " vnoremap ? ?\v
 
+" q: is more annoying than useful
+" nnoremap q: :
 " Perhaps I'm crazy
 " They still work in visual mode now
 " nnoremap <up> <nop>
