@@ -55,7 +55,7 @@ Plug 'joshdick/onedark.vim'
 Plug 'NewProggie/NewProggie-Color-Scheme'
 Plug 'junegunn/seoul256.vim'
 " :VsdContrast cycles contrast :VsdOptions show options
-Plug 'mg979/vim-studio-dark'
+Plug 'mg979/vim-studio-dark' " vsdark | tomorrow_eigthies | sand
 
 
 " wal for colors
@@ -88,13 +88,10 @@ Plug 'godlygeek/csapprox'
     " And live preview for :substitute :smagic :snomagic
     Plug 'markonm/traces.vim'
 
-    " Show what just got yanked
+    " Show what just got pasted, undoed, yanked
+    Plug 'NicklasLallo/vim-shiny'
     Plug 'machakann/vim-highlightedyank'
-    let g:highlightedyank_highlight_duration = 100
-    " endif
-    if !exists('##TextYankPost')
-    map y <Plug>(highlightedyank)
-    endif
+    Plug 'machakann/vim-highlightedundo'
 
     if v:version >= 703
     Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
@@ -178,7 +175,7 @@ Plug 'godlygeek/csapprox'
     " Simple comment toggeling with :gcc (line) or gc (target of a motion)
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-surround'                " Vim-surround
-    Plug 'tpope/vim-repeat'
+    Plug 'NicklasLallo/vim-repeat'           " Fork to support undo highlights as well
     Plug 'kreskij/Repeatable.vim', { 'on': 'Repeatable' }
 " }}}
 " Additional commands, tools, and maps {{{
@@ -271,7 +268,6 @@ Plug 'godlygeek/csapprox'
     " This functionality is also in visual-multi
     Plug 'junegunn/vim-easy-align'
 "  }}}
-
 call plug#end()
 " }}}
 " Plugin settings {{{
@@ -783,6 +779,51 @@ let g:ale_sign_warning = '⚠\ '
 
 " }}}
 " Other {{{
+    " Visual {{{
+    let g:highlightedyank_highlight_duration = 100
+    if !exists('##TextYankPost')
+        map y <Plug>(highlightedyank)
+    endif
+
+    let g:highlightedundo#highlight_mode = 2
+    " let g:highlightedundo#highlight_duration_delete = 100
+    " let g:highlightedundo#highlight_duration_add = 100
+    nmap g-    <Plug>(highlightedundo-gminus)
+    nmap g+    <Plug>(highlightedundo-gplus)
+
+    " highlightedundo and vim-repeat both remap the u, U, and <C-R> keys.
+    " I use a personal fork of vim-repeat that adds repeat#wrapMod to fix that
+    nnoremap <silent> u     :<C-U>call repeat#wrapMod("\<Plug>(highlightedundo-undo)",v:count)<CR>
+    nnoremap <silent> U     :<C-U>call repeat#wrapMod("\<Plug>(highlightedundo-Undo)",v:count)<CR>
+    nnoremap <silent> <C-R> :<C-U>call repeat#wrapMod("\<Plug>(highlightedundo-redo)",v:count)<CR>
+
+    IndentLinesEnable " Display a small line with each indentationlevel
+
+    " vim-signify
+    let g:signify_vcs_list = ['git']
+    let g:signify_skip_filetype = { 'journal': 1 }
+    let g:signify_sign_delete        = '-' " - is the opposite of +, not sure why _ is default
+    " let g:signify_sign_add          = '│'
+    " let g:signify_sign_change       = '│'
+    " let g:signify_sign_changedelete = '│'
+
+    " To make shiny and yankstack work together I have a modified fork of
+    " shiny that allows for a custom command.
+    nnoremap <silent> p :call shiny#custom("\<Plug>(Paste_p)")<CR>
+    nnoremap <silent> P :call shiny#custom("\<Plug>(Paste_P)")<CR>
+    nnoremap <silent> ]p :call shiny#custom("\<Plug>(PasteIndent_p)")<CR>
+    nnoremap <silent> [P :call shiny#custom("\<Plug>(PasteIndent_P)")<CR>
+    nnoremap <silent> <M-p> :call shiny#custom("\<Plug>(SwapPasteNext)")<CR>
+    nnoremap <silent> <M-P> :call shiny#custom("\<Plug>(SwapPastePrevious)")<CR>
+    nmap gp <Plug>(shiny-gp)
+    nmap gP <Plug>(shiny-gP)
+
+    let g:vim_shiny_window_change = 1 " The background flashes briefly when changing windows <M-j> <M-k>
+
+    augroup plugin-vim-shiny
+        autocmd WinEnter * call shiny#window#flash()
+    augroup END
+    " }}}
 
 " vim-ipython tmux integration
 let g:cellmode_tmux_sessionname=''  " Will try to automatically pickup tmux session
@@ -795,18 +836,6 @@ noremap <silent> <C-g> :call RunTmuxPythonCell(1)<CR>
 " let g:cellmode_screen_sessionname='ipython'
 " let g:cellmode_screen_window='0'
 
-
-nnoremap <silent> <Plug>AppendTextNext gn<esc>".p:call repeat#set("\<Plug>AppendTextNext")<CR>
-nnoremap <silent> <Plug>AppendText *Ncgn<C-r>"<C-o>:call repeat#set("\<Plug>AppendTextNext")<CR>
-nmap <silent> c>* <Plug>AppendText
-
-nnoremap <silent> <Plug>PrependTextNext n".P:call repeat#set("\<Plug>PrependTextNext")<CR>
-nnoremap <silent> <Plug>PrependText *Ncgn<C-r>"<C-o>`[<C-o>:call repeat#set("\<Plug>PrependTextNext")<CR>
-nmap <silent> c<* <Plug>PrependText
-
-nnoremap <silent> <M-j> :MultipleCursorsFind <C-R>/<CR>
-vnoremap <silent> <M-j> :MultipleCursorsFind <C-R>/<CR>
-
 let g:no_plugins = 'false'
 " Multi cursor
 let g:multi_cursor_prev_key = '<C-S-n>'
@@ -816,14 +845,6 @@ let g:multi_cursor_exit_from_visual_mode = 0
 let g:multi_cursor_exit_from_insert_mode = 0
 nnoremap <silent> <M-j> :MultipleCursorsFind <C-R>/<CR>
 vnoremap <silent> <M-j> :MultipleCursorsFind <C-R>/<CR>
-IndentLinesEnable " Display a small line with each indentationlevel
-" vim-signify
-let g:signify_vcs_list = ['git']
-let g:signify_skip_filetype = { 'journal': 1 }
-let g:signify_sign_delete        = '-'
-" let g:signify_sign_add          = '│'
-" let g:signify_sign_change       = '│'
-" let g:signify_sign_changedelete = '│'
 "
 "
 
@@ -974,8 +995,10 @@ autocmd FileType gitcommit setlocal complete+=kspell
 " not contain bce (not to mention that libvte based terminals
 " incorrectly contain bce in their terminfo files). This causes
 " incorrect background rendering when using a color theme with a
-" background color. (Kitty, tmux)
+" background color. (Kitty, tmux).
+" This makes it not use the term color for clearing/erase
 let &t_ut=''
+" set t_ut=
 " au BufWinEnter * let w:m2=matchadd('ColorColumn','\%>140v.\+', -1)
 
 " }}}
@@ -1148,6 +1171,7 @@ nnoremap <space> za
 " visualy select last inserted text
 nnoremap gV `[V`]
 " Yank to end of line (default Y=yy)
+" Makes yank behave the same as D
 nnoremap Y y$
 " edit this file
 nnoremap <silent> <leader>ev :tabedit ~/.vimrc<CR>
@@ -1155,54 +1179,38 @@ nnoremap <silent> <leader>ev :tabedit ~/.vimrc<CR>
 nnoremap <silent> <leader>sv :so $MYVIMRC<CR>
 " edit the .zshrc file
 nnoremap <silent> <leader>ec :tabedit ~/.zshrc<CR>
-" edit the .cshrc.user file
-nnoremap <silent> <leader>ec :tabedit ~/.cshrc.user<CR>
-" remove any search highlighting
-nnoremap <leader><space> :nohlsearch<CR>
 " `gf` opens file under cursor in new vertical split
 nnoremap gf :vertical wincmd f<CR>
 " move visual lines instead of real lines, less confusing together with wraping lines
 " j&k still work like normal when preceeded with a count, and any movement larger than 5 goes to the jumplist.
 nnoremap <expr> j v:count ? (v:count > 5 ? "m'" . v:count : '') . 'j' : 'gj'
 nnoremap <expr> k v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk'
-nnoremap ^ H
-nnoremap $ L
-nnoremap H ^
-nnoremap L $
-
-" Use next
-" nnoremap <silent> <c-l>
-" inoremap <silent> <c-l>
 
 " Scroll faster.
 nnoremap <C-e> 2<C-e>
 nnoremap <C-y> 2<C-y>
 
 
+" Faster way to open search since it's used to often
 nmap ; :%s//g<LEFT><LEFT>
 xmap ; :s//g<LEFT><LEFT>
 " Super Save, save all windows as a session, reopen with vim -S (vim/gvim/nvim -S)
 nnoremap <leader>s :mksession<CR>
 " Fast Saving
 nnoremap <leader>w :w!<CR>
-" Toggle spellchecking
+" Toggle spell checking
 nnoremap <silent> <leader>t :setlocal spell!<CR>
 " Fast tab switching (Leader+Last)
 let g:lasttab = 1
-nnoremap <leader>l :exe "tabn ".g:lasttab<CR>
+nnoremap <silent> <leader>l :exe "tabn ".g:lasttab<CR>
 autocmd TabLeave * let g:lasttab = tabpagenr()
 
 nnoremap <silent> <leader>i :call ToggleCC()<CR>
-"show trailing whitespaces, somewhat exessive
+" show trailing whitespaces, somewhat exessive
 nnoremap <silent> <C-T> /\S\zs\s\+$<CR>
 
 " Replaced gundo with UndoTree, pure vimscript instead of dependencies
 nnoremap <leader>u :UndotreeToggle<CR>
-
-" open a new tab in the current buffer's path
-" very useful when editing files in the same directory
-" TODO combine with Vexplore and make more convinent
-" nnoremap <leader>e :tabedit <c-r>=expand("%:p:h")<CR>/<CR>
 
 " toggle NERDTree
 nnoremap <silent> <Leader>nt :NERDTreeToggle<CR>
@@ -1222,6 +1230,28 @@ nnoremap <C-V> v
 
 xnoremap v <C-V>
 xnoremap <C-V> v
+
+" These work similarly to C-N in visual-multi, use whichever one you prefer
+" Here you do a change once completely for the first match, and then just
+" press the . command to repeatedly change the others.
+
+" make current word pattern, then search select and change it
+" use . to then change the next occurance of the same word to the same thing
+nnoremap <silent> c* *Ncgn
+" Same but backwards
+nnoremap <silent> c# #NcgN
+" make current word pattern, then search select and append to it
+" looks complicated but it's just to make it repeatable with vim-repeat
+nnoremap <silent> <Plug>AppendTextNext gn<esc>".p:call repeat#set("\<Plug>AppendTextNext")<CR>
+nnoremap <silent> <Plug>AppendText *Ncgn<C-r>"<C-o>:call repeat#set("\<Plug>AppendTextNext")<CR>
+nmap <silent> c>* <Plug>AppendText
+" make current word pattern, then search select and prepend to it
+nnoremap <silent> <Plug>PrependTextNext n".P:call repeat#set("\<Plug>PrependTextNext")<CR>
+nnoremap <silent> <Plug>PrependText *Ncgn<C-r>"<C-o>`[<C-o>:call repeat#set("\<Plug>PrependTextNext")<CR>
+nmap <silent> c<* <Plug>PrependText
+" append & prepend backwards can be implemented in the same way but I wouldn't
+" use them really.
+
 " }}}
 " vnoremap {{{
 
