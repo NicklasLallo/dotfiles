@@ -293,6 +293,8 @@ let g:which_key_map['w'] = 'Write / Save'
 let g:which_key_map['i'] = 'Toggle Invisible'
 let g:which_key_map['l'] = 'Go To last Tab'
 
+let g:which_key_map['C'] = 'Colorpicker'
+
 let g:which_key_map['n'] = {'name' : '+NERDTree'}
 let g:which_key_map['e'] = {'name' : '+Edit file'}
 
