@@ -43,7 +43,7 @@ Plug 'rakr/vim-two-firewatch', {'as': 'two-firewatch'}
 Plug 'romainl/Apprentice'
 Plug 'sonph/onehalf'
 Plug 'srcery-colors/srcery-vim', {'as': 'srcery'}
-Plug 'tlhr/anderson.vim'
+" Plug 'tlhr/anderson.vim'
 Plug 'tomasr/molokai'
 " Plug 'tpope/vim-vividchalk', {'as': 'vividchalk'}
 Plug 'tyrannicaltoucan/vim-deep-space'
@@ -56,13 +56,17 @@ Plug 'NewProggie/NewProggie-Color-Scheme'
 Plug 'junegunn/seoul256.vim'
 " :VsdContrast cycles contrast :VsdOptions show options
 Plug 'mg979/vim-studio-dark' " vsdark | tomorrow_eigthies | sand
+Plug 'liuchengxu/space-vim-theme'
 
 
 " wal for colors
 Plug 'dylanaraps/wal'
 
 " Make gvim-only colorschemes work better in terminal vim
-Plug 'godlygeek/csapprox'
+" Shouldn't be needed as long as :set termguicolors works
+" reenable if the terminal 'only' supports 256 colors rather than
+" 16M/truecolor. Disabling this plugin when it's not needed speads up starttime.
+" Plug 'godlygeek/csapprox'
 
 " }}}
 " Styling {{{
@@ -74,8 +78,10 @@ Plug 'godlygeek/csapprox'
     Plug 'Yggdroot/indentLine', { 'on': 'IndentLinesEnable' }
     autocmd! User indentLine doautocmd indentLine Syntax
     if has('nvim')
-        Plug 'gelguy/wilder.nvim',         { 'do': ':UpdateRemotePlugins' }
+        " A bit to buggy, test again in a few months
+        " Plug 'gelguy/wilder.nvim',         { 'do': ':UpdateRemotePlugins' }
     endif
+    " Plug 'liuchengxu/vim-clap' " <C-J> <C-K> to cycle list
 "  }}}
 " {{{ Visual feedback
     " See what's going on
@@ -96,9 +102,18 @@ Plug 'godlygeek/csapprox'
     Plug 'machakann/vim-highlightedyank'
     Plug 'machakann/vim-highlightedundo'
 
-    if v:version >= 703
-    Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
-    endif
+    " if v:version >= 703
+    " Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
+    " endif
+    " Improved tagbar with LSP and async processing
+    Plug 'liuchengxu/vista.vim'
+        " How each level is indented and what to prepend.
+        " This could make the display more compact or more spacious.
+        " e.g., more compact: ["▸ ", ""]
+        let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+        let g:vista_fzf_preview = ['right:50%']
+        " Ensure you have installed some decent font to show these pretty symbols, then you can enable icon for the kind.
+        let g:vista#renderer#enable_icon = 1
 
     " This combination bellow shows both all vim-marks as well as all git/vcs
     " changes in the left side bar.
@@ -133,10 +148,11 @@ Plug 'godlygeek/csapprox'
 
     " automatically handles the tag files
     " Requires ctags/universal-ctags
+    let g:gutentags_exclude_filetypes = ['vim', 'tags']
     Plug 'ludovicchabant/vim-gutentags'
 " }}}
 " Language Specific {{{
-    Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'} " crazy python syntax
+    " Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'} " crazy python syntax
     " Go
     Plug 'fatih/vim-go'
     " Syntax Highlighting for i3 config file
@@ -325,6 +341,8 @@ let g:which_key_map['f'] = 'Search/Replace cWord paragraph'
 let g:which_key_map['%'] = 'Search/Replace cWord global'
 let g:which_key_map['?'] = 'Google cWord'
 let g:which_key_map['!'] = 'Google cWord FeelingLucky'
+let g:which_key_map['!'] = 'Vista'
+
 
 let g:which_key_map['C'] = 'Colorpicker'
 
@@ -376,6 +394,8 @@ endif
 let g:airline_left_sep= ' ' " Seems to always be a space after the left sep
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#show_buffers = 0
+
+" autocmd User AirlineAfterInit,AirlineAfterTheme call AirlineInit()
 
 " let g:airline_left_sep = ''
 " let g:airline_right_sep = ''
@@ -465,6 +485,41 @@ command! -bang -nargs=? -complete=dir Files
 if (executable('ag'))
     let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
 endif
+
+" Make fzf open a floating window by default
+     " let $FZF_DEFAULT_OPTS = '--layout=reverse'
+
+     " let g:fzf_layout = { 'window': 'call OpenFloatingWin()' }
+
+     function! OpenFloatingWin()
+       let height = &lines - 3
+       let width = float2nr(&columns - (&columns * 2 / 10))
+       let col = float2nr((&columns - width) / 2)
+
+       let opts = {
+             \ 'relative': 'editor',
+             \ 'row': height * 0.3,
+             \ 'col': col + 30,
+             \ 'width': width * 2 / 3,
+             \ 'height': height / 2
+             \ }
+
+       let buf = nvim_create_buf(v:false, v:true)
+       let win = nvim_open_win(buf, v:true, opts)
+
+       call setwinvar(win, '&winhl', 'Normal:Pmenu')
+
+       setlocal
+             \ buftype=nofile
+             \ nobuflisted
+             \ bufhidden=hide
+             \ nonumber
+             \ norelativenumber
+             \ signcolumn=no
+     endfunction
+
+
+
 " let $FZF_DEFAULT_COMMAND = 'fd --type f --hidden --follow --color=always --exclude .git'
 " let $FZF_DEFAULT_OPTS="--extended"
 "let g:fzf_files_options = '--preview "(head -'.&lines.' | rougify {} || bat --color \"always\" --line-range 0:100 {} || head -'.&lines.' {})"'
@@ -785,49 +840,49 @@ let g:ale_sign_warning = '⚠\ '
 
 " }}}
 " Wilder {{{
-if has('nvim')
-    call wilder#enable_cmdline_enter()
-    cmap <expr> <Tab> wilder#in_context() ? wilder#next() : "\<Tab>"
-    cmap <expr> <S-Tab> wilder#in_context() ? wilder#previous() : "\<S-Tab>"
-    set wildcharm=<Tab>
+" if has('nvim')
+"     call wilder#enable_cmdline_enter()
+"     cmap <expr> <Tab> wilder#in_context() ? wilder#next() : "\<Tab>"
+"     cmap <expr> <S-Tab> wilder#in_context() ? wilder#previous() : "\<S-Tab>"
+"     set wildcharm=<Tab>
 
-    let s:status_hl = wilder#make_hl('WilderStatus', 'WildStatus')
-    let s:mode_hl   = wilder#make_hl('WilderMode', 'WildMode')
-    let s:index_hl  = wilder#make_hl('WilderIndex', 'airline_z')
-    let s:sep_hl    = wilder#make_hl('WilderSep', 'WilderSeparator')
+"     let s:status_hl = wilder#make_hl('WilderStatus', 'WildStatus')
+"     let s:mode_hl   = wilder#make_hl('WilderMode', 'WildMode')
+"     let s:index_hl  = wilder#make_hl('WilderIndex', 'airline_z')
+"     let s:sep_hl    = wilder#make_hl('WilderSep', 'WilderSeparator')
 
-    " call wilder#set_option('pipeline', [
-    "             \   wilder#branch(
-    "             \     [
-    "             \       wilder#check({_, x -> empty(x)}),
-    "             \       wilder#history(10),
-    "             \     ],
-    "             \     wilder#cmdline_pipeline(),
-    "             \     [
-    "             \       wilder#python_fuzzy_delimiter(),
-    "             \       wilder#python_search({'engine': 're'}),
-    "             \       wilder#result_output_escape('^$,*~[]/\'),
-    "             \     ],
-    "             \   ),
-    "             \ ])
+"     " call wilder#set_option('pipeline', [
+"     "             \   wilder#branch(
+"     "             \     [
+"     "             \       wilder#check({_, x -> empty(x)}),
+"     "             \       wilder#history(10),
+"     "             \     ],
+"     "             \     wilder#cmdline_pipeline(),
+"     "             \     [
+"     "             \       wilder#python_fuzzy_delimiter(),
+"     "             \       wilder#python_search({'engine': 're'}),
+"     "             \       wilder#result_output_escape('^$,*~[]/\'),
+"     "             \     ],
+"     "             \   ),
+"     "             \ ])
 
-    call wilder#set_option('renderer', wilder#statusline_renderer({
-                \ 'separator':' • ',
-                \ 'separator_hl': s:sep_hl,
-                \ 'hl': s:status_hl,
-                \ 'left': [
-                \    {'value': [{-> getcmdtype() ==# ':' ? ' Command ' : ' Search '}, wilder#spinner()], 'hl': s:mode_hl},
-                \    wilder#separator('', s:mode_hl, s:status_hl, 'left'), ' ',
-                \ ],
-                \ 'right': [
-                \    ' ', wilder#separator('', s:index_hl, s:status_hl, 'right'),
-                \    wilder#index({'hl': s:index_hl}),
-                \ ],
-                \ }))
+"     call wilder#set_option('renderer', wilder#statusline_renderer({
+"                 \ 'separator':' • ',
+"                 \ 'separator_hl': s:sep_hl,
+"                 \ 'hl': s:status_hl,
+"                 \ 'left': [
+"                 \    {'value': [{-> getcmdtype() ==# ':' ? ' Command ' : ' Search '}, wilder#spinner()], 'hl': s:mode_hl},
+"                 \    wilder#separator('', s:mode_hl, s:status_hl, 'left'), ' ',
+"                 \ ],
+"                 \ 'right': [
+"                 \    ' ', wilder#separator('', s:index_hl, s:status_hl, 'right'),
+"                 \    wilder#index({'hl': s:index_hl}),
+"                 \ ],
+"                 \ }))
 
-    " Enable cmdline completion (for Neovim only)
-    call wilder#set_option('modes', ['/', '?', ':'])
-endif
+"     " Enable cmdline completion (for Neovim only)
+"     call wilder#set_option('modes', ['/', '?', ':'])
+" endif
 " }}}
 " Other {{{
     " Visual {{{
@@ -930,7 +985,7 @@ if has('gui_running')
   set background=dark
   colorscheme gruvbox
 else
-  colorscheme carbonized-dark
+  colorscheme space_vim_theme
   set background=dark
     if has('terminal') && !(&term ==# 'xterm-kitty') && !(&term ==# 'xterm-256color')
         " Avoid setting this variable when it is not absolutely neccesary
@@ -1103,7 +1158,7 @@ set undolevels=1000   " save more levels of undo
 set foldenable        " enable folding
 set foldlevelstart=10 " open most folds by default
 set foldnestmax=10    " 10 nested fold max
-set foldmethod=manual
+set foldmethod=indent " fold similar indentation levels
 set iskeyword+=-      " Treat dash separated words as word text objects (for ciw etc)
 " set foldcolumn=1
 set mouse=a           " enable mouse
@@ -1183,7 +1238,8 @@ map <F6> :source ~/.vim_session<cr>
 " map <F8> :set autochdir! autochdir?<CR>
 nnoremap <silent> <F7> :call <SID>rotate_colors()<cr>
 nnoremap <silent> <F8> :call <SID>light_colors()<cr>
-nmap <F9> :TagbarToggle<CR>
+nmap <F9> :Vista find<CR>
+nmap <silent> <leader><leader> :Vista focus<CR>
 
 " Unsure about this
 " Control-C Copy in visual mode
