@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-  export ZSH=$HOME/.oh-my-zsh
+export ZSH=$HOME/.oh-my-zsh
 
 # . $HOME/.z.sh
 # Set name of the theme to load.
@@ -64,19 +64,7 @@ plugins=(fzf-z git forgit z zsh-autosuggestions colored-man-pages command-not-fo
 
 # User configuration
 
-  export EDITOR=nvim
-  export RANGER_LOAD_DEFAULT_RC="FALSE"
-  export PATH="/bin/:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl"
-  export PATH=~/dotfiles/scripts/:$PATH
-  export PATH="${PATH}:${HOME}/.local/bin/"
-  export PATH="${PATH}:${HOME}/.gem/ruby/2.6.0/bin/"
-  export PATH="${PATH}:${HOME}/aur/imgur-screenshot/"
-# export MANPATH="/usr/local/man:$MANPATH"
-
-export ANDROID_HOME=/opt/android-sdk
-#  export TERM="xterm-256color"
-
-  setxkbmap -layout se
+setxkbmap -layout se
 
 source $ZSH/oh-my-zsh.sh
 
@@ -86,10 +74,6 @@ source $ZSH/oh-my-zsh.sh
 #     source /usr/lib/python3.6/site-packages/powerline/bindings/zsh/powerline.zsh
 # fi
 
-export PATH=/opt/cuda/bin${PATH:+:${PATH}}
-export CUDA_HOME=/opt/cuda${CUDA_HOME:+:${CUDA_HOME}}
-export LD_LIBRARY_PATH=/opt/cuda/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
-export LD_LIBRARY_PATH=/opt/cuda/extras/CUPTI/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
@@ -139,14 +123,76 @@ if [[ $USER == 'la1' ]]; then
     echo $showerthoughts | cowsay | lolcat
 fi
 
+# Internet man page / cheat cheet
+# usage: how_in language question
+# ex: how_in python list folders
+# It basically searches stackoverflow for you. Only really useful for simple questions.
+function how_in(){
+    q="${@:2}"
+    curl cht.sh/$1/${q// /+}
+}
+
+# Find out what is taking so much space on your drives
+diskspace() { du -k --max-depth=1 "$@" | sort -nr | awk '
+     BEGIN {
+        split("KB,MB,GB,TB", Units, ",");
+     }
+     {
+        u = 1;
+        while ($1 >= 1024) {
+           $1 = $1 / 1024;
+           u += 1
+        }
+        $1 = sprintf("%.1f %s", $1, Units[u]);
+        print $0;
+     }
+    '
+}
+
+# Easy way to extract archives
+extract () {
+   if [ -f $1 ] ; then
+       case $1 in
+           *.tar.bz2)   tar xvjf $1;;
+           *.tar.gz)    tar xvzf $1;;
+           *.bz2)       bunzip2 $1 ;;
+           *.rar)       unrar x $1 ;;
+           *.gz)        gunzip $1  ;;
+           *.tar)       tar xvf $1 ;;
+           *.tbz2)      tar xvjf $1;;
+           *.tgz)       tar xvzf $1;;
+           *.zip)       unzip $1   ;;
+           *.Z)         uncompress $1  ;;
+           *.7z)        7z x $1;;
+           *) echo "don't know how to extract '$1'..." ;;
+       esac
+   else
+       echo "'$1' is not a valid file!"
+   fi
+}
+
+#List people in a Twitch channel chat
+function twitch_list() { curl -s "https://tmi.twitch.tv/group/user/$1/chatters" | less; }
+
+#Tail all logs in /var/log
+alias logs="find /var/log -type f -exec file {} \; | grep 'text' | cut -d' ' -f1 | sed -e's/:$//g' | grep -v '[0-9]$' | xargs tail -f"
+#Expand current directory structure in tree form
+alias treed="ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'"
+#List by file size in current directory
+sbs() { du -b --max-depth 1 | sort -nr | perl -pe 's{([0-9]+)}{sprintf "%.1f%s", $1>=2**30? ($1/2**30, "G"):    $1>=2**20? ($1/2**20, "M"): $1>=2**10? ($1/2**10, "K"): ($1, "")}e';}
+#Show active ports
+alias port='netstat -tulanp'
+#Translator; requires Internet
+#Usage: translate <phrase> <output-language>
+#Example: translate "Bonjour! Ca va?" en
+#See this for a list of language codes: http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+function translate(){ wget -U "Mozilla/5.0" -qO - "http://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=$2&dt=t&q=$(echo $1 | sed "s/[\"'<>]//g")" | sed "s/,,,0]],,.*//g" | awk -F'"' '{print $2, $6}'; }
+
+
+
+
 alias fd='fdfind'
-export FD_COMMAND="fdfind"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export GOBIN="$HOME/go/bin"
-export GOPATH="$HOME/go"
-export FZF_DEFAULT_OPS="--extended"
-export FZF_DEFAULT_COMMAND="$FD_COMMAND --type f --hidden --follow --exclude .git"
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 alias vim='nvim'
 alias nv='nvim'
@@ -219,22 +265,22 @@ cdf() {
 
 # fkill - kill processes - list only the ones you can kill. Modified the earlier script.
 fkill() {
-    local pid 
+    local pid
     if [ "$UID" != "0" ]; then
         pid=$(ps -f -u $UID | sed 1d | fzf -m | awk '{print $2}')
     else
         pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
-    fi  
+    fi
 
     if [ "x$pid" != "x" ]
     then
         echo $pid | xargs kill -${1:-9}
-    fi  
+    fi
 }
 
 cdscuts_list_echo() {
     # cat $1 | sed 's/#.*//g' | sed '/^\s*$/d'
-    cat $1 | sed '/^\s*$/d' 
+    cat $1 | sed '/^\s*$/d'
     # Same as above but includes the comments for the search
 }
 
@@ -264,6 +310,39 @@ bm() {
     fi
 }
 alias bookmark='bm'
+
+#An alternative to the cdb & bm above, but without fzf
+##############################################################################
+# mark/jump support + completion
+# un/mark name : bookmark a directory or remove one (unmark)
+# jump name : jump to directory
+# marks : show all bookmarks
+export MARKPATH=$HOME/.marks
+function jump {
+    cd -P $MARKPATH/$1 2>/dev/null || echo "No such mark: $1"
+}
+function mark {
+    mkdir -p $MARKPATH; ln -s $(pwd) $MARKPATH/$1
+}
+function unmark {
+    rm -i $MARKPATH/$1
+}
+function marks {
+    ls -l $MARKPATH | sed 's/  / /g' | cut -d' ' -f9- | sed 's/ -/\t-/g' && echo
+}
+_completemarks() {
+  local curw=${COMP_WORDS[COMP_CWORD]}
+  local wordlist=$(find $MARKPATH -type l -printf "%f\n")
+  COMPREPLY=($(compgen -W '${wordlist[@]}' -- "$curw"))
+  return 0
+}
+
+complete -F _completemarks jump unmark
+
+
+
+
+
 # fshow - git commit browser (enter for show, ctrl-d for diff, ` toggles sort)
 fshow() {
   local out shas sha q k
@@ -395,5 +474,4 @@ if [[ -f $HOME/diff-so-fancy ]]; then
     git config --global color.diff.new        "green bold"
     git config --global color.diff.whitespace "red reverse"
 fi
-export LESS="-M -I -R"
 source $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

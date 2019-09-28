@@ -21,7 +21,7 @@ More common 1080p monitor. Every time a new terminal is opened you get a fresh s
 ![Vim Showing some simple code](https://github.com/NicklasLallo/dotfiles/raw/master/Pictures/Readme/vimRedshift1.png)
 With Redshift disabled (evening)
 ![Vim Showing some simple code](https://raw.githubusercontent.com/NicklasLallo/dotfiles/master/Pictures/Readme/vimRedshift3.png)
-Different background and vim colortheme.
+Different background and Vim colortheme.
 
 ## Older picture:
 ![Preview of Setup](https://github.com/NicklasLallo/dotfiles/raw/master/Pictures/Readme/Old.png)
@@ -32,15 +32,16 @@ You can easily pick and choose the parts you like without having to use everythi
 
 Since these are dotfiles they obviously require you to also install the original software you want these files to configure for you, they are after all only the configuration files.
 
-To more quickly set things up I recomend to use GNU Stow to symlink the dotfiles.
+
+To more quickly set things up I recommend to use GNU Stow to symlink the dotfiles.
 1. Clone the repo into your home folder, e.g. `~/dotfiles`.
-2. Install stow from your package manager. (or do the symlinks manualy, see: `man ln`)
+2. Install stow from your package manager. (or do the symlinks manually, see: `man ln`)
 3. Backup any of your original config files you want to keep around.
 4. Download the submodules (additional git repos) with `git submodule init` & `git submodule update`.
-5. Go to the repo and run `stow vim` or similar to symlink the files asociated with that part of the setup.
+5. Go to the repo and run `stow vim` or similar to symlink the files associated with that part of the setup.
 
 ## Considerations
-My setup uses two monitors, one of which is an ultrawide monitor with an unusually high resolution (3440x1440). If you use this on any other system you will have to manualy tweak the positioning of the polybar segments. This is not difficult, simple math should suffice. Same with the gaps/borders, they are most likely to large on for example only a single 1080p or 720p monitor. The i3 config file also says wich workspace should go on which monitor (use `xrandr` to find the names of your monitors).
+My setup uses two monitors, one of which is an ultrawide monitor with an unusually high resolution (3440x1440). If you use this on any other system you will have to manually tweak the positioning of the polybar segments. This is not difficult, simple math should suffice. Same with the gaps/borders, they are most likely to large on for example only a single 1080p or 720p monitor. The i3 config file also says wich workspace should go on which monitor (use `xrandr` to find the names of your monitors).
 
 Also, even though I intend for these configuration files to be modular and somewhat independant, I still highly recomend that you read through every file before you use it. Who knows what I might have included in here.
 

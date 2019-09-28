@@ -1,8 +1,5 @@
 " Plugins {{{
 let mapleader=","       " leader is comma instead of \
-" Optional built in package
-" packadd! matchit " Enhances % jumping.
-" packadd! cfilter " Allows filtering of the quickfix/location list, Ex: :Cfilter[!] /{pat}/
 " Plug {{{
 " Install vim-plug if missing
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -12,95 +9,9 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 call plug#begin('~/.vim/plugged')
 
-Plug 'markonm/traces.vim'
-" Make commands run on limited visual selections and not entire lines with 'B'. :'<,'>B cmd
-" Also add searching with 'S'. :'<,'>S pattern
-Plug 'vim-scripts/vis'
-
-" Let vim interact with tmux
-" Automate things with :call VimuxRunCommand("shell command")
-Plug 'benmills/vimux'
-" This a vim plugin that enables MATLAB-style cell mode execution for python scripts in vim, assuming an ipython interpreter running in screen (or tmux).
-"    C-c sends the currently selected lines to tmux
-"    C-g sends the current cell to tmux
-"    C-b sends the current cell to tmux, moving to the next one
-Plug 'julienr/vim-cellmode'
-
-
-" Go
-Plug 'fatih/vim-go'
-
-" Fix FocusGained/FocusLost in terminal vim together with tmux
-" And also fix autoread in terminal vim (otherwise only working in gvim)
-Plug 'tmux-plugins/vim-tmux-focus-events'
-
-" Which-key similar to spacemacs
-Plug 'liuchengxu/vim-which-key'
-
-" Syntax Highlighting for i3 config file
-Plug 'PotatoesMaster/i3-vim-syntax'
-
-" Nice opening screen
-Plug 'mhinz/vim-startify'
-
-        let g:startify_commands = [
-        \   { 'up': [ 'Update Plugins', ':PlugUpdate' ] },
-        \   { 'ug': [ 'Upgrade Plugin Manager', ':PlugUpgrade' ] },
-        \ ]
-        
-        let g:startify_bookmarks = [
-            \ { 'c': '~/.vimrc' },
-            \ { 'g': '~/dotfiles/.gitconfig' },
-            \ { 'z': '~/.zshrc' }
-        \ ]
-
-        autocmd User Startified setlocal cursorline
-        nmap <leader>st :Startify<cr>
-
-" Emmet for vim
-Plug 'mattn/emmet-vim'
-" Use with <C-y>,
-
-" Change how motions work
-Plug 'easymotion/vim-easymotion'
-" trigger with <leader><leader>
-" slightly buggy if you wait for too long after <leader><leader> in
-" combination with which-key
-
-" transpose csv/tsv
-Plug 'salsifis/vim-transpose'
-
-" Plugin from git directory
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-" Plug 'enricobacis/vim-airline-clock'
-" Linter
-Plug 'w0rp/ale'
-Plug 'tweekmonster/startuptime.vim'
-
-" allows opening files with syntax: vim fileName:lineNr
-Plug 'bogado/file-line'
-" Cscope
-"Plug '~/.vim/locals/cscope_maps.vim'
-
-" Vim Indent Object, simple plugin that adds the 'i' text-object for current indentation level.
-" Example: vii, vai, vaI, viI
-" Plug 'michaeljsmith/vim-indent-object' " Replaced by vimscript in this file
-
-" Plugin that expands the power of text-objects:
-" Example: cin) will change in the next () (searches forward from cursor).
-" This is mainly useful together with '.' to repeat the command many times.
-" Also allows searching backwards with l (last) instead of n (next).
-" Does some seeking even when n/l are missing.
-" Also allows for count, ex: d2i) (delete 2 levels deep).
-" Also adds many new separators, Ex: i, i. i; i: i+ i- i= i~ i_ i* i# i/ i| i\ i& i$
-" Adds Argument as a text-object, Ex: cia. Arguments are comma separated lists inside braces, Ex: def func(a,b,c,d)
-" Adds multi text objects, any block & any quote, Ex: inb anb Inb Anb ilb alb Ilb Alb & inq anq Inq Anq ilq alq Ilq Alq
-" vanw & vanp not yet implemented. Simply doesn't touch w,W,p,P,s,S word objects (but overrides the other defaults)
-Plug 'wellle/targets.vim'
-
-
-" Colorthemes
+" Plugins are sorted by category
+" {{{ colorthemes
+" TODO, cleanup and remove more of those that I never use
 Plug 'AlessandroYorba/Alduin'
 Plug 'AlessandroYorba/Despacio'
 Plug 'AlessandroYorba/Sierra'
@@ -132,7 +43,7 @@ Plug 'rakr/vim-two-firewatch', {'as': 'two-firewatch'}
 Plug 'romainl/Apprentice'
 Plug 'sonph/onehalf'
 Plug 'srcery-colors/srcery-vim', {'as': 'srcery'}
-Plug 'tlhr/anderson.vim', {'as': 'Wes anderson'}
+Plug 'tlhr/anderson.vim'
 Plug 'tomasr/molokai'
 " Plug 'tpope/vim-vividchalk', {'as': 'vividchalk'}
 Plug 'tyrannicaltoucan/vim-deep-space'
@@ -142,6 +53,9 @@ Plug 'hzchirs/vim-material'
 Plug 'ayu-theme/ayu-vim'
 Plug 'joshdick/onedark.vim'
 Plug 'NewProggie/NewProggie-Color-Scheme'
+Plug 'junegunn/seoul256.vim'
+" :VsdContrast cycles contrast :VsdOptions show options
+Plug 'mg979/vim-studio-dark' " vsdark | tomorrow_eigthies | sand
 
 
 " wal for colors
@@ -150,103 +64,217 @@ Plug 'dylanaraps/wal'
 " Make gvim-only colorschemes work better in terminal vim
 Plug 'godlygeek/csapprox'
 
-" multifile find & replace
-Plug 'brooth/far.vim'
-" :Far foo bar **/*.c     This finds the pattern to replace
-" :Fardo                  This does the replacement
-" :Farundo                Undo in panic
+" }}}
+" Styling {{{
 
-" Real multiple cursors
-Plug 'terryma/vim-multiple-cursors'
-" Use easily with <C-n>
-
-" Simple comment toggeling with :gcc (line) or gc (target of a motion)
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive', { 'on': [] }  " git awesomeness
-Plug 'tpope/vim-surround'                " Vim-surround
-Plug 'tpope/vim-repeat'
-Plug 'kreskij/Repeatable.vim', { 'on': 'Repeatable' }
-Plug 'vim-scripts/ReplaceWithRegister'   " [\"x]gr{motion}
-Plug 'AndrewRadev/splitjoin.vim'         " gS (split) & gJ (join)
-Plug 'AndrewRadev/switch.vim'            " gs (switch, ex: true->false, '&&'->'||')
-Plug 'zirrostig/vim-schlepp'             " move visual selections around
-Plug 'google/vim-searchindex'            " prints 'At match #N out of M matches' after any search.
-
-" if exists('##TextYankPost')
-Plug 'machakann/vim-highlightedyank'
-let g:highlightedyank_highlight_duration = 100
-" endif
-if !exists('##TextYankPost')
-  map y <Plug>(highlightedyank)
-endif
-
-Plug 'Yggdroot/indentLine', { 'on': 'IndentLinesEnable' }
-autocmd! User indentLine doautocmd indentLine Syntax
-if v:version >= 703
-  Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
-endif
-if v:version >= 703
-  Plug 'mhinz/vim-signify'
-  let g:signify_vcs_list = [ 'git' ]    " Improve performance. Add more later if needed.
-  let g:signify_skip_filetype = { 'tmp': 1, 'bak': 1 }
-endif
-let g:SignatureMarkTextHLDynamic=1      " Allows for interaction with signify/gitgutter
-Plug 'kshenoy/vim-signature'            " displays marks on lefthand side
+    Plug 'ryanoasis/vim-devicons'
+    Plug 'junegunn/rainbow_parentheses.vim'
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
+    Plug 'Yggdroot/indentLine', { 'on': 'IndentLinesEnable' }
+    autocmd! User indentLine doautocmd indentLine Syntax
+    if has('nvim')
+        Plug 'gelguy/wilder.nvim',         { 'do': ':UpdateRemotePlugins' }
+    endif
+"  }}}
+" {{{ Visual feedback
+    " See what's going on
 
 
+    " visual feedback for f, F, t, T
+    Plug 'deris/vim-shot-f'
+    " Displays function signatures from completions in the command line.
+    Plug 'Shougo/echodoc.vim'
 
-" PlugInstall and PlugUpdate will clone fzf in ~/.fzf and run install script
-" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-" Both options are optional. You don't have to install fzf in ~/.fzf
-" and you don't have to run install script if you use fzf only in Vim.
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'shell': '/bin/zsh' }
-Plug 'junegunn/fzf.vim'
-Plug 'junegunn/vim-easy-align'          " align, ex: gaip#
-Plug 'junegunn/goyo.vim'                " Distraction free writinga :Goyo
-" Plug 'junegunn/vim-github-dashboard'  " Use with :GHD , requires ruby support
-Plug 'junegunn/vim-peekaboo'            " Preview \" @ i<C-R>
-Plug 'junegunn/vim-journal'             " poor mans Org-mode
-Plug 'junegunn/seoul256.vim'            " Color theme
-Plug 'junegunn/gv.vim'                  " git commit browse, requires fugitive, :GV
-Plug 'junegunn/limelight.vim'           " Use together with goyo, :Limelight
-Plug 'junegunn/rainbow_parentheses.vim'
+    Plug 'junegunn/vim-peekaboo'            " Preview \" @ i<C-R>
+    " Gives visual feedback for patterns and ranges for Ex commands.
+    " And live preview for :substitute :smagic :snomagic
+    Plug 'markonm/traces.vim'
+
+    " Show what just got pasted, undoed, yanked
+    Plug 'NicklasLallo/vim-shiny'
+    Plug 'machakann/vim-highlightedyank'
+    Plug 'machakann/vim-highlightedundo'
+
+    if v:version >= 703
+    Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
+    endif
+
+    " This combination bellow shows both all vim-marks as well as all git/vcs
+    " changes in the left side bar.
+    if v:version >= 703
+    Plug 'mhinz/vim-signify'
+    let g:signify_vcs_list = [ 'git' ]    " Improve performance. Add more later if needed.
+    let g:signify_skip_filetype = { 'tmp': 1, 'bak': 1 }
+    endif
+    let g:SignatureMarkTextHLDynamic=1      " Allows for interaction with signify/gitgutter
+    Plug 'kshenoy/vim-signature'            " displays marks on lefthand side
 
 
-Plug 'romainl/vim-cool'                 " Disable hlsearch when you are done searching
-" let g:CoolTotalMatches = 1
-" The ultimate undo history visualizer for VIM
-Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
-" NERDTree... tree explorer for vim
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-augroup nerd_loader
-  autocmd!
-  autocmd VimEnter * silent! autocmd! FileExplorer
-  autocmd BufEnter,BufNew *
-        \  if isdirectory(expand('<amatch>'))
-        \|   call plug#load('nerdtree')
-        \|   execute 'autocmd! nerd_loader'
-        \| endif
-augroup END
+    " Make hlsearch bearable without having to type :nohl all the time
+    Plug 'romainl/vim-cool'                 " Disable hlsearch when you are done searching
 
-" Nerdtree show git status
-Plug 'Xuyuanp/nerdtree-git-plugin'
+    " Which-key similar to spacemacs
+    Plug 'liuchengxu/vim-which-key'
+    Plug 'lilydjwg/colorizer'
+" }}}
+" {{{ Outside tools
+    " Let vim interact with tmux
+    " Automate things with :call VimuxRunCommand("shell command")
+    Plug 'benmills/vimux'
+    " This a vim plugin that enables MATLAB-style cell mode execution for python scripts in vim, assuming an ipython interpreter running in screen (or tmux).
+    "    C-c sends the currently selected lines to tmux
+    "    C-g sends the current cell to tmux
+    "    C-b sends the current cell to tmux, moving to the next one
+    Plug 'julienr/vim-cellmode'
+    " Fix FocusGained/FocusLost in terminal vim together with tmux
+    " And also fix autoread in terminal vim (otherwise only working in gvim)
+    Plug 'tmux-plugins/vim-tmux-focus-events'
 
-" highlight file icons with different colors
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+    " automatically handles the tag files
+    " Requires ctags/universal-ctags
+    Plug 'ludovicchabant/vim-gutentags'
+" }}}
+" Language Specific {{{
+    Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'} " crazy python syntax
+    " Go
+    Plug 'fatih/vim-go'
+    " Syntax Highlighting for i3 config file
+    Plug 'PotatoesMaster/i3-vim-syntax'
+    " Emmet for vim
+    " Plug 'mattn/emmet-vim'
+    " Use with <C-y>,
+" }}}
+" Other {{{
+    Plug 'zirrostig/vim-schlepp'             " move visual selections around
+    Plug 'google/vim-searchindex'            " prints 'At match #N out of M matches' after any search.
+    " multifile find & replace
+    Plug 'brooth/far.vim'
+    " :Far foo bar **/*.c     This finds the pattern to replace
+    " :Fardo                  This does the replacement
+    " :Farundo                Undo in panic
 
-Plug 'ryanoasis/vim-devicons'
-if has('nvim')
-    " Strange Undefined Variable warnings together
-    " with ipython3
-    " Plug 'kassio/neoterm'
-    " let g:neoterm_repl_python = 'ipython3'
-endif
+    " allows opening files with syntax: vim fileName:lineNr
+    Plug 'bogado/file-line'
+    Plug 'tweekmonster/startuptime.vim'
+    " transpose csv/tsv
+    Plug 'salsifis/vim-transpose'
+    " Nice opening screen
+    Plug 'mhinz/vim-startify'
 
-" semantic-based completion
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+    let g:startify_commands = [
+    \   { 'up': [ 'Update Plugins', ':PlugUpdate' ] },
+    \   { 'ug': [ 'Upgrade Plugin Manager', ':PlugUpgrade' ] },
+    \ ]
 
+    let g:startify_bookmarks = [
+        \ { 'c': '~/.vimrc' },
+        \ { 'g': '~/dotfiles/.gitconfig' },
+        \ { 'z': '~/.zshrc' }
+    \ ]
+
+    autocmd User Startified setlocal cursorline
+    nmap <leader>st :Startify<cr>
+    " Simple comment toggeling with :gcc (line) or gc (target of a motion)
+    Plug 'tpope/vim-commentary'
+    Plug 'tpope/vim-surround'                " Vim-surround
+    Plug 'NicklasLallo/vim-repeat'           " Fork to support undo highlights as well
+    Plug 'kreskij/Repeatable.vim', { 'on': 'Repeatable' }
+    Plug 'rhysd/git-messenger.vim'           " <leader>gm or :GitMessenger
+" }}}
+" Additional commands, tools, and maps {{{
+    Plug 'AndrewRadev/splitjoin.vim'         " gS (split) & gJ (join)
+    Plug 'AndrewRadev/switch.vim'            " gs (switch, ex: true->false, '&&'->'||')
+    Plug 'junegunn/goyo.vim'                " Distraction free writinga :Goyo
+    Plug 'junegunn/limelight.vim'           " Use together with goyo, :Limelight
+    " The ultimate undo history visualizer for VIM
+    Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
+    " NERDTree... tree explorer for vim
+    Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+    augroup nerd_loader
+    autocmd!
+    autocmd VimEnter * silent! autocmd! FileExplorer
+    autocmd BufEnter,BufNew *
+            \  if isdirectory(expand('<amatch>'))
+            \|   call plug#load('nerdtree')
+            \|   execute 'autocmd! nerd_loader'
+            \| endif
+    augroup END
+    " Nerdtree show git status
+    Plug 'Xuyuanp/nerdtree-git-plugin'
+    " highlight file icons with different colors
+    Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+" }}}
+" Motions, Movements & Text Objects {{{
+    " Plugin that expands the power of text-objects:
+    " Example: cin) will change in the next () (searches forward from cursor).
+    " This is mainly useful together with '.' to repeat the command many times.
+    " Also allows searching backwards with l (last) instead of n (next).
+    " Does some seeking even when n/l are missing.
+    " Also allows for count, ex: d2i) (delete 2 levels deep).
+    " Also adds many new separators, Ex: i, i. i; i: i+ i- i= i~ i_ i* i# i/ i| i\ i& i$
+    " Adds Argument as a text-object, Ex: cia. Arguments are comma separated lists inside braces, Ex: def func(a,b,c,d)
+    " Adds multi text objects, any block & any quote, Ex: inb anb Inb Anb ilb alb Ilb Alb & inq anq Inq Anq ilq alq Ilq Alq
+    " vanw & vanp not yet implemented. Simply doesn't touch w,W,p,P,s,S word objects (but overrides the other defaults)
+    Plug 'wellle/targets.vim'
+
+    " Change how motions work
+    " Is currently maped to '-' & '_'
+    Plug 'easymotion/vim-easymotion'
+
+    " Vim Indent Object, simple plugin that adds the 'i' text-object for current indentation level.
+    " Example: vii, vai, vaI, viI
+    " Plug 'michaeljsmith/vim-indent-object' " Replaced by vimscript in this file
+"  }}}
+" Advanced {{{
+    " If you are going to use these plugins make sure to read their help files
+    " first. On the other hand these are also some of the most awesome plugins.
+
+
+    Plug 'tpope/vim-fugitive', { 'on': [] }  " git awesomeness
+    Plug 'junegunn/gv.vim'                   " git commit browse, requires fugitive, :GV
+
+    " Linter
+    Plug 'w0rp/ale'
+    " semantic-based completion
+    let g:ycm_key_detailed_diagnostics = '<leader>D'
+    Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+
+    " 'yankstack', cCxX'Del' black hole redirection, swap-&-paste, visual move
+    " paste don't override default register, replace operator, duplicate operator,
+    " interactive paste with fzf, and more
+    let g:yanktools_main_key = 's' " unfortunate sacrifice
+    nmap S s$
+    " :help yanktools.txt
+    Plug 'mg979/vim-yanktools'   " M-p & M-P to cycle stack, ]y & [y cycle with preview
+
+    " Real multiple cursors
+    " Plug 'terryma/vim-multiple-cursors'
+    " Better newer faster stronger
+    " To run the tutorial:
+    " vim -Nu path/to/visual-multi/tutorialrc
+    let g:VM_leader = '+'
+    Plug 'mg979/vim-visual-multi'
+    " Use easily with <C-n>
+
+    " PlugInstall and PlugUpdate will clone fzf in ~/.fzf and run install script
+    " Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    " Both options are optional. You don't have to install fzf in ~/.fzf
+    " and you don't have to run install script if you use fzf only in Vim.
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'shell': '/bin/zsh' }
+    Plug 'junegunn/fzf.vim'
+
+
+" }}}
+" Potentially unnecessary {{{
+    Plug 'junegunn/vim-journal'             " poor mans Org-mode
+    " align, ex: gaip#
+    " This functionality is also in visual-multi
+    Plug 'junegunn/vim-easy-align'
+"  }}}
 call plug#end()
 " }}}
+" Plugin settings {{{
 " Vim Fugitive {{{
 " only allow dp & do while using fugitive to avoid any pauses while pressing d
 " in other modes.
@@ -288,10 +316,15 @@ let g:which_key_map =  {}
 " let g:which_key_map.8 = 'which_key_ignore'
 " let g:which_key_map.9 = 'which_key_ignore'
 let g:which_key_map['a'] = ':Ag Fuzzy search'
-let g:which_key_map['g'] = ':Tags Fuzzy search'
+let g:which_key_map['T'] = ':Tags Fuzzy search'
 let g:which_key_map['w'] = 'Write / Save'
 let g:which_key_map['i'] = 'Toggle Invisible'
 let g:which_key_map['l'] = 'Go To last Tab'
+let g:which_key_map['C'] = 'color test'
+let g:which_key_map['f'] = 'Search/Replace cWord paragraph'
+let g:which_key_map['%'] = 'Search/Replace cWord global'
+let g:which_key_map['?'] = 'Google cWord'
+let g:which_key_map['!'] = 'Google cWord FeelingLucky'
 
 let g:which_key_map['C'] = 'Colorpicker'
 
@@ -444,7 +477,7 @@ function! FZFOpen(command_str)
 endfunction
 
 nnoremap <silent> <leader>a :call FZFOpen(':Ag')<CR>
-nnoremap <silent> <leader>g :call FZFOpen(':Tags')<CR>
+nnoremap <silent> <leader>T :call FZFOpen(':Tags')<CR>
 
 nnoremap <silent> <C-g>g :call FZFOpen(':Ag')<CR>
 nnoremap <silent> <C-g>c :call FZFOpen(':Commands')<CR>
@@ -461,29 +494,44 @@ imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 imap <c-x><c-l> <plug>(fzf-complete-line)
 inoremap <c-l> <C-x><C-l>
 
-        nnoremap <silent> <Leader>C :call fzf#run({
-        \   'source':
-        \     map(split(globpath(&rtp, "colors/*.vim"), "\n"),
-        \         "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
-        \   'sink':    'colo',
-        \   'options': '+m',
-        \   'left':    30
-        \ })<CR>
+nnoremap <silent> <Leader>C :call fzf#run({
+\   'source':
+\     map(split(globpath(&rtp, "colors/*.vim"), "\n"),
+\         "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
+\   'sink':    'colo',
+\   'options': '+m',
+\   'left':    30
+\ })<CR>
+
+command! FZFMru call fzf#run({
+\  'source':  v:oldfiles,
+\  'sink':    'e',
+\  'options': '-m -x +s',
+\  'down':    '40%'})
+
+command! -bang -nargs=* Find call fzf#vim#grep(
+    \ 'rg --column --line-number --no-heading --follow --color=always '.<q-args>, 1,
+    \ <bang>0 ? fzf#vim#with_preview('up:60%') : fzf#vim#with_preview('right:50%:hidden', '?'), <bang>0)
+command! -bang -nargs=? -complete=dir Files
+    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview('right:50%', '?'), <bang>0)
+command! -bang -nargs=? -complete=dir GitFiles
+    \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview('right:50%', '?'), <bang>0)
 
 
-        command! FZFMru call fzf#run({
-        \  'source':  v:oldfiles,
-        \  'sink':    'e',
-        \  'options': '-m -x +s',
-        \  'down':    '40%'})
-        
-        command! -bang -nargs=* Find call fzf#vim#grep(
-            \ 'rg --column --line-number --no-heading --follow --color=always '.<q-args>, 1,
-            \ <bang>0 ? fzf#vim#with_preview('up:60%') : fzf#vim#with_preview('right:50%:hidden', '?'), <bang>0)
-        command! -bang -nargs=? -complete=dir Files
-            \ call fzf#vim#files(<q-args>, fzf#vim#with_preview('right:50%', '?'), <bang>0)
-        command! -bang -nargs=? -complete=dir GitFiles
-            \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview('right:50%', '?'), <bang>0)
+
+" Use FZF for spellchecking instead of the default full screen thingy.
+" overrides the normal mode command: z=
+" optionally spellsuggest can take more arguments, 2nd is for number of
+" suggestions
+function! FzfSpellSink(word)
+  exe 'normal! "_ciw'.a:word
+endfunction
+
+function! FzfSpell()
+  let suggestions = spellsuggest(expand("<cword>"))
+  return fzf#run({'source': suggestions, 'sink': function("FzfSpellSink"), 'down': 10 })
+endfunction
+nnoremap z= :call FzfSpell()<CR>
 
 " }}}
 " NERDTree {{{
@@ -605,7 +653,7 @@ if has('cscope')
 
     " tags navigation
     " Go to definition (requires Ctags)
-    nnoremap <C-d> <C-]>
+    " nnoremap <C-d> <C-]>
 
     " Using 'CTRL-spacebar' (intepreted as CTRL-@ by vim) then a search type
     " makes the vim window split horizontally, with search result displayed in
@@ -651,7 +699,7 @@ endif
 set tags=./tags;/
 
 " }}}
-" FZF + cscope{{{
+" Cscope (with fzf) {{{
 
 function! Cscope(option, query)
   let color = '{ x = $1; $1 = ""; z = $3; $3 = ""; printf "\033[34m%s\033[0m:\033[31m%s\033[0m\011\033[37m%s\033[0m\n", x,z,$0; }'
@@ -736,7 +784,97 @@ let g:ale_sign_error = '✗\ '
 let g:ale_sign_warning = '⚠\ '
 
 " }}}
+" Wilder {{{
+if has('nvim')
+    call wilder#enable_cmdline_enter()
+    cmap <expr> <Tab> wilder#in_context() ? wilder#next() : "\<Tab>"
+    cmap <expr> <S-Tab> wilder#in_context() ? wilder#previous() : "\<S-Tab>"
+    set wildcharm=<Tab>
+
+    let s:status_hl = wilder#make_hl('WilderStatus', 'WildStatus')
+    let s:mode_hl   = wilder#make_hl('WilderMode', 'WildMode')
+    let s:index_hl  = wilder#make_hl('WilderIndex', 'airline_z')
+    let s:sep_hl    = wilder#make_hl('WilderSep', 'WilderSeparator')
+
+    " call wilder#set_option('pipeline', [
+    "             \   wilder#branch(
+    "             \     [
+    "             \       wilder#check({_, x -> empty(x)}),
+    "             \       wilder#history(10),
+    "             \     ],
+    "             \     wilder#cmdline_pipeline(),
+    "             \     [
+    "             \       wilder#python_fuzzy_delimiter(),
+    "             \       wilder#python_search({'engine': 're'}),
+    "             \       wilder#result_output_escape('^$,*~[]/\'),
+    "             \     ],
+    "             \   ),
+    "             \ ])
+
+    call wilder#set_option('renderer', wilder#statusline_renderer({
+                \ 'separator':' • ',
+                \ 'separator_hl': s:sep_hl,
+                \ 'hl': s:status_hl,
+                \ 'left': [
+                \    {'value': [{-> getcmdtype() ==# ':' ? ' Command ' : ' Search '}, wilder#spinner()], 'hl': s:mode_hl},
+                \    wilder#separator('', s:mode_hl, s:status_hl, 'left'), ' ',
+                \ ],
+                \ 'right': [
+                \    ' ', wilder#separator('', s:index_hl, s:status_hl, 'right'),
+                \    wilder#index({'hl': s:index_hl}),
+                \ ],
+                \ }))
+
+    " Enable cmdline completion (for Neovim only)
+    call wilder#set_option('modes', ['/', '?', ':'])
+endif
+" }}}
 " Other {{{
+    " Visual {{{
+    let g:highlightedyank_highlight_duration = 100
+    if !exists('##TextYankPost')
+        map y <Plug>(highlightedyank)
+    endif
+
+    let g:highlightedundo#highlight_mode = 2
+    " let g:highlightedundo#highlight_duration_delete = 100
+    " let g:highlightedundo#highlight_duration_add = 100
+    nmap g-    <Plug>(highlightedundo-gminus)
+    nmap g+    <Plug>(highlightedundo-gplus)
+
+    " highlightedundo and vim-repeat both remap the u, U, and <C-R> keys.
+    " I use a personal fork of vim-repeat that adds repeat#wrapMod to fix that
+    nnoremap <silent> u     :<C-U>call repeat#wrapMod("\<Plug>(highlightedundo-undo)",v:count)<CR>
+    nnoremap <silent> U     :<C-U>call repeat#wrapMod("\<Plug>(highlightedundo-Undo)",v:count)<CR>
+    nnoremap <silent> <C-R> :<C-U>call repeat#wrapMod("\<Plug>(highlightedundo-redo)",v:count)<CR>
+
+    IndentLinesEnable " Display a small line with each indentationlevel
+
+    " vim-signify
+    let g:signify_vcs_list = ['git']
+    let g:signify_skip_filetype = { 'journal': 1 }
+    let g:signify_sign_delete        = '-' " - is the opposite of +, not sure why _ is default
+    " let g:signify_sign_add          = '│'
+    " let g:signify_sign_change       = '│'
+    " let g:signify_sign_changedelete = '│'
+
+    " To make shiny and yankstack work together I have a modified fork of
+    " shiny that allows for a custom command.
+    nnoremap <silent> p :call shiny#custom("\<Plug>(Paste_p)")<CR>
+    nnoremap <silent> P :call shiny#custom("\<Plug>(Paste_P)")<CR>
+    nnoremap <silent> ]p :call shiny#custom("\<Plug>(PasteIndent_p)")<CR>
+    nnoremap <silent> [P :call shiny#custom("\<Plug>(PasteIndent_P)")<CR>
+    nnoremap <silent> <M-p> :call shiny#custom("\<Plug>(SwapPasteNext)")<CR>
+    nnoremap <silent> <M-P> :call shiny#custom("\<Plug>(SwapPastePrevious)")<CR>
+    nmap gp <Plug>(shiny-gp)
+    nmap gP <Plug>(shiny-gP)
+
+    let g:vim_shiny_window_change = 1 " The background flashes briefly when changing windows <M-j> <M-k>
+
+    augroup plugin-vim-shiny
+        autocmd WinEnter * call shiny#window#flash()
+    augroup END
+    " }}}
 
 " vim-ipython tmux integration
 let g:cellmode_tmux_sessionname=''  " Will try to automatically pickup tmux session
@@ -749,18 +887,6 @@ noremap <silent> <C-g> :call RunTmuxPythonCell(1)<CR>
 " let g:cellmode_screen_sessionname='ipython'
 " let g:cellmode_screen_window='0'
 
-
-nnoremap <silent> <Plug>AppendTextNext gn<esc>".p:call repeat#set("\<Plug>AppendTextNext")<CR>
-nnoremap <silent> <Plug>AppendText *Ncgn<C-r>"<C-o>:call repeat#set("\<Plug>AppendTextNext")<CR>
-nmap <silent> c>* <Plug>AppendText
-
-nnoremap <silent> <Plug>PrependTextNext n".P:call repeat#set("\<Plug>PrependTextNext")<CR>
-nnoremap <silent> <Plug>PrependText *Ncgn<C-r>"<C-o>`[<C-o>:call repeat#set("\<Plug>PrependTextNext")<CR>
-nmap <silent> c<* <Plug>PrependText
-
-nnoremap <silent> <M-j> :MultipleCursorsFind <C-R>/<CR>
-vnoremap <silent> <M-j> :MultipleCursorsFind <C-R>/<CR>
-
 let g:no_plugins = 'false'
 " Multi cursor
 let g:multi_cursor_prev_key = '<C-S-n>'
@@ -770,18 +896,11 @@ let g:multi_cursor_exit_from_visual_mode = 0
 let g:multi_cursor_exit_from_insert_mode = 0
 nnoremap <silent> <M-j> :MultipleCursorsFind <C-R>/<CR>
 vnoremap <silent> <M-j> :MultipleCursorsFind <C-R>/<CR>
-nmap <F8> :TagbarToggle<CR>
-IndentLinesEnable " Display a small line with each indentationlevel
-" vim-signify
-let g:signify_vcs_list = ['git']
-let g:signify_skip_filetype = { 'journal': 1 }
-let g:signify_sign_delete        = '-'
-" let g:signify_sign_add          = '│'
-" let g:signify_sign_change       = '│'
-" let g:signify_sign_changedelete = '│'
 "
 "
 
+" Disable the default <leader><leader> maps
+let g:EasyMotion_do_mapping = 0
 " The - key is my easymotion key.
 map _ <Plug>(easymotion-s)
 nmap - <Plug>(easymotion-sn)
@@ -795,9 +914,7 @@ nnoremap g- -
 " to not use 'conceal' on quotation marks
 autocmd Filetype json :IndentLinesDisable
 "}}}
-
-" Enable the fuzzy finder fzf
-" set rtp+=~/.fzf
+" }}}
 " }}}
 "Intro Settings {{{
 if version > 600
@@ -875,6 +992,17 @@ function! FixBrokenColors()
     execute('hi ALEErrorSign ctermbg=' . s:leftColCtermBg . ' guibg=' . s:leftColGuiBg . ' ctermfg=161 guifg=#d7005f')
     execute('hi ALEWarningSign ctermbg=' . s:leftColCtermBg . ' guibg=' . s:leftColGuiBg . ' ctermfg=161 guifg=#d7005f')
 
+    " Wilder {{{
+    hi WildMode             ctermfg=1     ctermbg=NONE    cterm=NONE guifg=#e0e0e0    guibg=#8F575A gui=italic
+    hi WildStatus           ctermfg=1     ctermbg=NONE    cterm=NONE guifg=#988C99    guibg=#153C63 gui=NONE
+    hi WilderSeparator      ctermfg=1     ctermbg=NONE    cterm=NONE guifg=#FA2C77    guibg=#153C63 gui=NONE
+    " }}}
+    " Spelling errors fix
+    execute('hi SpellBad   ctermfg=255 ctermbg=167 gui=undercurl guifg=#EEEEEE guibg=#D75F5F guisp=Red')
+    execute('hi SpellCap   ctermfg=255 ctermbg=74 gui=undercurl guifg=#EEEEEE guibg=#5FAFD7 guisp=Blue')
+    execute('hi SpellRare  ctermfg=255 ctermbg=140 gui=undercurl guifg=#EEEEEE guibg=#AF87D7 guisp=Magenta')
+    execute('hi SpellLocal ctermfg=255 ctermbg=14 gui=undercurl guifg=#EEEEEE guibg=#5FB3B3 guisp=Cyan')
+
     call GuiVSCterm()
 endfunction
 
@@ -911,14 +1039,23 @@ autocmd VimResized * wincmd =
 " (uBB is right double angle, uB7 is middle dot)
 set listchars=tab:»·,trail:␣,nbsp:˷
 
+autocmd FileType markdown setlocal spell
+autocmd FileType markdown setlocal complete+=kspell
+
+autocmd FileType gitcommit setlocal spell
+autocmd FileType gitcommit setlocal complete+=kspell
+
+
 
 " vim hardcodes background color erase even if the terminfo file does
 " not contain bce (not to mention that libvte based terminals
 " incorrectly contain bce in their terminfo files). This causes
 " incorrect background rendering when using a color theme with a
-" background color. (Kitty, tmux)
+" background color. (Kitty, tmux).
+" This makes it not use the term color for clearing/erase
 let &t_ut=''
-au BufWinEnter * let w:m2=matchadd('ColorColumn','\%>140v.\+', -1)
+" set t_ut=
+" au BufWinEnter * let w:m2=matchadd('ColorColumn','\%>140v.\+', -1)
 
 " }}}
  " Basic Settings {{{
@@ -927,18 +1064,18 @@ set guioptions=
 " Always increment as base 10 (<C-a> & <C-x>)
 set nrformats=
 set termguicolors     " Doesn't work with all terminals but fixes a few colorschemes for the terminals that support it
-"set shell="/bin/zsh"
+"set shell="/bin/zsh" " There are better places to fix this
 "set shellredir=">%s 2>&1"
 "set shellpipe="2>&1| tee"
-set backspace=indent,eol,start
-set display+=lastline
+set backspace=indent,eol,start " make backspace behave as expected
+set display+=lastline " avoid '@@@' filler, default in nvim but not in older regular vim
 set guioptions=       " Always increment as base 10 (<C-a> & <C-x>)
 set nobackup          " most files are in git anyways
-set autoread          " Always reload buffer when external changes detected
+set autoread          " Alway reload buffer when external changes detected
 set encoding=utf-8    " usually the case rather than latin1
 set textwidth=0       " disable automatic word wrapping (newlines)
 set hidden            " preserve buffers by hiding instead of closing them
-set showtabline=4     " t
+set showtabline=2     " always
 set fileformats=unix,mac,dos " Handle various end-of-line formats
 set tabstop=4         " number of visual spaces per tab
 set softtabstop=4     " number of spaces in tab when editing
@@ -1046,7 +1183,7 @@ map <F6> :source ~/.vim_session<cr>
 " map <F8> :set autochdir! autochdir?<CR>
 nnoremap <silent> <F7> :call <SID>rotate_colors()<cr>
 nnoremap <silent> <F8> :call <SID>light_colors()<cr>
-
+nmap <F9> :TagbarToggle<CR>
 
 " Unsure about this
 " Control-C Copy in visual mode
@@ -1070,6 +1207,8 @@ endfunction
 " nnoremap ? ?\v
 " vnoremap ? ?\v
 
+" q: is more annoying than useful
+" nnoremap q: :
 " Perhaps I'm crazy
 " They still work in visual mode now
 " nnoremap <up> <nop>
@@ -1090,6 +1229,7 @@ nnoremap <space> za
 " visualy select last inserted text
 nnoremap gV `[V`]
 " Yank to end of line (default Y=yy)
+" Makes yank behave the same as D
 nnoremap Y y$
 " edit this file
 nnoremap <silent> <leader>ev :tabedit ~/.vimrc<CR>
@@ -1097,54 +1237,38 @@ nnoremap <silent> <leader>ev :tabedit ~/.vimrc<CR>
 nnoremap <silent> <leader>sv :so $MYVIMRC<CR>
 " edit the .zshrc file
 nnoremap <silent> <leader>ec :tabedit ~/.zshrc<CR>
-" edit the .cshrc.user file
-nnoremap <silent> <leader>ec :tabedit ~/.cshrc.user<CR>
-" remove any search highlighting
-nnoremap <leader><space> :nohlsearch<CR>
 " `gf` opens file under cursor in new vertical split
 nnoremap gf :vertical wincmd f<CR>
 " move visual lines instead of real lines, less confusing together with wraping lines
 " j&k still work like normal when preceeded with a count, and any movement larger than 5 goes to the jumplist.
 nnoremap <expr> j v:count ? (v:count > 5 ? "m'" . v:count : '') . 'j' : 'gj'
 nnoremap <expr> k v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk'
-nnoremap ^ H
-nnoremap $ L
-nnoremap H ^
-nnoremap L $
-
-" Use next
-" nnoremap <silent> <c-l>
-" inoremap <silent> <c-l>
 
 " Scroll faster.
 nnoremap <C-e> 2<C-e>
 nnoremap <C-y> 2<C-y>
 
 
+" Faster way to open search since it's used to often
 nmap ; :%s//g<LEFT><LEFT>
 xmap ; :s//g<LEFT><LEFT>
 " Super Save, save all windows as a session, reopen with vim -S (vim/gvim/nvim -S)
 nnoremap <leader>s :mksession<CR>
 " Fast Saving
 nnoremap <leader>w :w!<CR>
-" Fast tab
-nnoremap <leader>t :tabnew<CR>
+" Toggle spell checking
+nnoremap <silent> <leader>t :setlocal spell!<CR>
 " Fast tab switching (Leader+Last)
 let g:lasttab = 1
-nnoremap <leader>l :exe "tabn ".g:lasttab<CR>
+nnoremap <silent> <leader>l :exe "tabn ".g:lasttab<CR>
 autocmd TabLeave * let g:lasttab = tabpagenr()
 
 nnoremap <silent> <leader>i :call ToggleCC()<CR>
-"show trailing whitespaces, somewhat exessive
+" show trailing whitespaces, somewhat exessive
 nnoremap <silent> <C-T> /\S\zs\s\+$<CR>
 
 " Replaced gundo with UndoTree, pure vimscript instead of dependencies
 nnoremap <leader>u :UndotreeToggle<CR>
-
-" open a new tab in the current buffer's path
-" very useful when editing files in the same directory
-" TODO combine with Vexplore and make more convinent
-" nnoremap <leader>e :tabedit <c-r>=expand("%:p:h")<CR>/<CR>
 
 " toggle NERDTree
 nnoremap <silent> <Leader>nt :NERDTreeToggle<CR>
@@ -1164,6 +1288,28 @@ nnoremap <C-V> v
 
 xnoremap v <C-V>
 xnoremap <C-V> v
+
+" These work similarly to C-N in visual-multi, use whichever one you prefer
+" Here you do a change once completely for the first match, and then just
+" press the . command to repeatedly change the others.
+
+" make current word pattern, then search select and change it
+" use . to then change the next occurance of the same word to the same thing
+nnoremap <silent> c* *Ncgn
+" Same but backwards
+nnoremap <silent> c# #NcgN
+" make current word pattern, then search select and append to it
+" looks complicated but it's just to make it repeatable with vim-repeat
+nnoremap <silent> <Plug>AppendTextNext gn<esc>".p:call repeat#set("\<Plug>AppendTextNext")<CR>
+nnoremap <silent> <Plug>AppendText *Ncgn<C-r>"<C-o>:call repeat#set("\<Plug>AppendTextNext")<CR>
+nmap <silent> c>* <Plug>AppendText
+" make current word pattern, then search select and prepend to it
+nnoremap <silent> <Plug>PrependTextNext n".P:call repeat#set("\<Plug>PrependTextNext")<CR>
+nnoremap <silent> <Plug>PrependText *Ncgn<C-r>"<C-o>`[<C-o>:call repeat#set("\<Plug>PrependTextNext")<CR>
+nmap <silent> c<* <Plug>PrependText
+" append & prepend backwards can be implemented in the same way but I wouldn't
+" use them really.
+
 " }}}
 " vnoremap {{{
 
@@ -1220,6 +1366,9 @@ xnoremap <expr> P '"_d"'.v:register.'P'
 
 inoremap (<CR> (<CR><SPACE><CR>)<Esc>k$xa
 inoremap {<CR> {<CR><SPACE><CR>}<Esc>k$xa
+
+inoremap <c-a> <home>
+inoremap <c-e> <end>
 
 inoremap ,, <C-x><C-o><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>" : ",,"<CR>
 inoremap ,; <C-n><C-r>=pumvisible()      ? "\<lt>Down>\<lt>C-p>\<lt>Down>" : ",;"<CR>
@@ -1402,7 +1551,7 @@ function! s:rotate_colors()
   echo name
 endfunction
 " }}}
-" Quick switch to light colorscheme <F8>{{{
+" Quick toggle to light colorscheme <F8>{{{
 
 function! s:light_colors()
     if !exists('s:colorsreset')
@@ -1452,6 +1601,7 @@ command! Danger if !empty(expand('%'))
          \|   echo 'Save the file first'
          \|   echohl None
          \| endif
+" }}}
 " :Share gives +w permission to group for active file {{{
 command! Share if !empty(expand('%'))
          \|   write
@@ -1462,6 +1612,7 @@ command! Share if !empty(expand('%'))
          \|   echo 'Save the file first'
          \|   echohl None
          \| endif
+" }}}
 " :EX gives +x permission to active file {{{
 command! EX if !empty(expand('%'))
          \|   write
@@ -1533,9 +1684,6 @@ xnoremap <silent> io :<c-u>call <SID>indent_object('==', 0, line("'<"), line("'>
 onoremap <silent> io :<c-u>call <SID>indent_object('==', 0, line('.'), line('.'), 0, 0)<cr>
 " }}}
 " Various {{{
-" <Leader>I/A | Prepend/Append to all adjacent lines with same indentation
-nmap <silent> <leader>I ^vio<C-V>I
-nmap <silent> <leader>A ^vio<C-V>$A
 " ?il | inner line
 xnoremap <silent> il <Esc>^vg_
 onoremap <silent> il :<C-U>normal! ^vg_<CR>
@@ -1620,6 +1768,7 @@ autocmd! FileType GV nnoremap <buffer> <silent> + :call <sid>gv_expand()<cr>
 " }}}
 " Search {{{
  "=====[ Completion during search (via Command window) ]======================
+ "Press TAB while searching to see options
 
 function! s:search_mode_start()
     cnoremap <tab> <c-f>:resize 1<CR>a<c-n>
@@ -1652,14 +1801,6 @@ if has('patch-8.0.1206')
         autocmd CmdlineLeave [/\?] call <SID>search_mode_stop()
     augroup END
 endif
-
-"=====[ Make multi-selection incremental search prettier ]======================
-
-" augroup SearchIncremental
-"     autocmd!
-"     autocmd CmdlineEnter [/\?]   highlight  Search  ctermfg=DarkRed   ctermbg=Black cterm=NONE
-"     autocmd CmdlineLeave [/\?]   highlight  Search  ctermfg=White ctermbg=Black cterm=bold
-" augroup END
 
 " }}}
 " Netrw {{{
@@ -1849,83 +1990,6 @@ endfunction
 
 
 " }}}
-" Unused Stuff {{{
-" Toggle Vexplore with Ctrl-E
-"function! ToggleVExplorer()
-"  if exists("t:expl_buf_num") "global variable for current tap, since only one instance of explorer
-"                              "per tab is preffered, replace t with w to change to window
-"    let expl_win_num = bufwinnr(t:expl_buf_num)
-"    if expl_win_num != -1
-"      let cur_win_nr = winnr()
-"      exec expl_win_num . 'wincmd w'
-"      close
-"      if expl_win_num > cur_win_nr
-"        exec cur_win_nr . 'wincmd w'
-"      elseif cur_win_nr==2
-"        exec '1wincmd w'
-"      else
-"        exec cur_win_nr . 'wincmd w'
-"      endif
-"      unlet t:expl_buf_num
-"    else
-"      unlet t:expl_buf_num
-"    endif
-"  else
-"    "exec '1wincmd w'
-"    Vexplore
-"    let t:expl_buf_num = bufnr("%")
-"  endif
-"endfunction
-"map <silent> <C-E> :call ToggleVExplorer()<CR>
-"let g:currentmode={
-"    \ 'n'   :   'N ',
-"    \ 'no'  :   'N·Operator Pending ',
-"    \ 'v'   :   'V ',
-"    \ 'V'   :   'V·Line ',
-"    \ ''  :   'V·Block ',
-"    \ 's'   :   'Select ',
-"    \ 'S'   :   'S·Line ',
-"    \ ''  :   'S·Block ',
-"    \ 'i'   :   'I ',
-"    \ 'R'   :   'R',
-"    \ 'Rv'  :   'V·Replace',
-"    \ 'c'   :   'Command ',
-"    \ 'cv'  :   'Vim Ex ',
-"    \ 'ce'  :   'Ex ',
-"    \ 'r'   :   'Prompt ',
-"    \ 'rm'  :   'More ',
-"    \ 'r?'  :   'Confirm ',
-"    \ '!'   :   'Shell ',
-"    \ 't'   :   'Terminal '
-"    \}
-"
-"" Automatically adjust statusline colors
-"function! ChangeStatuslineColor()
-"    if (mode() =~# '\v(n|no)')
-"        exe 'hi! StatusLine ctermfg=008 guifg=#fe8019'
-"    elseif (mode() =~# '\v(v|V)' || g:currentmode[mode()] ==# 'V·Block ' || get(g:currentmode, mode(), '') ==# 't')
-"        exe 'hi! StatusLine ctermfg=005 guifg=#8ec07c'
-"    elseif (mode() ==# 'i')
-"        exe 'hi! StatusLine ctermfg=004 guifg=#fabd2f'
-"    else
-"        exe 'hi! StatusLine ctermfg=006'
-"    endif
-"
-"    return ''
-"endfunction
-
-
-" Replaced Powerline with Airline since it was pure vimscript instead of
-" python
-" Enable powerline using one of the two solutions bellow (should both work
-" similarly. Top solution usually creates fewer errors on systems without
-" powerline.
-" set rtp+=/usr/lib/python3.6/site-packages/powerline/bindings/vim
-"python3 from powerline.vim import setup as powerline_setup
-"python3 powerline_setup()
-"python3 del powerline_setup
-
-" }}}
 " Neovim {{{
 if has('nvim')
     " In Neovim, you can set up fzf window using a Vim command
@@ -1955,40 +2019,42 @@ if has('nvim')
     nnoremap <A-j> <C-w>j
     nnoremap <A-k> <C-w>k
     nnoremap <A-l> <C-w>l
-    nnoremap <silent> <leader>o :vertical botright Ttoggle<CR><C-w>l
-" Nvim Functions {{{
-" Opens up a new buffer, either vertical or horizontal. Count can be used to
-" specify the number of visible columns or rows.
-fun! s:openBuffer(count, vertical)
-  let cmd = a:vertical ? 'vnew' : 'new'
-  let cmd = a:count ? a:count . cmd : cmd
-  exe cmd
-endf
+    " requires neoterm I believe
+    " nnoremap <silent> <leader>o :vertical botright Ttoggle<CR><C-w>l
 
-" Opens a new terminal buffer, but instead of doing so using 'enew' (same
-" window), it uses :vnew and :new instead. Usually, I want to open a new
-" terminal and not replace my current buffer.
-fun! s:openSplitTerm(args, count, vertical)
-  let direction = 1
-  call s:openBuffer(a:count, direction)
-  call s:openTerm(a:args)
-endf
+    " Nvim Functions {{{
+    " Opens up a new buffer, either vertical or horizontal. Count can be used to
+    " specify the number of visible columns or rows.
+    fun! s:openBuffer(count, vertical)
+    let cmd = a:vertical ? 'vnew' : 'new'
+    let cmd = a:count ? a:count . cmd : cmd
+    exe cmd
+    endf
 
-" Opens a new terminal buffer, but instead of doing so using split buffer, it
-" uses :tabnew instead.
-fun! s:openTabTerm(args)
-  exe 'tabnew'
-  call s:openTerm(a:args)
-endf
+    " Opens a new terminal buffer, but instead of doing so using 'enew' (same
+    " window), it uses :vnew and :new instead. Usually, I want to open a new
+    " terminal and not replace my current buffer.
+    fun! s:openSplitTerm(args, count, vertical)
+    let direction = 1
+    call s:openBuffer(a:count, direction)
+    call s:openTerm(a:args)
+    endf
 
-" Open a new terminal in the active buffer, while defining default mappings
-" for this plugin.
-fun! s:openTerm(args)
-  exe 'terminal' a:args
-  exe 'startinsert'
-endf
+    " Opens a new terminal buffer, but instead of doing so using split buffer, it
+    " uses :tabnew instead.
+    fun! s:openTabTerm(args)
+    exe 'tabnew'
+    call s:openTerm(a:args)
+    endf
 
-" }}}
+    " Open a new terminal in the active buffer, while defining default mappings
+    " for this plugin.
+    fun! s:openTerm(args)
+    exe 'terminal' a:args
+    exe 'startinsert'
+    endf
+    " }}}
+
     command! -count -nargs=* Term call s:openSplitTerm(<q-args>, <count>, 0)
     command! -count -nargs=* TermV call s:openSplitTerm(<q-args>, <count>, 1)
 
