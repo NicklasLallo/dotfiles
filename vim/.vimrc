@@ -31,7 +31,8 @@ Plug 'dracula/vim', {'as': 'dracula'}
 Plug 'drewtempelmeyer/palenight.vim', {'as': 'palenight'}
 Plug 'fcpg/vim-fahrenheit'
 Plug 'jacoborus/tender.vim', {'as': 'tender'}
-Plug 'morhetz/gruvbox'
+" Plug 'morhetz/gruvbox'
+Plug 'sainnhe/gruvbox-material'
 Plug 'nightsense/carbonized'
 Plug 'nightsense/cosmic_latte'
 Plug 'nightsense/seabird'
@@ -58,6 +59,8 @@ Plug 'junegunn/seoul256.vim'
 Plug 'mg979/vim-studio-dark' " vsdark | tomorrow_eigthies | sand
 Plug 'liuchengxu/space-vim-theme'
 
+" More language syntax packs
+Plug 'sheerun/vim-polyglot'
 
 " wal for colors
 Plug 'dylanaraps/wal'
