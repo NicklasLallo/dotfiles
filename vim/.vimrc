@@ -1000,9 +1000,6 @@ endif
 
 " set t_Co=256            " forces 256 colors so I don't have to change $TERM
 
-" makes the background disapear (so that it uses default terminal color and transparency)
-" hi Normal ctermbg=NONE
-
 function! GuiVSCterm()
     let s:CtermOnly = ['dream', 'dream-light', 'wal'] " Add themes manually if they don't support termguicolors
     if (index(s:CtermOnly, g:colors_name) >= 0)
@@ -1617,8 +1614,23 @@ function! s:rotate_colors()
   echo name
 endfunction
 " }}}
-" Quick toggle to light colorscheme <F8>{{{
+" Quick toggle to transparent background {{{
+command Transparent :call Transparent()
 
+function! Transparent()
+    if !exists('s:transparent')
+        let s:transparent = 1
+        set nocursorline
+        hi Normal ctermbg=None guibg=None
+        hi EndOfBuffer ctermbg=None guibg=None
+    else
+        unlet s:transparent
+        set cursorline
+        execute 'colorscheme ' . g:colors_name
+    endif
+endfunction
+" }}}
+" Quick toggle to light colorscheme <F8>{{{
 function! s:light_colors()
     if !exists('s:colorsreset')
         let s:colorsreset = 1
