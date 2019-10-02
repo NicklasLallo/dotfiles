@@ -1076,6 +1076,13 @@ augroup custom_highlighting
     " Except when typing that line:
     autocmd VimEnter,WinEnter * match DiffDelete /\s\+\%#\@<!$\| \+\ze\t/
 
+    " http://vim.wikia.com/wiki/Highlight_unwanted_spaces
+    " au BufNewFile,BufRead,InsertLeave * silent! match ExtraWhitespace /\s\+$/
+    " au InsertEnter * silent! match ExtraWhitespace /\s\+\%#\@<!$/
+
+    " Strip trailing whitespaces in GV
+    autocmd! FileType GV set ma! | %s/ *$// | nohl | 1 | set ma!
+
     if exists('##ColorScheme')
         autocmd ColorScheme * call FixBrokenColors()
     else
