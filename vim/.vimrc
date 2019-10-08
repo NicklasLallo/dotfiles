@@ -1039,6 +1039,9 @@ function! FixBrokenColors()
     " Add ctermfg=108 guifg=#87af87
     " Change ctermfg=68 guifg=#5f87d7
     " Delete ctermfg=161 guifg=#d7005f
+    let s:DiffAddGui         = '#87af87'
+    let s:DiffChangeGui      = '#5f87d7'
+    let s:DiffDeleteGui      = '#d7005f'
 
     execute('hi SignifySignAdd ctermbg='    . s:leftColCtermBg . ' guibg=' . s:leftColGuiBg . ' ctermfg=' . s:DiffAddCterm . ' guifg=' . s:DiffAddGui)
     execute('hi SignifySignChange ctermbg=' . s:leftColCtermBg . ' guibg=' . s:leftColGuiBg . ' ctermfg=' . s:DiffChangeCterm . ' guifg=' . s:DiffChangeGui)
