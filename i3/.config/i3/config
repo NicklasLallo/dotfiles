@@ -63,8 +63,8 @@ bindsym $mod+l exec i3lock-extra --screenshot --pixelize --overlay-image ~/Pictu
 #bindsym $mod+d exec rofi -show run -lines 3 -eh 2 -width 100 -padding 800 -opacity "85" -bw 0
 
 #I think compton ignores the opacity parameter since some update, it might be deprecated, but it still looks good without it
-bindsym $mod+d exec rofi -show run -opacity "85"
-bindsym $mod+c exec rofi -show run -lines 6 -separator-style solid -font "misc tamsyn 16" -width 35 -hide-scrollbar
+bindsym $mod+d exec rofi -show run
+bindsym $mod+c exec rofi -show run
 
 
 # There also is the (new) i3-dmenu-desktop which only displays applications
