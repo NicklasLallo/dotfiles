@@ -1234,7 +1234,6 @@ let &t_ut=''
 " Keybindings {{{
 " F-keys {{{
 
-
 " Automate things with :call VimuxRunCommand("shell command")
 
 " By default F1 is for help. But :help does the same thing so.
@@ -1248,7 +1247,8 @@ map <F6> :source ~/.vim_session<cr>
 " map <F8> :set autochdir! autochdir?<CR>
 nnoremap <silent> <F7> :call <SID>rotate_colors()<cr>
 nnoremap <silent> <F8> :call <SID>light_colors()<cr>
-nmap <F9> :Vista find<CR>
+
+nmap <F9> :call plug#load('fzf.vim') \| Vista finder<CR>
 nmap <silent> <leader><leader> :Vista focus<CR>
 
 " Unsure about this
@@ -1258,6 +1258,8 @@ vmap <C-C> y
 " Control-V Paste in insert and command mode
 " cmap <C-V> <C-r>0
 function! s:Runfile()
+  " save file to disk
+  update
   if &filetype ==# 'python'
     call VimuxRunCommand("clear; python3 " . bufname("%"))
     "TODO add support for more filetypes when needed
