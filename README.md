@@ -109,17 +109,17 @@ The wallpaper is set with feh & pywal in the i3 configuration, as startup comman
 + TODO more info.
 
 ## Scripts & Aliases
-+ `bm` (**b**ook**m**ark) - Appends the current working directory (path) into a file in your home directory. If passed any additional text it will append that as a comment on the line in the file. I use this to bookmark all my most commonly visited locations in the file system. Another option is to use z.
++ `bm` (**b**ook**m**ark) - Appends the current working directory (path) into a file in your home directory. If passed any additional text it will append that as a comment on the line in the file. I use this to bookmark all my most commonly visited locations in the file system. Another option is to use [z](https://github.com/rupa/z).
 + `cdb` (**cd** **b**ookmark) - Opens the file of bookmarks from your home directory, passes the lines to [fzf](https://github.com/junegunn/fzf), allows you to fuzzy search select a bookmark based on path or comment, and then changes your current directory to that location.
 + `fshow` - Git commit browser. `enter` for show, `Ctrl-d` for diff, \` toggles sort.
-+ Various git log FZF scripts, see the `.zshrc` file for more details. , `
++ Various git log FZF scripts, see the `.zshrc` file for more details.
 + `Ctrl+r`, `Ctrl+t`, `Alt+c` - Default fzf behaviour.
 + `Ctrl+f` - fzf fuzzy search for file recursively down from current location, opens selection for editing in vim. By default requires that fd is installed.
 + `Ctrl+j` - fzf fuzzy search the result of [z](https://github.com/rupa/z). z is installed as a plugin bundled with oh-my-zsh.
 + `cdd` - `cd ~/dotfiles`
 + `cdf` - cd to the directory of fzf fuzzy find filename.
 + `fkill` - fzf search all processes you have permission to kill, SIGTERM the selection.
-+ `gs[tatus] - git status (These and a few others come from the oh-my-zsh bundled git plugin)
++ `gs[tatus]` - git status (These and a few others come from the oh-my-zsh bundled git plugin)
 + `gp[ush]` - git push (These and a few others come from the oh-my-zsh bundled git plugin)
 + `gl` - git pull (These and a few others come from the oh-my-zsh bundled git plugin)
 + `ga glo gi gd grh gcf gss gclean` - git+fzf magic from [forgit](https://github.com/wfxr/forgit). Included copy in `oh-my-zsh/custom/plugin`
