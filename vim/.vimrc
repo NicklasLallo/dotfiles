@@ -58,6 +58,8 @@ Plug 'junegunn/seoul256.vim'
 " :VsdContrast cycles contrast :VsdOptions show options
 Plug 'mg979/vim-studio-dark' " vsdark | tomorrow_eigthies | sand
 Plug 'liuchengxu/space-vim-theme'
+Plug 'sainnhe/archived-colors' " cryslominsa
+" Plug 'neutaaaaan/iosvkem'
 
 " More language syntax packs
 Plug 'sheerun/vim-polyglot'
@@ -986,9 +988,9 @@ set showtabline=2 "always display the tabline, even if there is only one tab
 
 if has('gui_running')
   set background=dark
-  colorscheme gruvbox
+  colorscheme gruvbox-material
 else
-  colorscheme space_vim_theme
+  colorscheme gruvbox-material
   set background=dark
     if has('terminal') && !(&term ==# 'xterm-kitty') && !(&term ==# 'xterm-256color')
         " Avoid setting this variable when it is not absolutely neccesary
