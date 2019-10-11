@@ -10,6 +10,8 @@ rofi.theme: ~/.cache/wal/colors-rofi-dark.rasi
 # ! rofi.color-urgent: argb:00292d37, #ffffff, argb:00292d37, argb:00292d37, #ffffff
 
 rofi.modi: run,window,pywal:~/.config/rofi/pywal-menu.sh
+rofi.width: 36
+rofi.lines: 8
 rofi.show-icons: true
 rofi.sidebar-mode: true
 rofi.terminal: kitty
