@@ -1044,12 +1044,18 @@ function! FixBrokenColors()
     let s:DiffChangeGui      = ReturnHighlightTerm('DiffChange', 'guifg')
     let s:DiffDeleteGui      = ReturnHighlightTerm('DiffDelete', 'guifg')
 
-SignatureMarkText xxx guifg=#7daea3 guibg=#32302f
-SignatureMarkerText xxx guifg=#d3869b guibg=#32302f
-ShowMarksHLl   xxx guifg=#7daea3 guibg=#32302f
-ShowMarksHLu   xxx guifg=#7daea3 guibg=#32302f
-ShowMarksHLo   xxx guifg=#7daea3 guibg=#32302f
-ShowMarksHLm   xxx guifg=#7daea3 guibg=#32302f
+    let s:SignMarkTextCterm    = ReturnHighlightTerm('SignatureMarkText', 'ctermfg')
+    let s:SignMarkTextGui    = ReturnHighlightTerm('SignatureMarkText', 'guifg')
+
+    let s:SignMarkerTextCterm    = ReturnHighlightTerm('SignatureMarkerText', 'ctermfg')
+    let s:SignMarkerTextGui    = ReturnHighlightTerm('SignatureMarkerText', 'guifg')
+
+    " SignatureMarkText xxx guifg=#7daea3 guibg=#32302f
+    " SignatureMarkerText xxx guifg=#d3869b guibg=#32302f
+    " ShowMarksHLl   xxx guifg=#7daea3 guibg=#32302f
+    " ShowMarksHLu   xxx guifg=#7daea3 guibg=#32302f
+    " ShowMarksHLo   xxx guifg=#7daea3 guibg=#32302f
+    " ShowMarksHLm   xxx guifg=#7daea3 guibg=#32302f
 
     " Optionally force to always use these gree/blue/red defaults:
     " Add ctermfg=108 guifg=#87af87
@@ -1062,6 +1068,12 @@ ShowMarksHLm   xxx guifg=#7daea3 guibg=#32302f
     let s:DiffAddGui         = '#87af87'
     let s:DiffChangeGui      = '#5f87d7'
     let s:DiffDeleteGui      = '#d7005f'
+
+
+    call Hic('SignatureMarkText', s:leftColCtermBg, s:leftColGuiBg, s:SignMarkTextCterm, s:SignMarkTextGui)
+    call Hic('SignatureMarkText', s:leftColCtermBg, s:leftColGuiBg, s:SignMarkerTextCterm, s:SignMarkerTextGui)
+
+    call Hic('SignifySignChange', s:leftColCtermBg, s:leftColGuiBg, s:DiffChangeCterm, s:DiffChangeGui)
 
     call Hic('SignifySignAdd', s:leftColCtermBg, s:leftColGuiBg, s:DiffAddCterm, s:DiffAddGui)
     call Hic('SignifySignChange', s:leftColCtermBg, s:leftColGuiBg, s:DiffChangeCterm, s:DiffChangeGui)
