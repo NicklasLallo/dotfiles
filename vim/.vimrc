@@ -198,7 +198,8 @@ Plug 'dylanaraps/wal'
     nmap <leader>st :Startify<cr>
     " Simple comment toggeling with :gcc (line) or gc (target of a motion)
     Plug 'tpope/vim-commentary'
-    Plug 'tpope/vim-surround'                " Vim-surround
+    " Plug 'tpope/vim-surround'                " Vim-surround
+    Plug 'machakann/vim-sandwich'            " Instead of surround, uses 's'
     Plug 'NicklasLallo/vim-repeat'           " Fork to support undo highlights as well
     Plug 'kreskij/Repeatable.vim', { 'on': 'Repeatable' }
     Plug 'rhysd/git-messenger.vim'           " <leader>gm or :GitMessenger
@@ -264,9 +265,10 @@ Plug 'dylanaraps/wal'
     " 'yankstack', cCxX'Del' black hole redirection, swap-&-paste, visual move
     " paste don't override default register, replace operator, duplicate operator,
     " interactive paste with fzf, and more
-    let g:yanktools_main_key = 's' " unfortunate sacrifice
+    let g:yanktools_main_key = 'x' " unfortunate sacrifice, synonym for dl or <del>
     nmap S s$
     " :help yanktools.txt
+    " I didn't get used to it and am using vim-sandwitch on s now instead
     Plug 'mg979/vim-yanktools'   " M-p & M-P to cycle stack, ]y & [y cycle with preview
 
     " Real multiple cursors
@@ -1023,6 +1025,11 @@ function! ReturnHighlightTerm(group, term)
    return value
 endfunction
 
+function! Hic(group, ctermbg, guibg, ctermfg, guifg)
+    " Hic - Hi[light] c[ange]
+    execute('hi ' . a:group . ' ctermbg='    . a:ctermbg . ' guibg=' . a:guibg . ' ctermfg=' . a:ctermfg . ' guifg=' . a:guifg)
+endfunction
+
 function! FixBrokenColors()
     let s:leftColCtermBg  = ReturnHighlightTerm('LineNr', 'ctermbg')
     let s:leftColGuiBg    = ReturnHighlightTerm('LineNr', 'guibg')
@@ -1037,31 +1044,49 @@ function! FixBrokenColors()
     let s:DiffChangeGui      = ReturnHighlightTerm('DiffChange', 'guifg')
     let s:DiffDeleteGui      = ReturnHighlightTerm('DiffDelete', 'guifg')
 
+SignatureMarkText xxx guifg=#7daea3 guibg=#32302f
+SignatureMarkerText xxx guifg=#d3869b guibg=#32302f
+ShowMarksHLl   xxx guifg=#7daea3 guibg=#32302f
+ShowMarksHLu   xxx guifg=#7daea3 guibg=#32302f
+ShowMarksHLo   xxx guifg=#7daea3 guibg=#32302f
+ShowMarksHLm   xxx guifg=#7daea3 guibg=#32302f
+
     " Optionally force to always use these gree/blue/red defaults:
     " Add ctermfg=108 guifg=#87af87
+    " Add ctermfg=108 guifg=#a9b665
     " Change ctermfg=68 guifg=#5f87d7
+    " Change ctermfg=68 guifg=#7daea3
     " Delete ctermfg=161 guifg=#d7005f
+    " Delete ctermfg=12 guifg=#ea6962
+
     let s:DiffAddGui         = '#87af87'
     let s:DiffChangeGui      = '#5f87d7'
     let s:DiffDeleteGui      = '#d7005f'
 
-    execute('hi SignifySignAdd ctermbg='    . s:leftColCtermBg . ' guibg=' . s:leftColGuiBg . ' ctermfg=' . s:DiffAddCterm . ' guifg=' . s:DiffAddGui)
-    execute('hi SignifySignChange ctermbg=' . s:leftColCtermBg . ' guibg=' . s:leftColGuiBg . ' ctermfg=' . s:DiffChangeCterm . ' guifg=' . s:DiffChangeGui)
-    execute('hi SignifySignDelete ctermbg=' . s:leftColCtermBg . ' guibg=' . s:leftColGuiBg . ' ctermfg=' . s:DiffDeleteCterm . ' guifg=' . s:DiffDeleteGui)
+    call Hic('SignifySignAdd', s:leftColCtermBg, s:leftColGuiBg, s:DiffAddCterm, s:DiffAddGui)
+    call Hic('SignifySignChange', s:leftColCtermBg, s:leftColGuiBg, s:DiffChangeCterm, s:DiffChangeGui)
+    call Hic('SignifySignDelete', s:leftColCtermBg, s:leftColGuiBg, s:DiffDeleteCterm, s:DiffDeleteGui)
 
-    execute('hi ALEErrorSign ctermbg=' . s:leftColCtermBg . ' guibg=' . s:leftColGuiBg . ' ctermfg=161 guifg=#d7005f')
-    execute('hi ALEWarningSign ctermbg=' . s:leftColCtermBg . ' guibg=' . s:leftColGuiBg . ' ctermfg=161 guifg=#d7005f')
+    " Sometimes Signify use GitGutter highlight groups for some reason
+    call Hic('GitGutterAdd', s:leftColCtermBg, s:leftColGuiBg, s:DiffAddCterm, s:DiffAddGui)
+    call Hic('GitGutterChange', s:leftColCtermBg, s:leftColGuiBg, s:DiffChangeCterm, s:DiffChangeGui)
+    call Hic('GitGutterDelete', s:leftColCtermBg, s:leftColGuiBg, s:DiffDeleteCterm, s:DiffDeleteGui)
+
+
+    call Hic('ALEErrorSign', s:leftColCtermBg, s:leftColGuiBg , 161, '#d7005f')
+    call Hic('ALEWarningSign', s:leftColCtermBg, s:leftColGuiBg , 161, '#d7005f')
 
     " Wilder {{{
-    hi WildMode             ctermfg=1     ctermbg=NONE    cterm=NONE guifg=#e0e0e0    guibg=#8F575A gui=italic
-    hi WildStatus           ctermfg=1     ctermbg=NONE    cterm=NONE guifg=#988C99    guibg=#153C63 gui=NONE
-    hi WilderSeparator      ctermfg=1     ctermbg=NONE    cterm=NONE guifg=#FA2C77    guibg=#153C63 gui=NONE
+    " call('WildMode', 1, NONE, NONE, '#e0e0e0', '#8F575A', italic)
+    " call('WildStatus', 1, NONE, NONE, '#988C99', '#153C63', NONE)
+    " call('WilderSeparator', 1, NONE, NONE, '#FA2C77', '#153C63', NONE)
     " }}}
     " Spelling errors fix
-    execute('hi SpellBad   ctermfg=255 ctermbg=167 gui=undercurl guifg=#EEEEEE guibg=#D75F5F guisp=Red')
-    execute('hi SpellCap   ctermfg=255 ctermbg=74 gui=undercurl guifg=#EEEEEE guibg=#5FAFD7 guisp=Blue')
-    execute('hi SpellRare  ctermfg=255 ctermbg=140 gui=undercurl guifg=#EEEEEE guibg=#AF87D7 guisp=Magenta')
-    execute('hi SpellLocal ctermfg=255 ctermbg=14 gui=undercurl guifg=#EEEEEE guibg=#5FB3B3 guisp=Cyan')
+
+    call Hic('SpellBad', 167, '#D75F5F', 255, '#EEEEEE')
+    call Hic('SpellCap', 74, '#5FAFD7', 255, '#EEEEEE')
+    call Hic('SpellRare', 140, '#AF87D7', 255, '#EEEEEE')
+    call Hic('SpellLocal', 14, '#5FB3B3', 255, '#EEEEEE')
 
     call GuiVSCterm()
 endfunction
