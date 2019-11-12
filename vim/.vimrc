@@ -63,6 +63,7 @@ Plug 'sainnhe/archived-colors' " cryslominsa
 
 " More language syntax packs
 Plug 'sheerun/vim-polyglot'
+let g:polyglot_disabled = ['latex'] " Not compatible with vim-tex
 
 " wal for colors
 Plug 'dylanaraps/wal'
@@ -82,6 +83,7 @@ Plug 'dylanaraps/wal'
     Plug 'vim-airline/vim-airline-themes'
     Plug 'Yggdroot/indentLine', { 'on': 'IndentLinesEnable' }
     autocmd! User indentLine doautocmd indentLine Syntax
+    let g:indentLine_concealcursor = '' " default inc, no conceal on curorline
     if has('nvim')
         " A bit to buggy, test again in a few months
         " Plug 'gelguy/wilder.nvim',         { 'do': ':UpdateRemotePlugins' }
@@ -158,6 +160,13 @@ Plug 'dylanaraps/wal'
 " }}}
 " Language Specific {{{
     " Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'} " crazy python syntax
+    Plug 'lervag/vimtex' " latex for vim
+    let g:tex_flavor='latex'
+    let g:vimtex_view_method='zathura'
+    let g:vimtex_quickfix_mode=0
+    Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'} " for VimPlug
+    set conceallevel=2
+    let g:tex_conceal='abdmg'
     " Go
     Plug 'fatih/vim-go'
     " Syntax Highlighting for i3 config file
@@ -165,6 +174,51 @@ Plug 'dylanaraps/wal'
     " Emmet for vim
     " Plug 'mattn/emmet-vim'
     " Use with <C-y>,
+" }}}
+" Snippets {{{
+    Plug 'sirver/ultisnips'
+    " let g:UltiSnipsExpandTrigger = '<tab>'
+    " let g:UltiSnipsJumpForwardTrigger = '<tab>'
+    " let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
+
+    " This is to make ultisnips work well together with youcompleteme while
+    " both use <tab>
+    function! g:UltiSnips_Complete()
+    call UltiSnips#ExpandSnippet()
+    if g:ulti_expand_res == 0
+        if pumvisible()
+        return "\<C-n>"
+        else
+        call UltiSnips#JumpForwards()
+        if g:ulti_jump_forwards_res == 0
+            return "\<TAB>"
+        endif
+        endif
+    endif
+    return ""
+    endfunction
+
+    function! g:UltiSnips_Reverse()
+    call UltiSnips#JumpBackwards()
+    if g:ulti_jump_backwards_res == 0
+        return "\<C-P>"
+    endif
+
+    return ""
+    endfunction
+
+
+    if !exists("g:UltiSnipsJumpForwardTrigger")
+    let g:UltiSnipsJumpForwardTrigger = "<tab>"
+    endif
+
+    if !exists("g:UltiSnipsJumpBackwardTrigger")
+    let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+    endif
+
+    au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger     . " <C-R>=g:UltiSnips_Complete()<cr>"
+    au InsertEnter * exec "inoremap <silent> " .     g:UltiSnipsJumpBackwardTrigger . " <C-R>=g:UltiSnips_Reverse()<cr>"
+
 " }}}
 " Other {{{
     Plug 'zirrostig/vim-schlepp'             " move visual selections around
@@ -1148,6 +1202,12 @@ autocmd FileType markdown setlocal complete+=kspell
 
 autocmd FileType gitcommit setlocal spell
 autocmd FileType gitcommit setlocal complete+=kspell
+
+autocmd FileType tex setlocal spell
+autocmd FileType tex setlocal complete+=kspell
+" go to next spelling misstake, pick first correction ( 1z= ), then jump back.
+" should be undoable (<c-g>u)
+inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
 
 
 
