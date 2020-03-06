@@ -1,5 +1,6 @@
 " Plugins {{{
 let mapleader=","       " leader is comma instead of \
+let maplocalleader="+"  " vim-latex default bindings are all under localleader
 " Plug {{{
 " Install vim-plug if missing
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -313,8 +314,14 @@ Plug 'dylanaraps/wal'
     " Linter
     Plug 'w0rp/ale'
     " semantic-based completion
-    let g:ycm_key_detailed_diagnostics = '<leader>D'
-    Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+    " let g:ycm_key_detailed_diagnostics = '<leader>D'
+    " Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+if has('nvim')
+    Plug 'Shougo/deoplete.nvim'
+    Plug 'Shougo/neco-syntax'             " Generic syntax completion
+    Plug 'deoplete-plugins/deoplete-go'   " Go completion
+    Plug 'deoplete-plugins/deoplete-jedi' " Python completion
+endif
 
     " 'yankstack', cCxX'Del' black hole redirection, swap-&-paste, visual move
     " paste don't override default register, replace operator, duplicate operator,
@@ -392,8 +399,11 @@ let g:which_key_map =  {}
 " let g:which_key_map.7 = 'which_key_ignore'
 " let g:which_key_map.8 = 'which_key_ignore'
 " let g:which_key_map.9 = 'which_key_ignore'
+
+
 let g:which_key_map['a'] = ':Ag Fuzzy search'
-let g:which_key_map['T'] = ':Tags Fuzzy search'
+let g:which_key_map['T'] = 'Toggle spellcheck'
+let g:which_key_map['t'] = ':Tags Fuzzy search'
 let g:which_key_map['w'] = 'Write / Save'
 let g:which_key_map['i'] = 'Toggle Invisible'
 let g:which_key_map['l'] = 'Go To last Tab'
@@ -402,7 +412,6 @@ let g:which_key_map['f'] = 'Search/Replace cWord paragraph'
 let g:which_key_map['%'] = 'Search/Replace cWord global'
 let g:which_key_map['?'] = 'Google cWord'
 let g:which_key_map['!'] = 'Google cWord FeelingLucky'
-let g:which_key_map['!'] = 'Vista'
 
 
 let g:which_key_map['C'] = 'Colorpicker'
@@ -593,7 +602,7 @@ function! FZFOpen(command_str)
 endfunction
 
 nnoremap <silent> <leader>a :call FZFOpen(':Ag')<CR>
-nnoremap <silent> <leader>T :call FZFOpen(':Tags')<CR>
+nnoremap <silent> <leader>t :call FZFOpen(':Tags')<CR>
 
 nnoremap <silent> <C-g>g :call FZFOpen(':Ag')<CR>
 nnoremap <silent> <C-g>c :call FZFOpen(':Commands')<CR>
@@ -1209,6 +1218,10 @@ autocmd FileType tex setlocal complete+=kspell
 " should be undoable (<c-g>u)
 inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
 
+" Make vim start with a client-server setup if possible:
+if empty(v:servername) && exists('*remote_startserver')
+    call remote_startserver('VIM')
+endif"
 
 
 " vim hardcodes background color erase even if the terminfo file does
@@ -1424,7 +1437,7 @@ nnoremap <leader>s :mksession<CR>
 " Fast Saving
 nnoremap <leader>w :w!<CR>
 " Toggle spell checking
-nnoremap <silent> <leader>t :setlocal spell!<CR>
+nnoremap <silent> <leader>T :setlocal spell!<CR>
 " Fast tab switching (Leader+Last)
 let g:lasttab = 1
 nnoremap <silent> <leader>l :exe "tabn ".g:lasttab<CR>

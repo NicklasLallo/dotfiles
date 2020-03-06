@@ -201,7 +201,7 @@ alias please='sudo'
 alias kindly='sudo'
 # alias f='fzf --height 50% --border --preview "pygmentize -g -O style=monokai {}"'
 alias f='fzf --height 50% --border --preview "bat --color=always {}"'
-alias vimf='vim $(fzf --height 50% --border --preview "bat {}")'
+alias vimf='nvim $(fzf --height 50% --border --preview "bat {}")'
 
 function ranger-run(){
     zle kill-whole-line
@@ -234,7 +234,7 @@ function f_widget {
     if [[ -n $file ]] then;
         zle kill-whole-line
         zle reset-prompt
-        BUFFER="vim $file"
+        BUFFER="nvim $file"
         zle accept-line
     fi
     zle reset-prompt
@@ -252,7 +252,7 @@ vg() {
 
   if [[ -n $file ]]
   then
-     vim $file +$line
+     nvim $file +$line
   fi
 }
 
