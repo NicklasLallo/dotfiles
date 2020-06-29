@@ -84,9 +84,11 @@ bind ;C composite hint_focus; !s xdotool key Menu
 " Julia docs' built in search is bad
 set searchurls.julia https://www.google.com/search?q=site:http://docs.julialang.org/en/v1.0%20
 
-set theme dark
+colors base16-eighties
+" set theme dark
 set smoothscroll true
 set editorcmd kitty nvim
+set searchengine duckduckgo
 
 "
 " Misc settings
@@ -97,7 +99,9 @@ js tri.browserBg.runtime.getPlatformInfo().then(os=>{const editorcmd = os.os=="l
 
 " Sane hinting mode
 set hintfiltermode vimperator-reflow
+" set hintchars 1234567890
 set hintnames numeric
+" set hintnames uniform
 set newtab about:blank
 
 " Defaults to 300ms but I'm a 'move fast and close the wrong tabs' kinda chap
@@ -110,7 +114,7 @@ command fixamo js tri.excmds.setpref("privacy.resistFingerprinting.block_mozAddo
 
 " Make Tridactyl work on more sites at the expense of some security. For
 " details, read the comment at the top of this file.
-set csp clobber
+" set csp clobber
 fixamo_quiet
 
 " Make quickmarks for the sane Tridactyl issue view
