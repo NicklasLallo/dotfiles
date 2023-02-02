@@ -1,6 +1,8 @@
 # ❤ Dotfiles ❤
 My current dotfiles. Could be yours as well.
 
+(Slightly outdated repo, needs a rebuild due to updates at the moment, but quite easily fixed)
+
 ## Some details
 + **OS**: Arch
 + **WM**: i3
