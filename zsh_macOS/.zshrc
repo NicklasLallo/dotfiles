@@ -7,14 +7,16 @@ autoload -Uz compinit && compinit
 # - brew install fzf
 # - brew install forgit
 # - brew install starship
+# - brew install eza
 # Follow up command:
 # `starship preset gruvbox-rainbow -o ~/.config/starship.toml`
 # Additonally, install some font. I like Iosevka Nerd Font.
 
 alias vim="nvim"
 alias ..="cd .."
-alias ...= "cd ../.."
+alias ...="cd ../.."
 alias ....="cd ../../.."
+alias .....="cd ../../../.."
 alias :q="exit"
 alias :Q="exit"
 alias :wq="exit"
@@ -26,6 +28,7 @@ alias gl="git pull"
 alias gp="git push"
 alias lg="lazygit" #see https://github.com/jesseduffield/lazygit
 alias l="ls -lah"
+alias cdd="cd ~/dotfiles/"
 
 # Add fzf key bindings:
 # - CTRL-T - Paste the selected file path(s) into the command line
@@ -115,6 +118,60 @@ zmodload zsh/complist
 bindkey -M menuselect '^[[Z' reverse-menu-complete
 # Optionally, just use:
 # bindkey '^[[Z' reverse-menu-complete
+
+# fkill - kill processes - list only the ones you can kill. Modified the earlier script.
+fkill() {
+    local pid
+    if [ "$UID" != "0" ]; then
+        pid=$(ps -f -u $UID | sed 1d | fzf -m | awk '{print $2}')
+    else
+        pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+    fi
+
+    if [ "x$pid" != "x" ]
+    then
+        echo $pid | xargs kill -${1:-9}
+    fi
+}
+
+# Easy way to extract archives
+extract () {
+   if [ -f $1 ] ; then
+       case $1 in
+           *.tar.bz2)   tar xvjf $1;;
+           *.tar.gz)    tar xvzf $1;;
+           *.bz2)       bunzip2 $1 ;;
+           *.rar)       unrar x $1 ;;
+           *.gz)        gunzip $1  ;;
+           *.tar)       tar xvf $1 ;;
+           *.tbz2)      tar xvjf $1;;
+           *.tgz)       tar xvzf $1;;
+           *.zip)       unzip $1   ;;
+           *.Z)         uncompress $1  ;;
+           *.7z)        7z x $1;;
+           *) echo "don't know how to extract '$1'..." ;;
+       esac
+   else
+       echo "'$1' is not a valid file!"
+   fi
+}
+
+# if eza is installed add some aliases:
+# if hash eza &> /dev/null; then
+if (( $+commands[eza] )); then
+    # general use
+    alias ls='eza'                                                         # ls
+    alias l='eza -lbF --git'                                               # list, size, type, git
+    alias ll='eza -lbGF --git'                                             # long list - grid drisplay
+    alias llm='eza -lbGF --git --sort=modified'                            # long list, modified date sort
+    alias la='eza -lbhHigUmuSa --time-style=long-iso --git --color-scale'  # all list
+    alias lx='eza -lbhHigUmuSa@ --time-style=long-iso --git --color-scale' # all + extended list
+
+    # speciality views
+    alias lS='eza -1'			                                                  # one column, just names
+    alias lt='eza --tree --level=2'                                         # tree
+    alias lso='/bin/ls' # "ls origigal"  - use the system ls
+fi
 
 # Use starship prompt
 eval "$(starship init zsh)"
